@@ -34,6 +34,7 @@ public class Nombre {
     }
 
     public String getApellidoPaterno() {
+        System.out.println(apellidoPaterno);
         return apellidoPaterno;
     }
 

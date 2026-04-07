@@ -1,4 +1,5 @@
 public enum Tratamiento {
     SR,
-    SRA
+    SRA,
+    BB
 }
