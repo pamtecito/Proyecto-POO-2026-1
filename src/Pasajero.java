@@ -1,4 +1,4 @@
-//Alonso Gutiérrez
+//Alonso Gutiérrez Pino
 
 /*public class Pasajero extends Persona {
     private Nombre nomContacto;

@@ -1,4 +1,4 @@
-//Alonso Gutiérrez
+//Alonso Gutiérrez Pino
 
 /*public class Persona {
     private IdPersona idPersona;
