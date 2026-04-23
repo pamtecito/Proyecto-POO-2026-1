@@ -7,7 +7,7 @@ public class Viaje {
     private LocalTime hora;
     private int precio;
     private Bus bus;
-    private ArrayList<Pasaje> pasajes;
+    //private ArrayList<Pasaje> pasajes;
 
     public Viaje(LocalDate fecha, LocalTime hora, int precio, Bus bus){
         this.fecha= fecha;
@@ -41,9 +41,8 @@ public class Viaje {
         return  h;
     }
 
-    public void addPasaje(Pasaje pasaje){
-        pasajes.add(pasaje);
-    }
+    //public void addPasaje(Pasaje pasaje){
+        //pasajes.add(pasaje);
 
     public String[][] getListaPasajeros(){
         String[][] h= new String[0][0];

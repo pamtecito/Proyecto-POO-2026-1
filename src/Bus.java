@@ -1,14 +1,16 @@
+import java.util.ArrayList;
+
 public class Bus {
     private String patente;
     private String marca;
     private String modelo;
     private int nroAsientos;
+    private ArrayList<Viaje> viajes;
 
     public Bus(String patente, int nroAsientos){
         this.patente=patente;
         this.nroAsientos= nroAsientos;
-
-
+        viajes = new ArrayList<Viaje>();
     }
 
     public String getPatente() {
@@ -34,7 +36,7 @@ public class Bus {
     public void setModelo(String modelo) {
         this.modelo = modelo;
     }
-    public void addViaje(String viaje){
-
+    public void addViaje(Viaje viaje){
+        viajes.add(viaje);
     }
 }
