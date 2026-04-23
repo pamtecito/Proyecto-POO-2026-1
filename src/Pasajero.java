@@ -1,28 +1,24 @@
-//Alonso Gutiérrez Pino
-
-/*public class Pasajero extends Persona {
     private Nombre nomContacto;
     private String fonoContacto;
 
-    public Pasajero (IdPersona idPersona, Nombre nombreCompleto, String telefono) {
-        super(idPersona, nombreCompleto, telefono);
-    }
-
+    /*public Pasajero(IdPersona id, Nombre nombreCompleto, String telefono) {
+        super(id,nombreCompleto, telefono);
+    }*/
 
 
     public Nombre getNomContacto() {
         return nomContacto;
     }
 
-    public void setNomContacto(Nombre nomContacto) {
-        this.nomContacto = nomContacto;
+    public void setNomContacto(Nombre nom) {
+        this.nomContacto = nom;
     }
 
-    public String getFonoContacto() {
+    public String getFonoContacto(){
         return fonoContacto;
     }
 
-    public void setFonoContacto(String fonoContacto) {
-        this.fonoContacto = fonoContacto;
+    public void setFonoContacto(String fono) {
+        this.fonoContacto = fono;
     }
-}*/
+}
