@@ -3,9 +3,9 @@ public class Pasajero{
     private Nombre nomContacto;
     private String fonoContacto;
 
-    /*public Pasajero(IdPersona id, Nombre nombreCompleto, String telefono) {
+    public Pasajero(IdPersona id, Nombre nombreCompleto, String telefono) {
         super(id,nombreCompleto, telefono);
-    }*/
+    }
 
 
     public Nombre getNomContacto() {
