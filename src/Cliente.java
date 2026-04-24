@@ -9,7 +9,7 @@ public class Cliente extends Persona {
     public Cliente(IdPersona idPersona, Nombre nom, String email) {
         super(idPersona, nom);
         this.email = email;
-        ventas = new ArrayList<>();
+        ventas= new ArrayList<Venta>();
     }
 
     public String getEmail() {
@@ -27,12 +27,6 @@ public class Cliente extends Persona {
     public Venta[] getVentas(){
         return ventas.toArray(new Venta[0]);
     }
-
 }
-
-
-
-
-
 
 
