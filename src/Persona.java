@@ -32,11 +32,18 @@
     }
 
     public String toString() {
-        return null;
+        return "Id persona: " + idPersona + "\nNombre: " + nombreCompleto + "\nTelefono: " + telefono;
     }
 
     public boolean equals(Object otro){
-        return false;
+        if (this == otro) {
+            return true;
+        }
+        if (otro == null || getClass() != otro.getClass()) {
+            return false;
+        }
+
+        Persona persona = (Persona) otro;
+        return this.idPersona == persona.idPersona;
     }
-}
-*/
+}*/
