@@ -1,11 +1,15 @@
+import java.security.Permission;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
-public class Cliente {
+public class Cliente extends Persona {
     private String email;
-    //ArrayList<Venta> ventas;
+    private ArrayList<Venta> ventas;
 
-    public Cliente(String email) {
+    public Cliente(IdPersona idPersona, Nombre nom, String email) {
+        super(idPersona, nom);
         this.email = email;
+        ventas = new ArrayList<>();
     }
 
     public String getEmail() {
@@ -15,10 +19,7 @@ public class Cliente {
     public void setEmail(String email) {
         this.email = email;
     }
-}
 
-
-    /*
     public void addVenta(Venta venta){
         ventas.add(venta);
     }
@@ -26,5 +27,12 @@ public class Cliente {
     public Venta[] getVentas(){
         return ventas.toArray(new Venta[0]);
     }
-     */
+
+}
+
+
+
+
+
+
 

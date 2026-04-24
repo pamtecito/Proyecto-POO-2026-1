@@ -1,6 +1,6 @@
 //Alonso Gutiérrez Pino
 
-/*public class Persona {
+public class Persona {
     private IdPersona idPersona;
     private Nombre nombreCompleto;
     private String telefono;
@@ -8,7 +8,6 @@
     public Persona(IdPersona idPersona, Nombre nombreCompleto, String telefono) {
         this.idPersona = idPersona;
         this.nombreCompleto = nombreCompleto;
-        this.telefono = telefono;
     }
 
     public IdPersona getIdPersona() {
@@ -32,11 +31,12 @@
     }
 
     public String toString() {
-        return null;
+        return "Id Persona: " + idPersona +
+                "\nNombre: " + nombreCompleto +
+                "\nTelefono: " + telefono;
     }
 
     public boolean equals(Object otro){
         return false;
     }
 }
-*/
