@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class SistemaVentaPasaje {
@@ -48,23 +50,23 @@ public class SistemaVentaPasaje {
     }
 
     public String[][] getHorario(LocalDate fechaViaje){
-
+        return null;
     }
 
     public String[][] listAsientosDeViaje(LocalDate fecha, LocalTime hora, int precio, String patBus) {
-
+        return null;
     }
 
     public int getMontoVenta(String idDocumento, TipoDocumento tipo){
-
+        return 0;
     }
 
     public String getNombrePasajero(IdPersona idPasajero){
-
+        return null;
     }
 
     public boolean vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patBus, int asiento, IdPersona idPasajero){
-
+        return false;
     }
 
     public String[][] listVentas(){
