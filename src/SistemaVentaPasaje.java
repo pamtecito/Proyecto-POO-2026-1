@@ -28,7 +28,7 @@ public class SistemaVentaPasaje {
 
     public boolean createPasajero(IdPersona id, Nombre nom, String fono, Nombre nomContacto, String fonoContacto) {
         if (findPasajero(id) != null) return false;
-        Pasajero p = new Pasajero(IdPersona id, Nombre nom);
+        Pasajero p = new Pasajero(id, nom);
         p.setNomContacto(nomContacto);
         p.setFonoContacto(fono);
         return misPasajeros.add(p);
@@ -50,23 +50,63 @@ public class SistemaVentaPasaje {
     }
 
     public String[][] getHorario(LocalDate fechaViaje){
-        return null;
+        ArrayList<Viaje> viajesFecha = new ArrayList<>();
+        for (Viaje v : misViajes){
+            if(v.getFecha().equals(fechaViaje)){
+                viajesFecha.add(v);
+            }
+        }
+        String[][] horarios = new String[viajesFecha.size()][4];
+        for (int i = 0; i < horarios.length; i++) {
+            Viaje v = viajesFecha.get(i);
+            horarios[i][0] = v.getBus().getPatente();
+            horarios[i][1] = v.getHora().toString();
+            horarios[i][2] = String.valueOf(v.getPrecio());
+            horarios[i][3] = String.valueOf(v.getNroAsientosDisponibles());
+        }
+        return horarios;
     }
 
-    public String[][] listAsientosDeViaje(LocalDate fecha, LocalTime hora, int precio, String patBus) {
-        return null;
+    public String[][] listAsientosDeViaje(LocalDate fecha, LocalTime hora, String patBus) {
+        Viaje viaje = findViaje(String.valueOf(fecha), String.valueOf(hora), patBus);
+        if (viaje == null)return new String[0][0];
+
+        return viaje.getAsientos();
     }
 
     public int getMontoVenta(String idDocumento, TipoDocumento tipo){
-        return 0;
+       if (findVenta(idDocumento, tipo) == null) return 0;
+       Venta monto = findVenta(idDocumento, tipo);
+       return monto.getMonto();
     }
 
     public String getNombrePasajero(IdPersona idPasajero){
-        return null;
+        if (findPasajero(idPasajero) == null) return  null;
+        Pasajero nom =findPasajero(idPasajero);
+        return nom.getNombreCompleto().toString();
     }
 
     public boolean vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patBus, int asiento, IdPersona idPasajero){
-        return false;
+        /*Solicita a la venta, cuyo idDocumento y tipo se recibe como
+parámetros, crear un nuevo pasaje asociado al viaje cuya fecha
+y hora de salida se indican asociado al bus con la patente dada,
+ligando al nuevo pasaje, el pasajero correspondiente. Respecto
+de este último, el método recupera el pasajero cuyo idPersona
+se recibe como parámetro. El método retorna true si es posible
+crear el nuevo pasaje asociándolo a la venta. Si no es posible
+crear el nuevo pasaje porque no existe una venta con el
+idDocumento y tipo dados o no existe un viaje con los datos
+dados o no existe un bus cuya patente se indica o no existe un
+pasajero con el id dado, el método retorna false.
+*/
+
+        Viaje v = findViaje(String.valueOf(fecha), String.valueOf(hora), patBus);
+        Pasajero p = findPasajero(idPasajero);
+        Venta venta = v.
+        if (v == null || p == null) return false;
+
+
+        return true;
     }
 
     public String[][] listVentas(){
@@ -113,8 +153,8 @@ public class SistemaVentaPasaje {
                     Pasajero p = pasaje.getPasajero();
                     list[i][0] = String.valueOf(pasaje.getNumero());
                     list[i][1] = p.getIdPersona().toString();
-                    list[i][2] = p.getNombreCompleto;
-                    list[i][3] = p.getNomContacto();
+                    list[i][2] = p.getNombreCompleto().toString();
+                    list[i][3] = p.getNomContacto().toString();
                     list[i][4] = p.getFonoContacto();
                 }
             }
@@ -161,7 +201,7 @@ public class SistemaVentaPasaje {
    }
 
    private Pasajero findPasajero(IdPersona idPersona){
-        for (misPasajeros p : Pasajero){
+        for (Pasajero p :misPasajeros){
             if (p.getIdPersona().equals(idPersona)){
                 return p;
             }
