@@ -2,10 +2,11 @@ import java.util.ArrayList;
 
 public class Cliente {
     private String email;
-    //ArrayList<Venta> ventas;
+    ArrayList<Venta> ventas;
 
     public Cliente(String email) {
         this.email = email;
+        ventas= new ArrayList<Venta>();
     }
 
     public String getEmail() {
@@ -15,10 +16,7 @@ public class Cliente {
     public void setEmail(String email) {
         this.email = email;
     }
-}
 
-
-    /*
     public void addVenta(Venta venta){
         ventas.add(venta);
     }
@@ -26,5 +24,6 @@ public class Cliente {
     public Venta[] getVentas(){
         return ventas.toArray(new Venta[0]);
     }
-     */
+}
+
 

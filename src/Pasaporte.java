@@ -1,4 +1,4 @@
-public class Pasaporte /*implements idPersona*/{
+public class Pasaporte implements idPersona{
     private String numero;
     private String nacionalidad;
 
@@ -16,6 +16,12 @@ public class Pasaporte /*implements idPersona*/{
     }
 
     public static Pasaporte of(String num, String nacionalidad){
+        if(num.length() != 9 || num == null){
+            return null;
+        }
+        if(nacionalidad == null){
+            return null;
+        }
         return new Pasaporte(num, nacionalidad);
     }
 }
