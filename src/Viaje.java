@@ -37,7 +37,19 @@ public class Viaje {
         this.precio = precio;
     }
 
-    public void addPasaje(Pasaje pasaje){
+    public String[][] getAsientos(){
+        String[][] asientos = new String[this.getBus().getNroAsientos()][2];
+        for (int i = 0; i < asientos.length; i++) {
+            asientos[i][0] = String.valueOf(i+1);
+            asientos[i][1] = "libre";
+        }
+        for (Pasaje p : pasajes){
+            asientos[p.getAsiento()][1] = "Ocupado";
+        }
+        return asientos;
+    }
+
+    public void addPasaje(Pasaje pasaje) {
         pasajes.add(pasaje);
     }
 
