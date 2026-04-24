@@ -5,7 +5,7 @@ public class Persona {
     private Nombre nombreCompleto;
     private String telefono;
 
-    public Persona(IdPersona idPersona, Nombre nombreCompleto, String telefono) {
+    public Persona(IdPersona idPersona, Nombre nombreCompleto) {
         this.idPersona = idPersona;
         this.nombreCompleto = nombreCompleto;
     }
@@ -36,7 +36,11 @@ public class Persona {
                 "\nTelefono: " + telefono;
     }
 
+    @Override
     public boolean equals(Object otro){
-        return false;
+        if (this == otro) return true;
+        if (otro == null || getClass() != otro.getClass()) return false;
+        Persona perso = (Persona)otro;
+        return this.idPersona == perso.idPersona;
     }
 }
