@@ -2,11 +2,9 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Main {
+    SistemaVentaPasaje svp= new SistemaVentaPasaje();
     public static void main(String[] args) {
-
         Scanner tcld = new Scanner(System.in);
-
-
         menu(tcld);
     }
 
@@ -15,9 +13,6 @@ public class Main {
         ArrayList<Bus> buses = new ArrayList<>();
         ArrayList<Viaje> viajes = new ArrayList<>();
         int opcion;
-        String rut;
-        String pasaporte;
-
 
         System.out.println("Menú principal");
         System.out.println("1. Crear cliente");
@@ -34,6 +29,9 @@ public class Main {
 
         switch (opcion) {
             case 1: crearCliente(tcld);
+            break;
+            case 2: crearBus(tcld);
+            break;
 
 
         }
@@ -73,13 +71,29 @@ public class Main {
                 nroTelefono = tcld.next();
                 System.out.println("Email: ");
                 email = tcld.next();
-                if
 
             } else {
                 System.out.println("Pasaporte: ");
                 pasaporte =  tcld.next();
             }
 
+        }
+    }
+
+    private static void crearBus(Scanner tcld){
+        System.out.println("Creacion de un bus: ");
+        System.out.println("Patente:");
+        String pat= tcld.next();
+        System.out.println("Marca:");
+        String marc= tcld.next();
+        System.out.println("Modelo:");
+        String mod= tcld.next();
+        System.out.println("Numero de asientos: ");
+        int numTotDeAsientos= tcld.nextInt();
+        if(svp.createBus(pat, marc,mod,numTotDeAsientos)){
+            System.out.println("Bus guardado exitosamente");
+        } else {
+            System.out.println("Bus no creado");
         }
     }
 }
