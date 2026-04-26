@@ -35,6 +35,14 @@ public class SistemaVentaPasaje {
 
     }
 
+    public boolean createBus(String patente, String marca, String modelo, int nroAsientos){
+            if(findBus(patente) != null) return false;
+            Bus b = new Bus(patente, nroAsientos);
+            b.setMarca(marca);
+            b.setModelo(modelo);
+            return misbuses.add(b);
+    }
+
     public boolean createViaje(LocalDate fecha, LocalTime hora, int precio, String patBus) {
         if (findViaje(String.valueOf(fecha),String.valueOf(hora),patBus) != null) return false;
         if (findBus(patBus) == null) return false;
@@ -87,25 +95,23 @@ public class SistemaVentaPasaje {
     }
 
     public boolean vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patBus, int asiento, IdPersona idPasajero){
-        /*Solicita a la venta, cuyo idDocumento y tipo se recibe como
-parámetros, crear un nuevo pasaje asociado al viaje cuya fecha
-y hora de salida se indican asociado al bus con la patente dada,
-ligando al nuevo pasaje, el pasajero correspondiente. Respecto
-de este último, el método recupera el pasajero cuyo idPersona
-se recibe como parámetro. El método retorna true si es posible
-crear el nuevo pasaje asociándolo a la venta. Si no es posible
-crear el nuevo pasaje porque no existe una venta con el
-idDocumento y tipo dados o no existe un viaje con los datos
-dados o no existe un bus cuya patente se indica o no existe un
-pasajero con el id dado, el método retorna false.
-*/
+        Venta venta = null;
+        for (int i = 0; i < misVentas.size() && venta == null; i++) {
+            if (misVentas.get(i).getIdDocumento().equals(idDoc)) {
+                venta = misVentas.get(i);
+            }
+        }
+        if (venta == null) return false;
+        Viaje viaje = findViaje(String.valueOf(fecha), String.valueOf(hora), patBus);
+        if (viaje == null) return false;
 
-        Viaje v = findViaje(String.valueOf(fecha), String.valueOf(hora), patBus);
-        Pasajero p = findPasajero(idPasajero);
-        Venta venta = v.
-        if (v == null || p == null) return false;
+        Bus bus = findBus(patBus);
+        if (bus == null) return false;
 
+        Pasajero pasajero = findPasajero(idPasajero);
+        if (pasajero == null) return false;
 
+        venta.createPasaje(asiento, viaje, pasajero);
         return true;
     }
 
