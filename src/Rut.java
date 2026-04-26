@@ -2,7 +2,7 @@ public class Rut implements IdPersona {
     private int numero;
     private char dv;
 
-    public Rut(int numero, char dv) {
+    private Rut(int numero, char dv) {
         this.numero = numero;
         this.dv = dv;
     }
@@ -21,9 +21,9 @@ public class Rut implements IdPersona {
         rutConDv = rutConDv.replace(".","").replace("-","");
         rutConDv = rutConDv.substring(0, rutConDv.length() - 1);
 
-        int num =  Integer.parseInt(rutConDv);
+        String  num =  (rutConDv);
 
-        return new Rut(num, dv);
+        return new Rut(Integer.parseInt(num), dv);
     }
 
     @Override
