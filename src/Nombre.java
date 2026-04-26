@@ -1,5 +1,4 @@
-import java.util.Objects;
-
+//clase hecha por anastacia en un pc del labIci
 public class Nombre {
     private Tratamiento tratamiento;
     private String nombres;
