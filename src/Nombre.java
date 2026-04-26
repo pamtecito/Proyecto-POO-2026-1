@@ -26,7 +26,7 @@ public class Nombre {
     }
 
     public void setApellidoPaterno(String apellidoPaterno) {
-        apellidoPaterno = apellidoPaterno;
+        this.apellidoPaterno = apellidoPaterno;
     }
 
     public String getApellidoMaterno() {
@@ -34,7 +34,7 @@ public class Nombre {
     }
 
     public void setApellidoMaterno(String apellidoMaterno) {
-        apellidoMaterno = apellidoMaterno;
+        this.apellidoMaterno = apellidoMaterno;
     }
 
     @Override
