@@ -56,10 +56,10 @@ public class Viaje {
     public String[][] getListaPasajeros(){
         String[][] h= new String[pasajes.size()][4];
         for(int i=0; i<h.length; i++){
-            h[i][0]= pasajes.getPasajero().getIdPersona();
-            h[i][1]= pasajes.getPasajero().getNombreCompleto();
-            h[i][2]= pasajes.getPasajero().getNomContacto();
-            h[i][3]= pasajes.getPasajero().getFonoContacto();
+            h[i][0]= String.valueOf(pasajes.get(i).getPasajero().getIdPersona());
+            h[i][1]= String.valueOf(pasajes.get(i).getPasajero().getNomContacto());
+            h[i][2]= String.valueOf(pasajes.get(i).getPasajero().getNombreCompleto());
+            h[i][3]= pasajes.get(i).getPasajero().getFonoContacto();
         }
         return h;
     }
