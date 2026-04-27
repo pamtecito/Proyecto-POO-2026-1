@@ -1,18 +1,16 @@
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner tcld = new Scanner(System.in);
-        menu(tcld);
+        sistema.debug();
+        menu();
     }
 
-    private static void menu(Scanner tcld) {
-        SistemaVentaPasaje sistema = new SistemaVentaPasaje();
+    private static void menu() {
+        LocalDate f = null;
         int opcion;
 
         do {
@@ -22,11 +20,11 @@ public class Main {
             System.out.println("3. Crear Viaje");
             System.out.println("4. Vender pasaje");
             System.out.println("5. Lista de pasajeros");
-            System.out.println("6. Lista de buses");
+            System.out.println("6. Lista de ventas");
             System.out.println("7. Lista de viajes");
             System.out.println("8. Consulta viajes disponibles por fecha");
             System.out.println("9. Salir");
-            System.out.println("Opcion: ");
+            System.out.println("..:: Ingrese numero de opción: ");
             opcion = tcld.nextInt();
 
             switch (opcion) {
@@ -51,6 +49,9 @@ public class Main {
                 case 7:
                     listViajes(tcld, sistema);
                     break;
+                case 8:
+                    consultaHorario(f);
+                    break;
                 case 9:
                     System.out.println("Saliendo...");
                     break;
@@ -61,7 +62,8 @@ public class Main {
 
         } while (opcion != 9);
     }
-    private static void crearCliente (Scanner tcld, SistemaVentaPasaje sistema){
+
+    private static void crearCliente() {
         IdPersona id;
         int srOSra;
 
@@ -113,20 +115,15 @@ public class Main {
                 System.out.println("Email: ");
                 String email = tcld.next();
 
-                boolean creado;
+                boolean creado = sistema.createCliente(id, nombre, telefono, email);
 
-                if (rutopasaporte == 1) {
-                    creado = sistema.createCliente(id, nombre, telefono, email);
-                } else {
-                    creado = sistema.createCliente(id, nombre, telefono, email);
-                }
+
 
                 if (creado) {
                     System.out.println("Cliente creado");
                 } else {
                     System.out.println("No se ha podido crear. Ya existe un cliente con el identificador dado");
                 }
-
 
 
             }
@@ -137,13 +134,13 @@ public class Main {
     private static void crearBus(Scanner tcld, SistemaVentaPasaje sistema){
         System.out.println("Crear un nuevo bus: ");
         System.out.println("Patente: ");
-        String patente = tcld.next();
+        String patente = tcld.next().toUpperCase();
         System.out.println("Marca: ");
         tcld.nextLine();
         String marca = tcld.nextLine();
         System.out.println("Modelo: ");
-        tcld.nextLine();
         String modelo = tcld.nextLine();
+        tcld.nextLine();
         System.out.println("Numero de asientos: ");
         int nroAsientos = tcld.nextInt();
 
@@ -158,15 +155,16 @@ public class Main {
 
     private static void crearViaje(Scanner tcld, SistemaVentaPasaje sistema){
         System.out.println("Creando un nuevo viaje: ");
+        System.out.println("Fecha [dd/mm/yyyy]");
         String fechaStr = tcld.next();
-        LocalDate fecha = LocalDate.parse(fechaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate fecha = LocalDate.parse(fechaStr, formato);
         System.out.println("Hora[hh:mm]: ");
         String horaStr = tcld.next();
         LocalTime hora = LocalTime.parse(horaStr, DateTimeFormatter.ofPattern("HH:mm"));
         System.out.println("Precio: ");
         int precio = tcld.nextInt();
         System.out.println("Patente Bus: ");
-        String patente = tcld.next();
+        String patente = tcld.next().toUpperCase();
 
         Boolean creado = sistema.createViaje(fecha, hora, precio, patente);
 
@@ -371,7 +369,7 @@ public class Main {
         }
     }
 
-    private static void listPasajeros(Scanner tcld, SistemaVentaPasaje sistema) {
+    private static void listPasajeros() {
         System.out.println("Listado de pasajeros de un viaje");
         System.out.println("Fecha del viaje: ");
         String fechaStr = tcld.next();
@@ -384,18 +382,19 @@ public class Main {
 
         String[][] lista = sistema.listPasajeros(fecha, hora, patente);
 
+
         System.out.println("Listado de pasajeros");
         if (lista == null) {
             System.out.println("No hay pasajeros registrados");
         } else {
-            System.out.printf("%-10s %-10s %-10s %-10s %-10s\n",
-                    "Patente", "Fecha", "Hora", "Precio", "Disponibles");
+            System.out.printf("%-10s %-15s %-35s %-35s %-20s\n",
+                    "N°Asiento", "RUT/Pasaporte", "Pasajero", "Nom Contacto", "Fono Contacto");
 
-            System.out.println("------------------------------------------------------");
+            System.out.println("----------------------------------------------------------------------------------------------------------------------------------");
 
 
             for (int i = 0; i < lista.length; i++) {
-                System.out.printf("%-10s %-10s %-10s %-10s %-10s\n",
+                System.out.printf("%-10s %-15s %-35s %-35s %-20s\n",
                         lista[i][0],
                         lista[i][1],
                         lista[i][2],
@@ -406,36 +405,38 @@ public class Main {
         }
     }
 
-    private static void listVentas(Scanner tcld, SistemaVentaPasaje sistema) {
+    private static void listVentas() {
         System.out.println("Listado de ventas");
         String[][] lista = sistema.listVentas();
         if (lista == null) {
             System.out.println("No hay ventas registrados");
         } else {
-            System.out.printf("%-15s %-10s %-12s %-25s %-10s\n",
-                    "ID Doc", "Tipo", "Fecha", "Cliente", "Monto");
+            System.out.printf("%-15s %-10s %-12s %-12s %-25s %-15s %-10s\n",
+                    "ID Doc", "Tipo", "Fecha", "RUN/Pasaporte","Cliente", "Cantidad Boletos","Total venta");
 
             System.out.println("--------------------------------------------------------------------------");
 
             for (int i = 0; i < lista.length; i++) {
-                System.out.printf("%-15s %-10s %-12s %-25s %-10s\n",
+                System.out.printf("%-15s %-10s %-12s %-12s %-25s %-15s %-10s\n",
                         lista[i][0],
                         lista[i][1],
                         lista[i][2],
                         lista[i][3],
-                        lista[i][4]
+                        lista[i][4],
+                        lista[i][5],
+                        lista[i][6]
                 );
 
             }
         }
     }
 
-    private static void listViajes(Scanner tcld, SistemaVentaPasaje sistema) {
+    private static void listViajes() {
         System.out.println("Listado de viajes");
         String[][] lista = sistema.listViajes();
         if (lista == null) {
             System.out.println("No hay viajes registrados");
-        }  else {
+        } else {
             System.out.printf("%-12s %-12s %-10s %-10s %-15s\n",
                     "Patente", "Fecha", "Hora", "Precio", "Disponibles");
 
@@ -453,4 +454,3 @@ public class Main {
         }
     }
 
-}
