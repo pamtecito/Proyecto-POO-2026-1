@@ -9,6 +9,7 @@ public class Pasaje {
         this.viaje = viaje;
         this.pasajero = pasajero;
         this.venta = venta;
+
     }
     public int getNumero() {
         return (int)numero;

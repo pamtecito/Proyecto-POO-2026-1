@@ -14,6 +14,7 @@ public class Venta {
         this.fecha = fecha;
         this.tipo = tipo;
         this.cliente = cli;
+        cli.addVenta(this);
         misPasajes = new ArrayList<>();
     }
 
