@@ -31,6 +31,7 @@ public class SistemaVentaPasaje {
         Pasajero p = new Pasajero(id, nom);
         p.setNomContacto(nomContacto);
         p.setFonoContacto(fono);
+        p.setFonoContacto(fonoContacto);
         return misPasajeros.add(p);
 
     }
@@ -57,7 +58,7 @@ public class SistemaVentaPasaje {
         return misVentas.add(new Venta(idDoc, tipo, fechaVenta, findCliente(idCliente)));
     }
 
-    public String[][] getHorario(LocalDate fechaViaje){
+    public String[][] getHorariosDisponibles(LocalDate fechaViaje){
         ArrayList<Viaje> viajesFecha = new ArrayList<>();
         for (Viaje v : misViajes){
             if(v.getFecha().equals(fechaViaje)){
@@ -101,12 +102,15 @@ public class SistemaVentaPasaje {
                 venta = misVentas.get(i);
             }
         }
+
         if (venta == null) return false;
         Viaje viaje = findViaje(String.valueOf(fecha), String.valueOf(hora), patBus);
         if (viaje == null) return false;
 
         Bus bus = findBus(patBus);
         if (bus == null) return false;
+
+        Cliente cliente = findCliente(idPasajero);
 
         Pasajero pasajero = findPasajero(idPasajero);
         if (pasajero == null) return false;
@@ -135,36 +139,45 @@ public class SistemaVentaPasaje {
         String[][] list = new String[misViajes.size()][5];
         for (int i = 0; i < misViajes.size(); i++) {
             Viaje v = misViajes.get(i);
-            list[i][0] = String.valueOf(v.getFecha());
-            list[i][1] = String.valueOf(v.getHora());
-            list[i][2] = String.valueOf(v.getPrecio());
-            list[i][3] = String.valueOf(v.getNroAsientosDisponibles());
-            list[i][4] = v.getBus().getPatente();
+            list[i][0] = v.getBus().getPatente();
+            list[i][1] = String.valueOf(v.getFecha());
+            list[i][2] = String.valueOf(v.getHora());
+            list[i][3] = String.valueOf(v.getPrecio());
+            list[i][4] = String.valueOf(v.getNroAsientosDisponibles());
         }
         return list;
     }
 
     public String[][] listPasajeros(LocalDate fecha, LocalTime hora, String patBus){
-        String[][] list = new String[misPasajeros.size()][6];
-        if (findViaje(String.valueOf(fecha),String.valueOf(hora),patBus) == null) return null;
         if (findBus(patBus) == null) return null;
-
-        for (int i = 0; i < misVentas.size(); i++) {
-            Pasaje[] pasajes = misVentas.get(i).getPasajes();
-            for (Pasaje pasaje : pasajes) {
-
-                Viaje v = findViaje(String.valueOf(fecha), String.valueOf(hora), patBus);
-
+        Viaje v = findViaje(String.valueOf(fecha), String.valueOf(hora), patBus);
+        if (v== null) return new String[0][0];
+        int contador = 0;
+        for (Venta venta : misVentas) {
+            for (Pasaje pasaje : venta.getPasajes()) {
                 if (pasaje.getViaje().equals(v)) {
-                    Pasajero p = pasaje.getPasajero();
-                    list[i][0] = String.valueOf(pasaje.getNumero());
-                    list[i][1] = p.getIdPersona().toString();
-                    list[i][2] = p.getNombreCompleto().toString();
-                    list[i][3] = p.getNomContacto().toString();
-                    list[i][4] = p.getFonoContacto();
+                    contador++;
                 }
             }
         }
+        String[][] list = new String[contador][6];
+        int fila = 0;
+        for (Venta venta : misVentas) {
+            for (Pasaje pasaje : venta.getPasajes()) {
+                if (pasaje.getViaje().equals(v)) {
+                    Pasajero p = pasaje.getPasajero();
+                    list[fila][0] = String.valueOf(pasaje.getAsiento());
+                    list[fila][1] = p.getIdPersona().toString();
+                    list[fila][2] = p.getNombreCompleto().toString();
+                    list[fila][3] = p.getNomContacto().toString();
+                    list[fila][4] = p.getFonoContacto();
+                    fila++;
+                }
+            }
+        }
+
+
+        System.out.println("Control" + list.length);
         return list;
     }
 
@@ -187,7 +200,7 @@ public class SistemaVentaPasaje {
 
    private Bus findBus(String patente){
         for (Bus b : misbuses){
-            if (b.getPatente() == patente){
+            if (b.getPatente().equals(patente)){
                 return b;
             }
         }
@@ -214,4 +227,76 @@ public class SistemaVentaPasaje {
         }
         return null;
    }
+
+
+    public void debug() {
+
+        // ── Crear Clientes ────────────────────────────────────────
+        System.out.println("=== CREAR CLIENTES ===");
+
+        Nombre nomCliente1 = new Nombre();
+        nomCliente1.setTratamiento(Tratamiento.SR);
+        nomCliente1.setNombres("Juan Carlos");
+        nomCliente1.setApellidoPaterno("Pérez");
+        nomCliente1.setApellidoMaterno("González");
+
+        Nombre nomCliente2 = new Nombre();
+        nomCliente2.setTratamiento(Tratamiento.SRA);
+        nomCliente2.setNombres("María José");
+        nomCliente2.setApellidoPaterno("López");
+        nomCliente2.setApellidoMaterno("Soto");
+
+        System.out.println(createCliente(Rut.of("12345678-9"), nomCliente1, "+56912345678", "juan.perez@gmail.com"));
+        System.out.println(createCliente(Rut.of("98765432-1"), nomCliente2, "+56987654321", "maria.lopez@gmail.com"));
+
+        // ── Crear Pasajeros ───────────────────────────────────────
+        System.out.println("\n=== CREAR PASAJEROS ===");
+
+        Nombre nomPasajero1 = new Nombre();
+        nomPasajero1.setTratamiento(Tratamiento.SR);
+        nomPasajero1.setNombres("Carlos Andrés");
+        nomPasajero1.setApellidoPaterno("Muñoz");
+        nomPasajero1.setApellidoMaterno("Díaz");
+
+        Nombre nomContacto1 = new Nombre();
+        nomContacto1.setTratamiento(Tratamiento.SRA);
+        nomContacto1.setNombres("Ana María");
+        nomContacto1.setApellidoPaterno("Muñoz");
+        nomContacto1.setApellidoMaterno("Rojas");
+
+        Nombre nomPasajero2 = new Nombre();
+        nomPasajero2.setTratamiento(Tratamiento.SRA);
+        nomPasajero2.setNombres("Sofía Isabel");
+        nomPasajero2.setApellidoPaterno("Torres");
+        nomPasajero2.setApellidoMaterno("Vargas");
+
+        Nombre nomContacto2 = new Nombre();
+        nomContacto2.setTratamiento(Tratamiento.SR);
+        nomContacto2.setNombres("Pedro Luis");
+        nomContacto2.setApellidoPaterno("Torres");
+        nomContacto2.setApellidoMaterno("Silva");
+
+        System.out.println(createPasajero(Rut.of("11111111-1"), nomPasajero1, "+56911111111", nomContacto1, "+56922222222"));
+        System.out.println(createPasajero(Rut.of("22222222-2"), nomPasajero2, "+56933333333", nomContacto2, "+56944444444"));
+
+        // ── Crear Buses ───────────────────────────────────────────
+        System.out.println("\n=== CREAR BUSES ===");
+        System.out.println(createBus("BCDF-12", "Mercedes-Benz", "Tourismo", 45));
+        System.out.println(createBus("XYZW-34", "Volvo", "B11R", 50));
+
+        // ── Crear Viajes ──────────────────────────────────────────
+        System.out.println("\n=== CREAR VIAJES ===");
+        System.out.println(createViaje(LocalDate.of(2025, 6, 15), LocalTime.of(8, 0),  15000, "BCDF-12"));
+        System.out.println(createViaje(LocalDate.of(2025, 6, 15), LocalTime.of(14, 30), 12000, "XYZW-34"));
+
+        // ── Iniciar Ventas ────────────────────────────────────────
+        System.out.println("\n=== INICIAR VENTAS ===");
+        System.out.println(iniciaVenta("BOL-001", TipoDocumento.BOLETA,  LocalDate.of(2025, 6, 10), Rut.of("12345678-9")));
+        System.out.println(iniciaVenta("FAC-001", TipoDocumento.FACTURA, LocalDate.of(2025, 6, 11), Rut.of("98765432-1")));
+
+        // ── Vender Pasajes ────────────────────────────────────────
+        System.out.println("\n=== VENDER PASAJES ===");
+        System.out.println(vendePasaje("BOL-001", LocalDate.of(2025, 6, 15), LocalTime.of(8,  0),  "BCDF-12", 5,  Rut.of("11111111-1")));
+        System.out.println(vendePasaje("FAC-001", LocalDate.of(2025, 6, 15), LocalTime.of(14, 30), "XYZW-34", 12, Rut.of("22222222-2")));
+    }
 }
