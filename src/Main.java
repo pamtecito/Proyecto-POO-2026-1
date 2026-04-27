@@ -40,7 +40,7 @@ public class Main {
                     crearViaje(tcld, sistema);
                     break;
                 case 4:
-                    venderPasaje(tcld, sistema);
+                    vendePasaje(tcld, sistema);
                     break;
                 case 5:
                     listPasajeros(tcld, sistema);
@@ -180,76 +180,8 @@ public class Main {
 
     }
 
-    private static void vendePasajes(Scanner tcld, SistemaVentaPasaje sistema) {
-        System.out.println("...::::Venta de pasajes:::... ");
 
-        System.out.println("Datos de la venta: ");
-        System.out.println("ID Documento: ");
-        String idDoc = tcld.next();
-        System.out.println("Tipo de documento: [1]Boleta [2]Factura");
-        int tipo = tcld.nextInt();
-
-        if (tipo != 1 && tipo != 2) {
-            System.out.println("No se pudo copletar. No se eligio ni boleta ni factura");
-        } else {
-            System.out.println("Fecha de la venta:");
-            String fech = tcld.next();
-            LocalDate fecha = LocalDate.parse(fech, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-
-            System.out.println("Datos del cliente:");
-            System.out.println("Rut[1] o Pasaporte[2]");
-            int opcion = tcld.nextInt();
-            IdPersona id = null;
-            if (opcion == 1) {
-                System.out.println("Rut: ");
-                id = Rut.of(tcld.next());
-            }
-            if (opcion == 2) {
-                System.out.println("Pasaporte: ");
-                System.out.println("Numero: ");
-                String numero = tcld.next();
-                System.out.println("Nacionalidad: ");
-                String nacionalidad = tcld.next();
-                id = Pasaporte.of(numero, nacionalidad);
-            }
-            if (opcion != 1 && opcion != 2) {
-                System.out.println("No se pudo completar. No se eligio ni Rut ni Pasaporte");
-            } else {
-                boolean creado;
-                if (tipo == 1) {
-                    String bolofac = "BOLETA";
-                    TipoDocumento boletaofactura = TipoDocumento.valueOf(bolofac);
-                    creado = sistema.iniciaVenta(idDoc, boletaofactura, fecha, id);
-                } else {
-                    String bolofac = "Factura";
-                    TipoDocumento boletaofactura = TipoDocumento.valueOf(bolofac);
-                    creado = sistema.iniciaVenta(idDoc, boletaofactura, fecha, id);
-                }
-                System.out.println(":::: Pasajes a vender");
-                System.out.println("Cantidad de pasajes:");
-                int cantPasajes = tcld.nextInt();
-                System.out.println("Fecha de viaje:");
-                String fechaViaje = tcld.next();
-                LocalDate fechaParseada = LocalDate.parse(fechaViaje, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                String[][] horarios = sistema.getHorario(fechaParseada);
-                System.out.println(":::: Listado de horarios disponibles");
-                System.out.printf("| %-8s | %-8s | %-6s | %-9s |%n", "BUS", "SALIDA", "VALOR", "ASIENTOS");
-
-                for (int i = 0; i < horarios.length; i++) {
-                    System.out.printf("| %-8s | %-8s | %-6s | %-9s |%n",
-                            horarios[i][0],
-                            horarios[i][1],
-                            horarios[i][2],
-                            horarios[i][3]
-                    );
-                }
-            }
-        }
-
-
-    }
-
-    private static void venderPasaje(Scanner tcld, SistemaVentaPasaje sistema){
+    private static void vendePasaje(Scanner tcld, SistemaVentaPasaje sistema){
         System.out.println("...::::Venta de pasajes:::... ");
 
         boolean continuar = true;
@@ -355,7 +287,7 @@ public class Main {
                         (i + 1), horariosDisponibles[i][0], horariosDisponibles[i][1], horariosDisponibles[i][2], horariosDisponibles[i][3]);
             }
 
-            System.out.println("Seleccione viaje en [:");
+            System.out.println("Seleccione viaje (desde [1] hasta [" + horariosDisponibles.length + "]):");
             seleccion = tcld.nextInt();
 
             patente = horariosDisponibles[seleccion - 1][0];
