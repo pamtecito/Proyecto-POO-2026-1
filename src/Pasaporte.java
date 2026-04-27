@@ -24,4 +24,19 @@ public class Pasaporte implements IdPersona{
         }
         return new Pasaporte(num, nacionalidad);
     }
+
+    @Override
+    public String toString(){
+        return numero + " " +  nacionalidad;
+    }
+
+
+    @Override
+    public boolean equals(Object obj){
+        if (this == obj) return true;
+        if (this == null || this.getClass() != getClass()) return false;
+        Pasaporte p = (Pasaporte) obj;
+        return p.getNumero() == ((Pasaporte) obj).getNumero() && p.getNacionalidad() == ((Pasaporte) obj).getNacionalidad();
+    }
 }
+

@@ -14,6 +14,7 @@ public class Venta {
         this.fecha = fecha;
         this.tipo = tipo;
         this.cliente = cli;
+        cli.addVenta(this);
         misPasajes = new ArrayList<>();
     }
 
@@ -34,6 +35,7 @@ public class Venta {
 
     public void createPasaje(int asiento, Viaje viaje, Pasajero pasajero) {
         Pasaje p = new Pasaje(asiento, viaje, pasajero, this);
+        misPasajes.add(p);
 
     }
 
@@ -47,7 +49,8 @@ public class Venta {
     }
 
     public int getMonto() {
-        return 0;
+        if (misPasajes.isEmpty()) return 0;
+        return misPasajes.getFirst().getViaje().getPrecio() * misPasajes.size();
     }
 
 

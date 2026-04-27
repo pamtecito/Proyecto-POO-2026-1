@@ -53,8 +53,7 @@ public class Viaje {
         pasajes.add(pasaje);
     }
 
-    /*public String[][] getListaPasajeros(){
-        if (pasajes.isEmpty()) return new String[0][0];
+    public String[][] getListaPasajeros(){
         String[][] h= new String[pasajes.size()][4];
         for(int i=0; i<h.length; i++){
             h[i][0]= String.valueOf(pasajes.get(i).getPasajero().getIdPersona());
@@ -64,7 +63,7 @@ public class Viaje {
         }
         return h;
     }
-    */
+
     public boolean existeDisponibilidad(){
         return pasajes.size() < bus.getNroAsientos();
     }

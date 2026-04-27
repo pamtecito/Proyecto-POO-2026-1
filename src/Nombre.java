@@ -10,7 +10,7 @@ public class Nombre {
     }
 
     public void setTratamiento(Tratamiento tratamiento) {
-        tratamiento = tratamiento;
+        this.tratamiento = tratamiento;
     }
 
     public String getNombres() {
@@ -18,7 +18,7 @@ public class Nombre {
     }
 
     public void setNombres(String nombres) {
-        nombres = nombres;
+        this.nombres = nombres;
     }
 
     public String getApellidoPaterno() {
@@ -40,7 +40,7 @@ public class Nombre {
     @Override
     public String toString (){
 
-        return tratamiento + nombres + apellidoPaterno + apellidoMaterno;
+        return tratamiento + " " + nombres + apellidoPaterno +" " + apellidoMaterno;
     }
 
     @Override
