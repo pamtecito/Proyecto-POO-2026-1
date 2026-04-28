@@ -120,7 +120,7 @@ public class SistemaVentaPasaje {
     }
 
     public String[][] listVentas(){
-        String[][] list = new String[misViajes.size()][7];
+        String[][] list = new String[misVentas.size()][7];
        for (int i = 0; i < misVentas.size(); i++) {
             Venta v = misVentas.get(i);
             list[i][0] = v.getIdDocumento();
@@ -247,57 +247,4 @@ public class SistemaVentaPasaje {
         nomCliente2.setApellidoPaterno("López");
         nomCliente2.setApellidoMaterno("Soto");
 
-        System.out.println(createCliente(Rut.of("12345678-9"), nomCliente1, "+56912345678", "juan.perez@gmail.com"));
-        System.out.println(createCliente(Rut.of("98765432-1"), nomCliente2, "+56987654321", "maria.lopez@gmail.com"));
-
-        // ── Crear Pasajeros ───────────────────────────────────────
-        System.out.println("\n=== CREAR PASAJEROS ===");
-
-        Nombre nomPasajero1 = new Nombre();
-        nomPasajero1.setTratamiento(Tratamiento.SR);
-        nomPasajero1.setNombres("Carlos Andrés");
-        nomPasajero1.setApellidoPaterno("Muñoz");
-        nomPasajero1.setApellidoMaterno("Díaz");
-
-        Nombre nomContacto1 = new Nombre();
-        nomContacto1.setTratamiento(Tratamiento.SRA);
-        nomContacto1.setNombres("Ana María");
-        nomContacto1.setApellidoPaterno("Muñoz");
-        nomContacto1.setApellidoMaterno("Rojas");
-
-        Nombre nomPasajero2 = new Nombre();
-        nomPasajero2.setTratamiento(Tratamiento.SRA);
-        nomPasajero2.setNombres("Sofía Isabel");
-        nomPasajero2.setApellidoPaterno("Torres");
-        nomPasajero2.setApellidoMaterno("Vargas");
-
-        Nombre nomContacto2 = new Nombre();
-        nomContacto2.setTratamiento(Tratamiento.SR);
-        nomContacto2.setNombres("Pedro Luis");
-        nomContacto2.setApellidoPaterno("Torres");
-        nomContacto2.setApellidoMaterno("Silva");
-
-        System.out.println(createPasajero(Rut.of("11111111-1"), nomPasajero1, "+56911111111", nomContacto1, "+56922222222"));
-        System.out.println(createPasajero(Rut.of("22222222-2"), nomPasajero2, "+56933333333", nomContacto2, "+56944444444"));
-
-        // ── Crear Buses ───────────────────────────────────────────
-        System.out.println("\n=== CREAR BUSES ===");
-        System.out.println(createBus("BCDF-12", "Mercedes-Benz", "Tourismo", 45));
-        System.out.println(createBus("XYZW-34", "Volvo", "B11R", 50));
-
-        // ── Crear Viajes ──────────────────────────────────────────
-        System.out.println("\n=== CREAR VIAJES ===");
-        System.out.println(createViaje(LocalDate.of(2025, 6, 15), LocalTime.of(8, 0),  15000, "BCDF-12"));
-        System.out.println(createViaje(LocalDate.of(2025, 6, 15), LocalTime.of(14, 30), 12000, "XYZW-34"));
-
-        // ── Iniciar Ventas ────────────────────────────────────────
-        System.out.println("\n=== INICIAR VENTAS ===");
-        System.out.println(iniciaVenta("BOL-001", TipoDocumento.BOLETA,  LocalDate.of(2025, 6, 10), Rut.of("12345678-9")));
-        System.out.println(iniciaVenta("FAC-001", TipoDocumento.FACTURA, LocalDate.of(2025, 6, 11), Rut.of("98765432-1")));
-
-        // ── Vender Pasajes ────────────────────────────────────────
-        System.out.println("\n=== VENDER PASAJES ===");
-        System.out.println(vendePasaje("BOL-001", LocalDate.of(2025, 6, 15), LocalTime.of(8,  0),  "BCDF-12", 5,  Rut.of("11111111-1")));
-        System.out.println(vendePasaje("FAC-001", LocalDate.of(2025, 6, 15), LocalTime.of(14, 30), "XYZW-34", 12, Rut.of("22222222-2")));
-    }
 }

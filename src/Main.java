@@ -1,3 +1,4 @@
+import javax.management.NotCompliantMBeanException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Scanner;
@@ -10,7 +11,6 @@ public class Main {
 
 
     public static void main(String[] args) {
-        sistema.debug();
         menu();
     }
 
@@ -180,9 +180,6 @@ public class Main {
         } else {
             System.out.println("No se ha podido crear el viaje. O la patente no existe o el bus ya tiene un viaje programado");
         }
-
-        //Verificar si la patente existe y si no hay un bus con la misma fecha agendada
-
     }
 
 
@@ -203,8 +200,9 @@ public class Main {
             tipoDocumento = tcld.nextInt();
         }
 
-        System.out.println("Fecha de venta [dd/mm/yyyy]");
+        System.out.print("Fecha de venta [dd/mm/yyyy]");
         f = LocalDate.parse(tcld.next(), formato);
+
 
         System.out.println("");
         System.out.println(":::: Datos del cliente");
@@ -242,12 +240,20 @@ public class Main {
         }
 
 
-        System.out.println("Pasajes a vender");
-        System.out.println("cantidad de pasajes: ");
-        //foreach
+        System.out.println(":::: Pasajes a vender");
+        System.out.println("");
+        System.out.print("Cantidad de pasajes: ");
         int cantidad = tcld.nextInt();
         System.out.print("Fecha del viaje [dd/mm/yyyy]: ");
         f = LocalDate.parse(tcld.next(), formato);
+
+        String[][] d = sistema.getHorariosDisponibles(f);
+        while (d.length == 0) {
+            System.out.println("No hay viajes disponibles para " + f + ". Ingrese otra fecha.");
+            System.out.print("Fecha del viaje [dd/mm/yyyy]: ");
+            f = LocalDate.parse(tcld.next(), formato);
+            d = sistema.getHorariosDisponibles(f);
+        }
         consultaHorario(f);
 
         String[][] datos = sistema.getHorariosDisponibles(f);
@@ -290,10 +296,17 @@ public class Main {
         System.out.println("Seleccione sus asientos (separe por ,): ");
         String[] asientos = tcld.next().split(",");
 
+        int[] asientosVendidos = new int[asientos.length];
+        String[] idsVendidos = new String[asientos.length];
+        String[] nombresVendidos = new String[asientos.length];
+        int indice = 0;
+
+        int asientoi = 0;
         for (String asiento : asientos) {
-            int asientoi = Integer.parseInt(asiento);
+            asientoi = Integer.parseInt(asiento);
             boolean pasajero;
             IdPersona r;
+
 
             if (asientosDisponibles[Integer.parseInt(asiento)][1].equals("Ocupado")) {
                 System.out.println("El asiento " + asiento + "Se encuentra ocupado");
@@ -373,12 +386,21 @@ public class Main {
     }
 
     private static void consultaHorario(LocalDate f) {
-        if (f == null){
-            System.out.println("Fecha [dd/mm/yyyy]");
-            f = LocalDate.parse(tcld.next(), formato);
+        if (f == null) {
+            while (true) {
+                System.out.print("Fecha [dd/mm/yyyy]: ");
+                f = LocalDate.parse(tcld.next(), formato);
+
+                if (sistema.getHorariosDisponibles(f).length == 0) {
+                    System.out.println("No hay viajes disponibles para " + f + ". Ingrese otra fecha.");
+                    break;
+                }
+            }
         }
 
+
         String[][] horarios = sistema.getHorariosDisponibles(f);
+
 
         System.out.println(":::: Listado de horarios disponibles");
         System.out.printf("*----------*----------*----------*----------*%n");
@@ -406,7 +428,7 @@ public class Main {
         String horaStr = tcld.next();
         LocalTime hora = LocalTime.parse(horaStr, DateTimeFormatter.ofPattern("HH:mm"));
         System.out.println("Patente bus: ");
-        String patente = tcld.next();
+        String patente = tcld.next().toUpperCase();
 
         String[][] lista = sistema.listPasajeros(fecha, hora, patente);
 
