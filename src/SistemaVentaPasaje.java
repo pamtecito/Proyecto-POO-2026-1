@@ -181,14 +181,15 @@ public class SistemaVentaPasaje {
         return list;
     }
 
-   private Cliente findCliente(IdPersona id){
-        for (Cliente c : misClientes){
-            if(c.getIdPersona().equals(id)){
-                return c;
-            }
-        }
-        return null;
+   private Cliente findCliente(IdPersona id) {
+       for (Cliente c : misClientes) {
+           if (c.getIdPersona().equals(id)) {
+               return c;
+           }
+       }
+       return null;
    }
+
    private Venta findVenta(String idDocumento, TipoDocumento tipoDocumento){
         for (Venta v: misVentas){
             if (v.getIdDocumento().equals(idDocumento) && v.getTipo().equals(tipoDocumento)){
@@ -212,7 +213,7 @@ public class SistemaVentaPasaje {
         LocalDate fec = LocalDate.parse(fecha);
         Bus bus = findBus(patenteBus);
         for (Viaje v : misViajes){
-            if (v.getFecha().equals(fec) && v.getBus().equals(bus) && v.getHora().equals(h)){
+            if (v.getFecha().equals(fec) && v.getBus().getPatente().equals(patenteBus) && v.getHora().equals(h)){
                 return v;
             }
         }

@@ -9,7 +9,6 @@ public class Main {
     private static DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 
-
     public static void main(String[] args) {
         sistema.debug();
         menu();
@@ -87,6 +86,10 @@ public class Main {
                 System.out.println("Pasaporte: ");
                 System.out.println("Numero: ");
                 String num = tcld.next();
+                while(num.length() != 9){
+                    System.out.println("Cantidad de digitos incorrecta, ingrese nuevamente: ");
+                    num= tcld.next();
+                }
                 System.out.println("Nacionalidad:");
                 String nacionalidad = tcld.next();
                 id = Pasaporte.of(num, nacionalidad);
@@ -116,13 +119,12 @@ public class Main {
                 nombre.setNombres(nombres);
                 nombre.setApellidoPaterno(apa);
                 nombre.setApellidoMaterno(ama);
-                System.out.println("Telefono movil: ");
+                System.out.println("Telefono movil: (ejemplo: 9XXXXXXXX) ");
                 String telefono = tcld.next();
-                System.out.println("Email: ");
+                System.out.println("Email: (ejemplo: x@gmail.com)");
                 String email = tcld.next();
 
                 boolean creado = sistema.createCliente(id, nombre, telefono, email);
-
 
 
                 if (creado) {
@@ -138,8 +140,8 @@ public class Main {
     }
 
     private static void crearBus() {
-        System.out.println("Crear un nuevo bus: ");
-        System.out.println("Patente: ");
+        System.out.println("...::::Creacion de un nuevo BUS::::... ");
+        System.out.println("Patente: (ejemplo: xx.xx-99)");
         String patente = tcld.next().toUpperCase();
         System.out.println("Marca: ");
         tcld.nextLine();
@@ -169,7 +171,7 @@ public class Main {
         LocalTime hora = LocalTime.parse(horaStr, DateTimeFormatter.ofPattern("HH:mm"));
         System.out.println("Precio: ");
         int precio = tcld.nextInt();
-        System.out.println("Patente Bus: ");
+        System.out.println("Patente Bus (xx.xx-00):");
         String patente = tcld.next().toUpperCase();
 
 
@@ -182,7 +184,6 @@ public class Main {
         //Verificar si la patente existe y si no hay un bus con la misma fecha agendada
 
     }
-
 
 
     private static void vendePasaje() {
@@ -219,19 +220,24 @@ public class Main {
             System.out.print("           RUT:");
             id = Rut.of(tcld.next());
         } else {
-            System.out.println("Numero de pasaporte:");
+            System.out.print("Numero de pasaporte [9 numeros]: ");
             String idPasaporte = tcld.next();
-            System.out.println("Nacionalidad");
+            while (idPasaporte.length() != 9) {
+                System.out.println("Numero de pasaporte invalido, ingreselo nuevamente:");
+                idPasaporte = tcld.next();
+            }
+            System.out.print("Nacionalidad: ");
             id = Pasaporte.of(idPasaporte, tcld.next());
 
         }
-        System.out.println("Ingrese nombre cliente");
+        System.out.print("Ingrese nombre cliente: ");
         String nombreCliente = tcld.nextLine();
+        tcld.nextLine();
 
-        if (sistema.iniciaVenta(idDocumento, TipoDocumento.values()[tipoDocumento], f, id)) {
+        if (sistema.iniciaVenta(idDocumento, TipoDocumento.values()[tipoDocumento - 1], f, id)) {
             System.out.println("venta iniciada");
         } else {
-            System.out.println("No se pudo iniciar la venta por x o y razon");
+            System.out.println("No se pudo iniciar la venta porque no se encontro el rut o pasaporte");
             return;
         }
 
@@ -240,15 +246,15 @@ public class Main {
         System.out.println("cantidad de pasajes: ");
         //foreach
         int cantidad = tcld.nextInt();
-        System.out.println("Fecha [dd/mm/yyyy]");
+        System.out.print("Fecha del viaje [dd/mm/yyyy]: ");
         f = LocalDate.parse(tcld.next(), formato);
         consultaHorario(f);
 
         String[][] datos = sistema.getHorariosDisponibles(f);
-        System.out.println("Ingrese viaje entre 1-" + datos.length + ":");
+        System.out.println("Ingrese viaje entre 1-" + (datos.length) + ":");
         int viaje = tcld.nextInt();
-        LocalTime hora = LocalTime.parse(datos[viaje-1][1]);
-        String patbus = datos[viaje-1][0];
+        LocalTime hora = LocalTime.parse(datos[viaje - 1][1]);
+        String patbus = datos[viaje - 1][0];
 
 
         System.out.println(":::: Asientos disponibles para el viaje seleccionado");
@@ -257,7 +263,7 @@ public class Main {
         String a1, a2, a3, a4;
         for (int i = 0; i < asientosDisponibles.length; i += 4) {
             if (asientosDisponibles[i][1].equals("libre")) {
-                a1 = asientosDisponibles[i ][0];
+                a1 = asientosDisponibles[i][0];
             } else {
                 a1 = "*";
             }
@@ -281,9 +287,7 @@ public class Main {
             System.out.println("|---+---+---+---+---|");
         }
 
-
-
-        System.out.println("Seleccione sus asientos tal que xx,yy");
+        System.out.println("Seleccione sus asientos (separe por ,): ");
         String[] asientos = tcld.next().split(",");
 
         for (String asiento : asientos) {
@@ -295,59 +299,78 @@ public class Main {
                 System.out.println("El asiento " + asiento + "Se encuentra ocupado");
 
             } else {
-                System.out.println("Rut o pasaporte");
-                int tipoDocumento2 = tcld.nextInt();
-                if (tipoDocumento2 == 1) {
-                    System.out.println("Rut");
-                    r = Rut.of(tcld.next());
-                    pasajero = sistema.vendePasaje(idDocumento, f, hora, patbus, asientoi, r);
-                } else {
-                    System.out.println("Pasaporte documento");
-                    String idPasaporte = tcld.next();
-                    System.out.println("Nacionalidad");
-                    r = Pasaporte.of(idPasaporte, tcld.next());
-                    pasajero = sistema.vendePasaje(idDocumento, f, hora, patbus, asientoi, r);
+                    System.out.println("Datos pasajero: ");
+                    System.out.println("Rut[1] o pasaporte[2]");
+                    int tipoDocumento2 = tcld.nextInt();
+                    if (tipoDocumento2 == 1) {
+                        System.out.println("Rut");
+                        r = Rut.of(tcld.next());
+                        pasajero = sistema.vendePasaje(idDocumento, f, hora, patbus, asientoi, r);
+                    } else {
+                        System.out.println("Pasaporte documento (9 numeros)");
+                        String idPasaporte = tcld.next();
+                        System.out.println("Nacionalidad");
+                        r = Pasaporte.of(idPasaporte, tcld.next());
+                        pasajero = sistema.vendePasaje(idDocumento, f, hora, patbus, asientoi, r);
+                    }
+
+                    String nombreCompleto = " ";
+                    if (!pasajero) {
+                        System.out.println(" ");
+                        System.out.println("El pasajero no existe");
+                        System.out.println("Rellene los datos para crear uno:");
+                        System.out.print("Sr[1] Sra[2]");
+                        int trat = tcld.nextInt();
+                        System.out.print("Ingrese nombre pasajero: ");
+                        Nombre nom = new Nombre();
+                        nom.setNombres(tcld.next());
+                        if (trat == 1) {
+                            nom.setTratamiento(Tratamiento.SR);
+                        } else {
+                            nom.setTratamiento(Tratamiento.SRA);
+                        }
+                        System.out.print("Apelldo paterno: ");
+                        nom.setApellidoPaterno(tcld.next());
+                        System.out.print("Apellido materno: ");
+                        nom.setApellidoMaterno(tcld.next());
+                        System.out.print("Ingrese numero de telefono: ");
+                        String fono = tcld.next();
+                        Nombre nomContacto = new Nombre();
+                        System.out.print("Nombre contacto: ");
+                        nomContacto.setNombres(tcld.next());
+                        nomContacto.setNombres(tcld.next());
+                        System.out.print("Fono contacto: ");
+                        String fonoContacto = tcld.next();
+
+                        sistema.createPasajero(r, nom, fono, nomContacto, fonoContacto);
+                        nombreCompleto = nom.getTratamiento() + " " + nom.getNombres() + " "
+                                + nom.getApellidoPaterno() + " " + nom.getApellidoMaterno();
+                    } else {
+                        sistema.vendePasaje(idDocumento, f, hora, patbus, asientoi, r);
+
+                    }
+
+                    asientosVendidos[indice] = asientoi;
+                    idsVendidos[indice]      = r.toString();
+                    nombresVendidos[indice]  = nombreCompleto;
+                    indice++;
+
+                    System.out.println("Pasaje agregado exitosamente");
                 }
-
-                if (!pasajero) {
-                    System.out.println("El pasajero no existe");
-                    System.out.println("Rellene los datos para crear uno:");
-                    //arreglar la creacion de pasajero en caso de no existir
-                    //
-                     //
-                     //arreglra
-                    System.out.println("Ingrese nombre pasajero");
-                    //apellidos
-                    //sr y sra
-                    Nombre nom = new Nombre();
-                    nom.setNombres(tcld.next());
-                    System.out.println("Ingrese numero de telefono");
-                    String fono = tcld.next();
-                    System.out.println("Ingrese nombre contacto");
-                    Nombre nomContacto = new Nombre();
-                    nomContacto.setNombres(tcld.next());
-                    System.out.println("Fonocontacto");
-                    String fonoContacto = tcld.next();
-
-
-                    sistema.createPasajero(r, nom, fono, nomContacto, fonoContacto);
-                }else {
-                    sistema.vendePasaje(idDocumento, f, hora, patbus, asientoi, r);
-
-                }
-                System.out.println("Pasaje agregado exitosamente");
-            }
-            System.out.println(sistema.getMontoVenta(idDocumento,TipoDocumento.values()[tipoDocumento]));
-            //imprimir informacion del pasaje
-
+                System.out.println(sistema.getMontoVenta(idDocumento, TipoDocumento.values()[tipoDocumento - 1]));
 
         }
-
-
-
+        System.out.println(":::: Imprimiendo los pasajes");
+        for (int i = 0; i < indice; i++) {
+            System.out.println("------------------ PASAJE ------------------");
+            System.out.println("NUMERO DE PASAJE : " + idDocumento);
+            System.out.println("FECHA DE VIAJE   : " + f.format(formato));
+            System.out.println("HORA DE VIAJE    : " + hora);
+            System.out.println("ASIENTO          : " + asientosVendidos[i]);
+            System.out.println("RUT / PASAPORTE  : " + idsVendidos[i]);
+            System.out.println("NOMBRE PASAJERO  : " + nombresVendidos[i]);
+        }
     }
-
-
 
     private static void consultaHorario(LocalDate f) {
         if (f == null){
