@@ -1,5 +1,9 @@
+package Modelo;
 
-public class Pasajero extends Persona{
+import Utilidades.IdPersona;
+import Utilidades.Nombre;
+
+public class Pasajero extends Persona {
     private Nombre nomContacto;
     private String fonoContacto;
 
