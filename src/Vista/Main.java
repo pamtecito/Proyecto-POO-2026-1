@@ -1,8 +1,14 @@
-import javax.management.NotCompliantMBeanException;
+package Vista;
+
+import Modelo.*;
+import Utilidades.*;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
+import Controlador.SistemaVentaPasaje;
+
 
 public class Main {
     private static Scanner tcld = new Scanner(System.in);
@@ -22,7 +28,7 @@ public class Main {
             System.out.println("Menú principal");
             System.out.println("1. Crear cliente");
             System.out.println("2. Crear bus");
-            System.out.println("3. Crear Viaje");
+            System.out.println("3. Crear Modelo.Viaje");
             System.out.println("4. Vender pasaje");
             System.out.println("5. Lista de pasajeros");
             System.out.println("6. Lista de ventas");
@@ -74,7 +80,7 @@ public class Main {
 
 
         System.out.println("Crear un nuevo cliente");
-        System.out.println("Rut[1] o pasaporte[2]: ");
+        System.out.println("Utilidades.Rut[1] o pasaporte[2]: ");
         int rutopasaporte = tcld.nextInt();
         if (rutopasaporte != 1 && rutopasaporte != 2) {
             System.out.println("Opción errónea");
@@ -83,7 +89,7 @@ public class Main {
                 System.out.println("R.U.T: ");
                 id = Rut.of(tcld.next());
             } else {
-                System.out.println("Pasaporte: ");
+                System.out.println("Utilidades.Pasaporte: ");
                 System.out.println("Numero: ");
                 String num = tcld.next();
                 while(num.length() != 9){
@@ -128,7 +134,7 @@ public class Main {
 
 
                 if (creado) {
-                    System.out.println("Cliente creado");
+                    System.out.println("Modelo.Cliente creado");
                 } else {
                     System.out.println("No se ha podido crear. Ya existe un cliente con el identificador dado");
                 }
@@ -155,9 +161,9 @@ public class Main {
         boolean creado = sistema.createBus(patente, marca, modelo, nroAsientos);
 
         if (creado) {
-            System.out.println("Bus creado exitosamente");
+            System.out.println("Modelo.Bus creado exitosamente");
         } else {
-            System.out.println("Bus no ha sido creado. Ya existe un bus con la patente dada");
+            System.out.println("Modelo.Bus no ha sido creado. Ya existe un bus con la patente dada");
         }
     }
 
@@ -171,12 +177,12 @@ public class Main {
         LocalTime hora = LocalTime.parse(horaStr, DateTimeFormatter.ofPattern("HH:mm"));
         System.out.println("Precio: ");
         int precio = tcld.nextInt();
-        System.out.println("Patente Bus (xx.xx-00):");
+        System.out.println("Patente Modelo.Bus (xx.xx-00):");
         String patente = tcld.next().toUpperCase();
 
 
         if (sistema.createViaje(fecha, hora, precio, patente)) {
-            System.out.println("Viaje creado exitosamente");
+            System.out.println("Modelo.Viaje creado exitosamente");
         } else {
             System.out.println("No se ha podido crear el viaje. O la patente no existe o el bus ya tiene un viaje programado");
         }
@@ -186,7 +192,7 @@ public class Main {
     private static void vendePasaje() {
         LocalDate f;
 
-        System.out.println("...::::Venta de pasajes:::... ");
+        System.out.println("...::::Modelo.Venta de pasajes:::... ");
 
         System.out.println(":::: Datos de la venta");
 
@@ -207,7 +213,7 @@ public class Main {
         System.out.println("");
         System.out.println(":::: Datos del cliente");
 
-        System.out.print("Rut [1] o Pasaporte [2]:");
+        System.out.print("Utilidades.Rut [1] o Utilidades.Pasaporte [2]:");
         int tipoDocumentoCliente = tcld.nextInt();
         while (tipoDocumentoCliente != 1 && tipoDocumentoCliente != 2) {
             System.out.println("Opcion invalida ingrese nuevamente");
@@ -313,14 +319,14 @@ public class Main {
 
             } else {
                     System.out.println("Datos pasajero: ");
-                    System.out.println("Rut[1] o pasaporte[2]");
+                    System.out.println("Utilidades.Rut[1] o pasaporte[2]");
                     int tipoDocumento2 = tcld.nextInt();
                     if (tipoDocumento2 == 1) {
-                        System.out.println("Rut");
+                        System.out.println("Utilidades.Rut");
                         r = Rut.of(tcld.next());
                         pasajero = sistema.vendePasaje(idDocumento, f, hora, patbus, asientoi, r);
                     } else {
-                        System.out.println("Pasaporte documento (9 numeros)");
+                        System.out.println("Utilidades.Pasaporte documento (9 numeros)");
                         String idPasaporte = tcld.next();
                         System.out.println("Nacionalidad");
                         r = Pasaporte.of(idPasaporte, tcld.next());
@@ -349,7 +355,7 @@ public class Main {
                         System.out.print("Ingrese numero de telefono: ");
                         String fono = tcld.next();
                         Nombre nomContacto = new Nombre();
-                        System.out.print("Nombre contacto: ");
+                        System.out.print("Utilidades.Nombre contacto: ");
                         nomContacto.setNombres(tcld.next());
                         nomContacto.setNombres(tcld.next());
                         System.out.print("Fono contacto: ");
@@ -368,7 +374,7 @@ public class Main {
                     nombresVendidos[indice]  = nombreCompleto;
                     indice++;
 
-                    System.out.println("Pasaje agregado exitosamente");
+                    System.out.println("Modelo.Pasaje agregado exitosamente");
                 }
                 System.out.println(sistema.getMontoVenta(idDocumento, TipoDocumento.values()[tipoDocumento - 1]));
 
@@ -438,7 +444,7 @@ public class Main {
             System.out.println("No hay pasajeros registrados");
         } else {
             System.out.printf("%-10s %-15s %-35s %-35s %-20s\n",
-                    "N°Asiento", "RUT/Pasaporte", "Pasajero", "Nom Contacto", "Fono Contacto");
+                    "N°Asiento", "RUT/Utilidades.Pasaporte", "Modelo.Pasajero", "Nom Contacto", "Fono Contacto");
 
             System.out.println("----------------------------------------------------------------------------------------------------------------------------------");
 
@@ -462,7 +468,7 @@ public class Main {
             System.out.println("No hay ventas registrados");
         } else {
             System.out.printf("%-15s %-10s %-12s %-12s %-25s %-15s %-10s\n",
-                    "ID Doc", "Tipo", "Fecha", "RUN/Pasaporte","Cliente", "Cantidad Boletos","Total venta");
+                    "ID Doc", "Tipo", "Fecha", "RUN/Utilidades.Pasaporte","Modelo.Cliente", "Cantidad Boletos","Total venta");
 
             System.out.println("--------------------------------------------------------------------------");
 

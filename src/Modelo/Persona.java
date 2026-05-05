@@ -1,4 +1,7 @@
+package Modelo;
 //Alonso Gutiérrez Pino
+
+import Utilidades.*;
 
 public class Persona {
     private IdPersona idPersona;
@@ -31,8 +34,8 @@ public class Persona {
     }
 
     public String toString() {
-        return "Id Persona: " + idPersona +
-                "\nNombre: " + nombreCompleto +
+        return "Id Modelo.Persona: " + idPersona +
+                "\nUtilidades.Nombre: " + nombreCompleto +
                 "\nTelefono: " + telefono;
     }
 

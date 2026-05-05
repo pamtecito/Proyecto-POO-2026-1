@@ -1,3 +1,8 @@
+package Controlador;
+
+import Modelo.*;
+import Utilidades.*;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -22,8 +27,6 @@ public class SistemaVentaPasaje {
         Cliente c = new Cliente(id,nom,email);
         c.setTelefono(fono);
         return misClientes.add(c);
-
-
     }
 
     public boolean createPasajero(IdPersona id, Nombre nom, String fono, Nombre nomContacto, String fonoContacto) {
@@ -65,7 +68,9 @@ public class SistemaVentaPasaje {
                 viajesFecha.add(v);
             }
         }
+
         String[][] horarios = new String[viajesFecha.size()][4];
+
         for (int i = 0; i < horarios.length; i++) {
             Viaje v = viajesFecha.get(i);
             horarios[i][0] = v.getBus().getPatente();
@@ -181,7 +186,7 @@ public class SistemaVentaPasaje {
         return list;
     }
 
-   private Cliente findCliente(IdPersona id) {
+   private Cliente findCliente (IdPersona id) {
        for (Cliente c : misClientes) {
            if (c.getIdPersona().equals(id)) {
                return c;
@@ -246,5 +251,5 @@ public class SistemaVentaPasaje {
         nomCliente2.setNombres("María José");
         nomCliente2.setApellidoPaterno("López");
         nomCliente2.setApellidoMaterno("Soto");
-
+    }
 }

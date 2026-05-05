@@ -1,3 +1,4 @@
+package Modelo;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ public class Venta {
     private Cliente cliente;
     private ArrayList<Pasaje> misPasajes;
 
-    public Venta(String idDocumento, TipoDocumento tipo,  LocalDate fecha, Cliente cli) {
+    public Venta(String idDocumento, TipoDocumento tipo, LocalDate fecha, Cliente cli) {
         this.idDocumento = idDocumento;
         this.fecha = fecha;
         this.tipo = tipo;
@@ -45,7 +46,7 @@ public class Venta {
             pasajes[i] = misPasajes.get(i);
         }
         return pasajes;
-        //return misPasajes.toArray(new Pasaje[0]);
+        //return misPasajes.toArray(new Modelo.Pasaje[0]);
     }
 
     public int getMonto() {
