@@ -1,5 +1,5 @@
 package Modelo;
-
+import Utilidades.*;
 import java.util.ArrayList;
 
 public class Cliente extends Persona {
