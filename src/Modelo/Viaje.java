@@ -3,6 +3,7 @@ package Modelo;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Viaje {
     private LocalDate fecha;
@@ -11,7 +12,7 @@ public class Viaje {
     private Bus bus;
     private ArrayList<Pasaje> pasajes;
 
-    public Viaje(LocalDate fecha, LocalTime hora, int precio, Bus bus) {
+    public Viaje(LocalDate fecha, LocalTime hora, int precio, Optional<Bus> bus) {
         this.fecha = fecha;
         this.hora = hora;
         this.precio = precio;

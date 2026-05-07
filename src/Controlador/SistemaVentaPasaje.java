@@ -3,9 +3,11 @@ package Controlador;
 import Modelo.*;
 import Utilidades.*;
 
+import java.awt.desktop.OpenFilesEvent;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class SistemaVentaPasaje {
     private ArrayList<Bus> misbuses;
@@ -82,22 +84,33 @@ public class SistemaVentaPasaje {
     }
 
     public String[][] listAsientosDeViaje(LocalDate fecha, LocalTime hora, String patBus) {
-        Viaje viaje = findViaje(String.valueOf(fecha), String.valueOf(hora), patBus);
-        if (viaje == null)return new String[0][0];
-
-        return viaje.getAsientos();
+        Optional<Viaje> viaje = findViaje(String.valueOf(fecha), String.valueOf(hora), patBus);
+        if (viaje.isPresent()){
+            Viaje v = viaje.get();
+            return v.getAsientos();
+        }else{
+            return new String[0][0];
+        }
     }
 
     public int getMontoVenta(String idDocumento, TipoDocumento tipo){
-       if (findVenta(idDocumento, tipo) == null) return 0;
-       Venta monto = findVenta(idDocumento, tipo);
-       return monto.getMonto();
+       Optional<Venta> monto = findVenta(idDocumento, tipo);
+       if (monto.isEmpty()){
+           return 0;
+       }else {
+           Venta venta = monto.get();
+           return venta.getMonto();
+       }
     }
 
     public String getNombrePasajero(IdPersona idPasajero){
-        if (findPasajero(idPasajero) == null) return  null;
-        Pasajero nom =findPasajero(idPasajero);
-        return nom.getNombreCompleto().toString();
+        Optional<Pasajero> nomPasajero =findPasajero(idPasajero);
+        if (nomPasajero.isEmpty()){
+            return  null;
+        } else {
+            Pasajero p = nomPasajero.get();
+            return p.getNombreCompleto().toString();
+        }
     }
 
     public boolean vendePasaje(String idDoc, LocalDate fecha, LocalTime hora, String patBus, int asiento, IdPersona idPasajero){
@@ -109,18 +122,21 @@ public class SistemaVentaPasaje {
         }
 
         if (venta == null) return false;
-        Viaje viaje = findViaje(String.valueOf(fecha), String.valueOf(hora), patBus);
-        if (viaje == null) return false;
+        Optional<Viaje> viaje = findViaje(String.valueOf(fecha), String.valueOf(hora), patBus);
+        if (!viaje.isEmpty()) return false;
+        Viaje v = viaje.get();
 
-        Bus bus = findBus(patBus);
-        if (bus == null) return false;
+        Optional<Bus> bus = findBus(patBus);
+        if (!bus.isEmpty()) return false;
 
-        Cliente cliente = findCliente(idPasajero);
+        Optional<Cliente> cliente = findCliente(idPasajero);
 
-        Pasajero pasajero = findPasajero(idPasajero);
-        if (pasajero == null) return false;
+        Optional<Pasajero> pasajero = findPasajero(idPasajero);
+        if (!pasajero.isEmpty()) return false;
+        Pasajero p = pasajero.get();
 
-        venta.createPasaje(asiento, viaje, pasajero);
+        venta.createPasaje(asiento, v, p);
+
         return true;
     }
 
@@ -155,7 +171,7 @@ public class SistemaVentaPasaje {
 
     public String[][] listPasajeros(LocalDate fecha, LocalTime hora, String patBus){
         if (findBus(patBus) == null) return null;
-        Viaje v = findViaje(String.valueOf(fecha), String.valueOf(hora), patBus);
+        Optional<Viaje> v = findViaje(String.valueOf(fecha), String.valueOf(hora), patBus);
         if (v== null) return new String[0][0];
         int contador = 0;
         for (Venta venta : misVentas) {
@@ -186,70 +202,52 @@ public class SistemaVentaPasaje {
         return list;
     }
 
-   private Cliente findCliente (IdPersona id) {
+   private Optional<Cliente> findCliente (IdPersona id) {
        for (Cliente c : misClientes) {
            if (c.getIdPersona().equals(id)) {
-               return c;
+               return Optional.of(c);
            }
        }
-       return null;
+       return Optional.empty();
    }
 
-   private Venta findVenta(String idDocumento, TipoDocumento tipoDocumento){
+   private Optional<Venta> findVenta(String idDocumento, TipoDocumento tipoDocumento){
         for (Venta v: misVentas){
             if (v.getIdDocumento().equals(idDocumento) && v.getTipo().equals(tipoDocumento)){
-                return v;
+                return Optional.of(v);
             }
         }
-        return null;
+        return Optional.empty();
    }
 
-   private Bus findBus(String patente){
+   private Optional<Bus> findBus(String patente){
         for (Bus b : misbuses){
             if (b.getPatente().equals(patente)){
-                return b;
+                return Optional.of(b);
             }
         }
-        return null;
+        return Optional.empty();
    }
 
-   private Viaje findViaje(String fecha, String hora, String patenteBus){
+   private Optional<Viaje> findViaje(String fecha, String hora, String patenteBus){
         LocalTime h = LocalTime.parse(hora);
         LocalDate fec = LocalDate.parse(fecha);
-        Bus bus = findBus(patenteBus);
+        Optional<Bus> bus = findBus(patenteBus);
         for (Viaje v : misViajes){
             if (v.getFecha().equals(fec) && v.getBus().getPatente().equals(patenteBus) && v.getHora().equals(h)){
-                return v;
+                return Optional.of(v);
             }
         }
-        return null;
+        return Optional.empty();
    }
 
-   private Pasajero findPasajero(IdPersona idPersona){
+   private Optional<Pasajero> findPasajero(IdPersona idPersona){
         for (Pasajero p :misPasajeros){
             if (p.getIdPersona().equals(idPersona)){
-                return p;
+                return Optional.of(p);
             }
         }
-        return null;
+        return Optional.empty();
    }
 
-
-    public void debug() {
-
-        // ── Crear Clientes ────────────────────────────────────────
-        System.out.println("=== CREAR CLIENTES ===");
-
-        Nombre nomCliente1 = new Nombre();
-        nomCliente1.setTratamiento(Tratamiento.SR);
-        nomCliente1.setNombres("Juan Carlos");
-        nomCliente1.setApellidoPaterno("Pérez");
-        nomCliente1.setApellidoMaterno("González");
-
-        Nombre nomCliente2 = new Nombre();
-        nomCliente2.setTratamiento(Tratamiento.SRA);
-        nomCliente2.setNombres("María José");
-        nomCliente2.setApellidoPaterno("López");
-        nomCliente2.setApellidoMaterno("Soto");
-    }
 }
