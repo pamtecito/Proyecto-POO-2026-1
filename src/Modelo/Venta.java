@@ -2,6 +2,7 @@ package Modelo;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Venta {
     private String idDocumento;
@@ -10,7 +11,7 @@ public class Venta {
     private Cliente cliente;
     private ArrayList<Pasaje> misPasajes;
 
-    public Venta(String idDocumento, TipoDocumento tipo, LocalDate fecha, Cliente cli) {
+    public Venta(String idDocumento, TipoDocumento tipo, LocalDate fecha, @org.jetbrains.annotations.UnknownNullability Optional<Cliente> cli) {
         this.idDocumento = idDocumento;
         this.fecha = fecha;
         this.tipo = tipo;
