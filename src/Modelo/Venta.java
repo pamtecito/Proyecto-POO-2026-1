@@ -50,9 +50,34 @@ public class Venta {
     }
 
     public int getMonto() {
+        return monto;
+    }
+    public int getMontoPagado(){
         if (misPasajes.isEmpty()) return 0;
         return misPasajes.getFirst().getViaje().getPrecio() * misPasajes.size();
     }
+    public boolean pagaMonto(long nroTarjeta){
+        if (nroTarjeta >0){
+            return true;
+        }
+        return false;
+
+
+    }
+    @Override
+    public boolean equals(Object otro) {
+
+        if(otro instanceof Venta) {
+
+            Venta v = (Venta) otro;
+
+            return this.idDocumento.equals(v.idDocumento);
+        }
+
+        return false;
+    }
+
+
 
 
 }
