@@ -8,11 +8,13 @@ public class Bus {
     private String modelo;
     private int nroAsientos;
     private ArrayList<Viaje> viajes;
+    private Empresa empresa;
 
-    public Bus(String patente, int nroAsientos){
+    public Bus(String patente, int nroAsientos, Empresa empresa){
         this.patente=patente;
         this.nroAsientos= nroAsientos;
-        viajes = new ArrayList<Viaje>();
+        viajes = new ArrayList<>();
+        this.empresa= empresa;
     }
 
     public String getPatente() {
@@ -40,5 +42,13 @@ public class Bus {
     }
     public void addViaje(Viaje viaje){
         viajes.add(viaje);
+    }
+
+    public Empresa getEmpresa(){
+        return empresa;
+    }
+
+    public Viaje[] getViajes(){
+        viajes.toArray(new Viaje[0]);
     }
 }
