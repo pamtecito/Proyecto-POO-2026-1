@@ -1,3 +1,6 @@
+package Modelo;
+import Utilidades.*;
+
 public abstract class Tripulante extends Persona {
     private Direccion direccion;
 
