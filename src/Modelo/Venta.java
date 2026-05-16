@@ -10,13 +10,14 @@ public class Venta {
     private LocalDate fecha;
     private Cliente cliente;
     private ArrayList<Pasaje> misPasajes;
-
-    public Venta(String idDocumento, TipoDocumento tipo, LocalDate fecha, @org.jetbrains.annotations.UnknownNullability Optional<Cliente> cli) {
+    private Pago pago;
+    public Venta(String idDocumento, TipoDocumento tipo, LocalDate fecha, Cliente cli) {
         this.idDocumento = idDocumento;
         this.fecha = fecha;
         this.tipo = tipo;
         this.cliente = cli;
         cli.addVenta(this);
+        pago = null;
         misPasajes = new ArrayList<>();
     }
 
@@ -51,9 +52,11 @@ public class Venta {
     }
 
     public int getMonto() {
-        return monto;
+        return 0;
     }
     public int getMontoPagado(){
+
+
         if (misPasajes.isEmpty()) return 0;
         return misPasajes.getFirst().getViaje().getPrecio() * misPasajes.size();
     }
@@ -62,8 +65,17 @@ public class Venta {
             return true;
         }
         return false;
+    }
+    public boolean pagoMonto(){
+        if (pago != null){
+            return false;
+        } else {
+            PagoEfectivo p = new PagoEfectivo(getMonto());
 
-
+        }
+    }
+    public String getTipoPago() {
+        return null;
     }
     @Override
     public boolean equals(Object otro) {
