@@ -1,3 +1,5 @@
+package Modelo;
+
 public class Direccion {
     private String calle;
     private int numero;
