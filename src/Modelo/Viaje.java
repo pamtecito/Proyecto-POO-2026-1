@@ -56,9 +56,11 @@ public class Viaje {
         this.duracion= duracion;
     }
 
-    public LocalDateTime getFechaHoraTermino(){
-        //return fecha y hora de llegada de un viaje mas los minutos de duracion del viaje y hora de salida
-
+    public LocalDateTime getFechaHoraTermino() {
+        //return fecha, duracion(mn) y hora de llegada, hora de salida.
+        //solo retorna fecha y hora de llegada.
+        LocalDateTime fechita= LocalDateTime.of(fecha, hora);
+        return fechita.plusMinutes(duracion);
     }
 
 
@@ -98,8 +100,20 @@ public class Viaje {
         return bus.getNroAsientos() - pasajes.size();
     }
 
-    public void getVentas(){
-
+    public Venta[] getVentas(){
+        //retorna en el arreglo:
+        /*
+        - Ventas asociadas a este viaje consultando a los pasajes que tiene asociado(o sea la cantidad de pasajes vendidos de este viaje)
+        -Si no se han vendido pasajes retornar arreglo tamaño 0
+         */
+        ArrayList<Venta> ventas= new ArrayList<>();
+        for(Pasaje p: pasajes){
+            Venta v= p.getVenta();
+            if(!ventas.contains(v)){
+                ventas.add(v);
+            }
+        }
+        return ventas.toArray(new Venta[0]);
     }
     public void addConductor(Conductor conductor) throws SistemaVentaPasajesException {
         if(conductors.size()>= 2) {
@@ -108,7 +122,11 @@ public class Viaje {
         conductors.add(conductor);
     }
     public Tripulante[] getTripulantes(){
-        return
+        Tripulante t1= (Tripulante) aux;
+        ArrayList<Tripulante> cond= conductors;
+        Tripulante[] t2= cond.toArray(new Tripulante[0]);
+        t2.add(t1);
+        return t2;
     }
     public Terminal getTerminalLlegada(){
         return llegada;
