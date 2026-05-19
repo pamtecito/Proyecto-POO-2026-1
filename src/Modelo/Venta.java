@@ -11,6 +11,7 @@ public class Venta {
     private Cliente cliente;
     private ArrayList<Pasaje> misPasajes;
     private Pago pago;
+
     public Venta(String idDocumento, TipoDocumento tipo, LocalDate fecha, Cliente cli) {
         this.idDocumento = idDocumento;
         this.fecha = fecha;
@@ -52,8 +53,14 @@ public class Venta {
     }
 
     public int getMonto() {
-        return 0;
+
+        if(misPasajes.size() == 0){
+            return 0;
+        }
+        int precio = misPasajes.get(0).getViaje().getPrecio();
+        return precio * misPasajes.size();
     }
+
     public int getMontoPagado(){
 
 
