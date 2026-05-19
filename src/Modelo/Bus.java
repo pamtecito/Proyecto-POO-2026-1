@@ -23,6 +23,10 @@ public class Bus {
         return marca;
     }
 
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+    
     public String getModelo() {
         return modelo;
     }
@@ -31,9 +35,6 @@ public class Bus {
         return nroAsientos;
     }
 
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
 
     public void setModelo(String modelo) {
         this.modelo = modelo;
