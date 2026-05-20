@@ -4,8 +4,8 @@ import Utilidades.*;
 public abstract class Tripulante extends Persona {
     private Direccion direccion;
 
-    public Tripulante(IdPersona idPersona, Nombre nombreCompleto, Direccion direccion) {
-        super(idPersona, nombreCompleto);
+    public Tripulante(IdPersona id, Nombre nom, Direccion dir) {
+        super(id, nom);
         this.direccion = direccion;
     }
 
