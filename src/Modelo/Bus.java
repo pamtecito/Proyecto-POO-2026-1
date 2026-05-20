@@ -8,13 +8,11 @@ public class Bus {
     private String modelo;
     private int nroAsientos;
     private ArrayList<Viaje> viajes;
-    private Empresa empresa;
 
-    public Bus(String patente, int nroAsientos, Empresa empresa){
+    public Bus(String patente, int nroAsientos){
         this.patente=patente;
         this.nroAsientos= nroAsientos;
-        viajes = new ArrayList<>();
-        this.empresa= empresa;
+        viajes = new ArrayList<Viaje>();
     }
 
     public String getPatente() {
@@ -25,10 +23,6 @@ public class Bus {
         return marca;
     }
 
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-    
     public String getModelo() {
         return modelo;
     }
@@ -37,19 +31,26 @@ public class Bus {
         return nroAsientos;
     }
 
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
 
     public void setModelo(String modelo) {
         this.modelo = modelo;
     }
+
     public void addViaje(Viaje viaje){
         viajes.add(viaje);
     }
-
-    public Empresa getEmpresa(){
-        return empresa;
-    }
-
     public Viaje[] getViajes(){
-        return viajes.toArray(new Viaje[0]);
+
+        Viaje[] arreglo = new Viaje[viajes.size()];
+
+        for(int i = 0; i < viajes.size(); i++){
+
+            arreglo[i] = viajes.get(i);
+        }
+
+        return arreglo;
     }
 }
