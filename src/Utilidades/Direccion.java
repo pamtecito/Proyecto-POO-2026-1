@@ -1,4 +1,4 @@
-package Modelo;
+package Utilidades;
 
 public class Direccion {
     private String calle;
