@@ -1,3 +1,5 @@
+package Modelo;
+
 public class PagoTarjeta extends Pago {
 
     private long nroTarjeta;

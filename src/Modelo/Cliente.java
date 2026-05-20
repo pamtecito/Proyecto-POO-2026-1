@@ -1,6 +1,6 @@
-import java.security.Permission;
+package Modelo;
+import Utilidades.*;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 public class Cliente extends Persona {
     private String email;
@@ -9,7 +9,7 @@ public class Cliente extends Persona {
     public Cliente(IdPersona idPersona, Nombre nom, String email) {
         super(idPersona, nom);
         this.email = email;
-        ventas = new ArrayList<>();
+        ventas= new ArrayList<Venta>();
     }
 
     public String getEmail() {
@@ -27,12 +27,6 @@ public class Cliente extends Persona {
     public Venta[] getVentas(){
         return ventas.toArray(new Venta[0]);
     }
-
 }
-
-
-
-
-
 
 

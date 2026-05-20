@@ -1,9 +1,12 @@
+package Modelo;
+import Utilidades.*;
+
 public abstract class Tripulante extends Persona {
     private Direccion direccion;
 
-    public Tripulante(IdPersona idPersona, Nombre nombreCompleto, Direccion direccion) {
-        super(idPersona, nombreCompleto);
-        this.direccion = direccion;
+    public Tripulante(IdPersona id, Nombre nom, Direccion dir) {
+        super(id, nom);
+        this.direccion = dir;
     }
 
     public Direccion getDireccion() {
