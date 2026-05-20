@@ -1,6 +1,6 @@
 //Alonso Gutiérrez Pino
 
-public class Persona {
+  public class Persona {
     private IdPersona idPersona;
     private Nombre nombreCompleto;
     private String telefono;
