@@ -45,7 +45,7 @@ public class Empresa {
 
         return arreglo;
     }
-    /*
+
     public boolean addConductor (IdPersona id, Nombre nombre, Direccion dir){
         return false;
     }
@@ -56,7 +56,7 @@ public class Empresa {
         return null;
     }
 
-     */
+
     public Venta[] getVentas(){
         return null;
     }
