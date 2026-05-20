@@ -6,7 +6,7 @@ public abstract class Tripulante extends Persona {
 
     public Tripulante(IdPersona id, Nombre nom, Direccion dir) {
         super(id, nom);
-        this.direccion = direccion;
+        this.direccion = dir;
     }
 
     public Direccion getDireccion() {
