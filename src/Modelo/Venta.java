@@ -54,34 +54,53 @@ public class Venta {
 
     public int getMonto() {
 
-        if(misPasajes.size() == 0){
+        if(misPasajes.isEmpty()){
             return 0;
         }
-        int precio = misPasajes.get(0).getViaje().getPrecio();
-        return precio * misPasajes.size();
+
+        return misPasajes.get(0).getViaje().getPrecio() * misPasajes.size();
     }
 
     public int getMontoPagado(){
 
 
         if (misPasajes.isEmpty()) return 0;
-        return misPasajes.getFirst().getViaje().getPrecio() * misPasajes.size();
+        return misPasajes.getFirst().getViaje().getPrecio() * misPasajes.size();// o esto?return pago.getMonto();
     }
-    public boolean pagaMonto(long nroTarjeta){
-        if (nroTarjeta >0){
-            return true;
+    //este sin nada de trjeta
+    public boolean pagaMonto(){
+
+        if(pago != null){
+            return false;
         }
-        return false;
+        pago = new PagoEfectivo(getMonto());
+        return true;
+
     }
-    public boolean pagoMonto(){
+
+    //este es con tarjeta
+    public boolean pagoMonto(long nroTarjeta){
         if (pago != null){
             return false;
-        } else {
-            PagoEfectivo p = new PagoEfectivo(getMonto());
-
         }
+        pago = new PagoTarjeta(getMonto(),nroTarjeta);
+
+        return true;
     }
     public String getTipoPago() {
+
+        if(pago == null){
+            return null;
+        }
+
+        if(pago instanceof PagoEfectivo){
+            return "Efectivo";
+        }
+
+        if(pago instanceof PagoTarjeta){
+            return "Tarjeta";
+        }
+
         return null;
     }
     @Override
@@ -91,7 +110,7 @@ public class Venta {
 
             Venta v = (Venta) otro;
 
-            return this.idDocumento.equals(v.idDocumento);
+            return this.idDocumento.equals(v.idDocumento);//&& this.tipo.equals(v.tipo);no se si agregar eso
         }
 
         return false;
