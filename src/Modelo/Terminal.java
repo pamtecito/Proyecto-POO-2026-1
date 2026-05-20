@@ -30,10 +30,15 @@ public class Terminal {
     }
 
     public void addLlegada(Viaje viaje) {
+        if (!llegadas.contains(viaje)) {
+            llegadas.add(viaje);
+        }
     }
 
     public void addSalida(Viaje viaje) {
-
+        if (!salidas.contains(viaje)) {
+            salidas.add(viaje);
+        }
     }
 
     public Viaje[] getLlegadas() {
