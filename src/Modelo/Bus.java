@@ -38,7 +38,19 @@ public class Bus {
     public void setModelo(String modelo) {
         this.modelo = modelo;
     }
+
     public void addViaje(Viaje viaje){
         viajes.add(viaje);
+    }
+    public Viaje[] getViajes(){
+
+        Viaje[] arreglo = new Viaje[viajes.size()];
+
+        for(int i = 0; i < viajes.size(); i++){
+
+            arreglo[i] = viajes.get(i);
+        }
+
+        return arreglo;
     }
 }

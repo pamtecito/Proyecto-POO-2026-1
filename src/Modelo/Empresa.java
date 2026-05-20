@@ -9,6 +9,7 @@ public class Empresa {
     private ArrayList<Bus> buses;
     private ArrayList<Conductor> conductores;
     private ArrayList<Auxiliar> auxiliares;
+
     public Empresa(Rut rut, String nombre, String url){
         this.rut = rut;
         this.nombre = nombre;
@@ -50,13 +51,15 @@ public class Empresa {
         if (conductores.contains(new Conductor(id,nombre,dir))){//obejeto temporal contains metodo que ve si dentro del arreglo el existe
             return false;
         }
+        conductores.add(new  Conductor(id,nombre,dir));
         return true;
     }
     public boolean addAuxiliar (IdPersona id, Nombre nombre, Direccion dir){
         if (auxiliares.contains(new Auxiliar(id,nombre,dir))){
             return false;
         }
-        return false;
+        auxiliares.add(new  Auxiliar(id,nombre,dir));
+        return true;
     }
     public Tripulante[] getTripulantes(){
         Tripulante[] arreglo = new Tripulante[conductores.size()+auxiliares.size()];
@@ -71,8 +74,28 @@ public class Empresa {
 
 //metodo faltante
     public Venta[] getVentas(){
-        Venta[] arreglo = new Venta[1];
+        ArrayList<Venta>ventas =new ArrayList<>();
+        for(Bus b : buses){
+            Viaje[]viajes = b.getViajes();
 
-        return null;
+            for(Viaje v : viajes){
+                Venta[] ventas2 =v.getVentas();
+
+                for(Venta vent : ventas2){
+
+                    if (!ventas.contains(vent)){
+                        ventas.add(vent);
+                    }
+
+                }
+            }
+        }
+        Venta[] arreglo = new Venta[ventas.size()];
+        for(int i = 0; i < arreglo.length ; i++){
+            arreglo[i] = ventas.get(i);
+        }
+        return arreglo;
     }
+
+
 }
