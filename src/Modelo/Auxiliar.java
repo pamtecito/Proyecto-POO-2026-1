@@ -1,5 +1,6 @@
 package Modelo;
 
+import Utilidades.Direccion;
 import Utilidades.IdPersona;
 import Utilidades.Nombre;
 
