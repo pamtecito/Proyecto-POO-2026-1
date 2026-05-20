@@ -54,7 +54,7 @@ public class Venta {
 
     public int getMonto() {
 
-        if(misPasajes.isEmpty()){
+        if(misPasajes.isEmpty()){//esta vacia o no
             return 0;
         }
 

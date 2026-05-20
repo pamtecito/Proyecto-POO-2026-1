@@ -28,8 +28,8 @@ public class Empresa {
     public String getUrl() {
         return url;
     }
-    public void setRut(Rut rut) {
-        this.rut = rut;
+    public void SetUrl(String url){
+        this.url = url;
     }
     public void addBus(Bus bus) {
 
@@ -45,19 +45,34 @@ public class Empresa {
 
         return arreglo;
     }
-    /*
+
     public boolean addConductor (IdPersona id, Nombre nombre, Direccion dir){
-        return false;
+        if (conductores.contains(new Conductor(id,nombre,dir))){//obejeto temporal contains metodo que ve si dentro del arreglo el existe
+            return false;
+        }
+        return true;
     }
     public boolean addAuxiliar (IdPersona id, Nombre nombre, Direccion dir){
+        if (auxiliares.contains(new Auxiliar(id,nombre,dir))){
+            return false;
+        }
         return false;
     }
     public Tripulante[] getTripulantes(){
-        return null;
+        Tripulante[] arreglo = new Tripulante[conductores.size()+auxiliares.size()];
+
+        for(int i = 0; i < arreglo.length ; i++){
+            arreglo[i] = conductores.get(i);
+            arreglo[i+ conductores.size()] = auxiliares.get(i);
+        }
+
+        return arreglo;
     }
 
-     */
+//metodo faltante
     public Venta[] getVentas(){
+        Venta[] arreglo = new Venta[1];
+
         return null;
     }
 }
