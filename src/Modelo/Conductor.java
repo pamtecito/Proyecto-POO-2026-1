@@ -1,7 +1,6 @@
 package Modelo;
 
-import Utilidades.IdPersona;
-import Utilidades.Nombre;
+import Utilidades.*;
 
 import java.util.ArrayList;
 
@@ -17,7 +16,7 @@ public class Conductor extends Tripulante{
         misViajes.add(viaje);
     }
     //retorno mki tamaño
-    public int getNumeroViajes(){
+    public int getNroViajes(){
         return misViajes.size();
     }
 }
