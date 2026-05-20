@@ -62,8 +62,6 @@ public class Venta {
     }
 
     public int getMontoPagado(){
-
-
         if (misPasajes.isEmpty()) return 0;
         return misPasajes.getFirst().getViaje().getPrecio() * misPasajes.size();
     }
