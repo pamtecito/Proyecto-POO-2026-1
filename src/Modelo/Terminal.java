@@ -1,5 +1,7 @@
 package Modelo;
 
+import Utilidades.Direccion;
+
 import java.util.ArrayList;
 
 public class Terminal {
