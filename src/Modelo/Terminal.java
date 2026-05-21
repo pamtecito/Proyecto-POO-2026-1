@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 
 //Alonso
+
 public class Terminal {
     private String nombre;
     private Direccion direccion;
