@@ -44,15 +44,12 @@ public class Bus {
     public void addViaje(Viaje viaje){
         viajes.add(viaje);
     }
+
+    public Empresa getEmpresa(){
+        return empresa;
+    }
+
     public Viaje[] getViajes(){
-
-        Viaje[] arreglo = new Viaje[viajes.size()];
-
-        for(int i = 0; i < viajes.size(); i++){
-
-            arreglo[i] = viajes.get(i);
-        }
-
-        return arreglo;
+        return viajes.toArray(new Viaje[0]);
     }
 }
