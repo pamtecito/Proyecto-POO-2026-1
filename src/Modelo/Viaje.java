@@ -147,8 +147,8 @@ public class Viaje {
     public Tripulante[] getTripulantes(){
         Tripulante t1= (Tripulante) aux;
         ArrayList<Tripulante> cond= conductors;
+        cond.add(t1);
         Tripulante[] t2= cond.toArray(new Tripulante[0]);
-        t2.add(t1);
         return t2;
     }
     public Terminal getTerminalLlegada(){
