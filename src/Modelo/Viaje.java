@@ -98,6 +98,29 @@ public class Viaje {
 
     public int getNroAsientosDisponibles() {
         return bus.getNroAsientos() - pasajes.size();
+    }//lo agrege para probar
+    public Venta[] getVentas(){
+
+        ArrayList<Venta> ventas = new ArrayList<>();
+
+        for(Pasaje p : pasajes){
+
+            Venta venta = p.getVenta();
+
+            if(!ventas.contains(venta)){
+
+                ventas.add(venta);
+            }
+        }
+
+        Venta[] arreglo = new Venta[ventas.size()];
+
+        for(int i = 0; i < ventas.size(); i++){
+
+            arreglo[i] = ventas.get(i);
+        }
+
+        return arreglo;
     }
 
     public Venta[] getVentas(){
