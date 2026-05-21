@@ -103,13 +103,49 @@ public class ControladorEmpresa {
     }
 
     public String[][] listEmpresas(){
-        //completar
-        return null;
+        if (misEmpresas.isEmpty()){
+            return new String[0][0];
+        }
+
+        String[][] listEmp = new String[misEmpresas.size()][6];
+
+        for (int i = 0; i < misEmpresas.size(); i++) {
+            Empresa e = misEmpresas.get(i);
+            listEmp[i][0] = e.getRut().toString();
+            listEmp[i][1] = e.getNombre();
+            listEmp[i][2] = e.getUrl();
+            listEmp[i][3] = String.valueOf(e.getTripulantes().length);
+            listEmp[i][4] = String.valueOf(e.getBuses().length);
+            listEmp[i][5] = String.valueOf(e.getVentas().length);
+        }
+
+        return listEmp;
     }
 
-    public String[][] listLlegadasSalidasTerminal(String nombre, LocalDate fecha){
-        //completar
-        return null;
+    public String[][] listLlegadasSalidasTerminal(String nombre, LocalDate fecha) throws SistemaVentaPasajesException{
+        Optional<Terminal> terminal = findTerminal(nombre);
+        if (findTerminal(nombre).isEmpty()) {
+            throw new SistemaVentaPasajesException("No existe un terminal con el nombre dado.");
+        }
+
+        ArrayList<String[]> viajes = new ArrayList<>();
+
+        for (Bus b : misBuses){
+            for (Viaje v : b.getViajes()){
+                boolean salida = v.getTerminalSalida().equals(terminal.get()) && v.getFecha().equals(fecha);
+                boolean llegada = v.getTerminalLlegada().equals(terminal.get()) && v.getFechaHoraTermino().toLocalDate().equals(fecha);
+
+                if (salida) {
+                    String[] salidaOficial = new String[5];
+                    salidaOficial[0] = "Salida";
+                    salidaOficial[1] = v.getHora().toString();
+                    salidaOficial[2] = b.getPatente();
+                    salidaOficial[3] = b.getE
+                }
+
+            }
+        }
+
     }
 
     public String[][] listVentasEmpresa(Rut rut){
