@@ -128,7 +128,7 @@ public class ControladorEmpresa {
             throw new SistemaVentaPasajesException("No existe un terminal con el nombre dado.");
         }
 
-        ArrayList<String[]> viajes = new ArrayList<>();
+        ArrayList<String[]> salidasYLlegadas = new ArrayList<>();
 
         for (Bus b : misBuses){
             for (Viaje v : b.getViajes()){
@@ -141,17 +141,54 @@ public class ControladorEmpresa {
                     salidaOficial[1] = v.getHora().toString();
                     salidaOficial[2] = b.getPatente();
                     salidaOficial[3] = b.getEmpresa().getNombre();
-                    salidaOficial[4] = String.valueOf(v.getVentas())
+                    salidaOficial[4] = String.valueOf(v.getVentas().length);
+                    salidasYLlegadas.add(salidaOficial);
+                } else if (llegada){
+                    String[] llegadaOficial = new String[5];
+                    llegadaOficial[0] = "Llegada";
+                    llegadaOficial[1] = v.getFechaHoraTermino().toLocalTime().toString();
+                    llegadaOficial[2] = b.getPatente();
+                    llegadaOficial[3] = b.getEmpresa().getNombre();
+                    llegadaOficial[4] = String.valueOf(v.getVentas().length);
+                    salidasYLlegadas.add(llegadaOficial);
                 }
 
             }
         }
 
+        String[][] listaSalYLleg =  new String[salidasYLlegadas.size()][5];
+        for (int i = 0; i < salidasYLlegadas.size(); i++) {
+            listaSalYLleg[i] = salidasYLlegadas.get(i);
+        }
+
+        return listaSalYLleg;
+
     }
 
-    public String[][] listVentasEmpresa(Rut rut){
-        //completar
-        return null;
+    public String[][] listVentasEmpresa(Rut rut) throws SistemaVentaPasajesException {
+        Optional<Empresa> empresa = findEmpresa(rut);
+
+        if(findEmpresa(rut).isEmpty()){
+            throw new SistemaVentaPasajesException("No existe empresa con ese rut.");
+        }
+
+        Venta[] ventas = empresa.get().getVentas();
+
+        if (ventas.length == 0) {
+            return new String[0][0];
+        }
+
+        String[][] ventasTotales = new String[ventas.length][4];
+
+        for (int i = 0; i < ventas.length; i++) {
+            Venta v =  ventas[i];
+            ventasTotales[i][0] = v.getFecha().toString();
+            ventasTotales[i][1] = v.getTipo().toString();
+            ventasTotales[i][2] = String.valueOf(v.getMontoPagado());
+            ventasTotales[i][3] = v.getTipoPago();
+        }
+
+        return ventasTotales;
     }
 
     protected Optional<Empresa> findEmpresa(Rut rut) throws SistemaVentaPasajesException {
