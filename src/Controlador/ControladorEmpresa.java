@@ -140,7 +140,8 @@ public class ControladorEmpresa {
                     salidaOficial[0] = "Salida";
                     salidaOficial[1] = v.getHora().toString();
                     salidaOficial[2] = b.getPatente();
-                    salidaOficial[3] = b.getE
+                    salidaOficial[3] = b.getEmpresa().getNombre();
+                    salidaOficial[4] = String.valueOf(v.getVentas())
                 }
 
             }
