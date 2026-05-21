@@ -7,7 +7,6 @@ import java.util.Optional;
 import Modelo.*;
 import Utilidades.*;
 import Excepciones.*;
-import excepciones.SistemaVentaPasajesException;
 
 public class ControladorEmpresa {
     private static ControladorEmpresa instance;
@@ -34,24 +33,73 @@ public class ControladorEmpresa {
         return instance;
     }
 
-    public void createEmpresa(Rut rut, String nombre, String url){
-        //completar
+    public void createEmpresa(Rut rut, String nombre, String url) throws SistemaVentaPasajesException{
+        if (findEmpresa(rut).isPresent()) {
+            throw new SistemaVentaPasajesException("Ya existe una empresa con ese rut.")
+        }
+
+        Empresa empresa = new Empresa(rut, nombre, url);
+        misEmpresas.add(empresa);
     }
 
-    public void createBus(String pat, String marca, String modelo, int nroAsientos, Rut rutEmp){
-        //completar
+    public void createBus(String pat, String marca, String modelo, int nroAsientos, Rut rutEmp) throws SistemaVentaPasajesException {
+        Optional<Empresa> empresa = findEmpresa(rutEmp);
+
+        if (findEmpresa(rutEmp).isEmpty()){
+            throw new SistemaVentaPasajesException("Empresa no encontrada.");
+        }
+        if (findBus(pat).isPresent()) {
+            throw new SistemaVentaPasajesException("Ya existe un bus con esta patente.");
+        }
+
+        Bus bus = new Bus(pat, nroAsientos, empresa.get());
+        bus.setMarca(marca);
+        bus.setModelo(modelo);
+
+        misBuses.add(bus);
     }
 
-    public void createTerminal(String nombre, Direccion direccion){
-        //completar
+    public void createTerminal(String nombre, Direccion direccion) throws SistemaVentaPasajesException{
+        if (findTerminal(nombre).isPresent()){
+            throw new SistemaVentaPasajesException("Terminal ya existente.");
+        }
+
+        for (Terminal t : misTerminales){
+            if (t.getDireccion().getComuna().equalsIgnoreCase(direccion.getComuna())) {
+                throw new SistemaVentaPasajesException("Ya existe un terminal en esa comuna.");
+            }
+        }
+
+        Terminal terminal = new Terminal(nombre, direccion);
+        misTerminales.add(terminal);
     }
 
-    public void hireConductorForEmpresa(Rut rutEmp, IdPersona id, Nombre nom, Direccion dir){
-        //completar
+    public void hireConductorForEmpresa(Rut rutEmp, IdPersona id, Nombre nom, Direccion dir) throws SistemaVentaPasajesException{
+        Optional<Empresa> empresa = findEmpresa(rutEmp);
+
+        if (findEmpresa(rutEmp).isEmpty()){
+            throw new SistemaVentaPasajesException("No existe una empresa con ese rut.");
+        }
+
+        boolean contratado = empresa.get().addConductor(id, nom, dir);
+        if (!contratado){
+            throw new SistemaVentaPasajesException("Ya está contratado este conductor.");
+        }
     }
 
-    public void hireAuxiliarForEmpresa(Rut rutEmp, IdPersona id, Nombre nom, Direccion dir){
-        //completar
+    public void hireAuxiliarForEmpresa(Rut rutEmp, IdPersona id, Nombre nom, Direccion dir) throws SistemaVentaPasajesException{
+        Optional<Empresa> empresa = findEmpresa(rutEmp);
+
+        if (findEmpresa(rutEmp).isEmpty()) {
+            throw new SistemaVentaPasajesException("No existe una empresa con ese rut.");
+        }
+
+        boolean contratado = empresa.get().addAuxiliar(id, nom, dir);
+
+        if (!contratado) {
+            throw new SistemaVentaPasajesException("Ya está contratado este auxiliar.");
+        }
+
     }
 
     public String[][] listEmpresas(){
@@ -69,9 +117,9 @@ public class ControladorEmpresa {
         return null;
     }
 
-    protected Optional<Empresa> findEmpresa(Rut rut) throws excepciones.SistemaVentaPasajesException {
+    protected Optional<Empresa> findEmpresa(Rut rut) throws SistemaVentaPasajesException {
         if (rut == null){
-            throw new excepciones.SistemaVentaPasajesException("Rut no puede ser null");
+            throw new SistemaVentaPasajesException("Rut no puede ser null");
         }
 
         for (Empresa e : misEmpresas){
@@ -82,9 +130,9 @@ public class ControladorEmpresa {
         return Optional.empty();
     }
 
-    protected Optional<Terminal> findTerminal(String nombre) throws excepciones.SistemaVentaPasajesException{
+    protected Optional<Terminal> findTerminal(String nombre) throws SistemaVentaPasajesException{
         if (nombre == null){
-            throw new excepciones.SistemaVentaPasajesException("El nombre no puede ser null.");
+            throw new SistemaVentaPasajesException("El nombre no puede ser null.");
         }
 
         for (Terminal t : misTerminales){
@@ -96,7 +144,7 @@ public class ControladorEmpresa {
         return Optional.empty();
     }
 
-    protected Optional<Bus> findBus(String patente)throws excepciones.SistemaVentaPasajesException {
+    protected Optional<Bus> findBus(String patente)throws SistemaVentaPasajesException {
         if (patente == null){
             throw new SistemaVentaPasajesException("La patente no puede ser null.");
         }
@@ -134,7 +182,7 @@ public class ControladorEmpresa {
         }
 
         for (Tripulante t : empresa.get().getTripulantes()){
-            if (t instanceof Auxiliar a && a.getIdPersona.equals(id)) {
+            if (t instanceof Auxiliar a && a.getIdPersona().equals(id)) {
                 return Optional.of(a);
             }
         }
