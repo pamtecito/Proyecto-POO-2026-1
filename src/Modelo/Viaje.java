@@ -1,6 +1,6 @@
 package Modelo;
 import Controlador.*;
-import excepciones.SistemaVentaPasajesException;
+import Excepciones.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -57,13 +57,9 @@ public class Viaje {
     }
 
     public LocalDateTime getFechaHoraTermino() {
-        //return fecha, duracion(mn) y hora de llegada, hora de salida.
-        //solo retorna fecha y hora de llegada.
         LocalDateTime fechita= LocalDateTime.of(fecha, hora);
         return fechita.plusMinutes(duracion);
     }
-
-
 
     public String[][] getAsientos(){
         String[][] asientos = new String[this.getBus().getNroAsientos()][2];
@@ -99,36 +95,9 @@ public class Viaje {
     public int getNroAsientosDisponibles() {
         return bus.getNroAsientos() - pasajes.size();
     }//lo agrege para probar
-    public Venta[] getVentas(){
 
-        ArrayList<Venta> ventas = new ArrayList<>();
-
-        for(Pasaje p : pasajes){
-
-            Venta venta = p.getVenta();
-
-            if(!ventas.contains(venta)){
-
-                ventas.add(venta);
-            }
-        }
-
-        Venta[] arreglo = new Venta[ventas.size()];
-
-        for(int i = 0; i < ventas.size(); i++){
-
-            arreglo[i] = ventas.get(i);
-        }
-
-        return arreglo;
-    }
 
     public Venta[] getVentas(){
-        //retorna en el arreglo:
-        /*
-        - Ventas asociadas a este viaje consultando a los pasajes que tiene asociado(o sea la cantidad de pasajes vendidos de este viaje)
-        -Si no se han vendido pasajes retornar arreglo tamaño 0
-         */
         ArrayList<Venta> ventas= new ArrayList<>();
         for(Pasaje p: pasajes){
             Venta v= p.getVenta();
@@ -138,22 +107,30 @@ public class Viaje {
         }
         return ventas.toArray(new Venta[0]);
     }
+
     public void addConductor(Conductor conductor) throws SistemaVentaPasajesException {
         if(conductors.size()>= 2) {
             throw new SistemaVentaPasajesException("Maximo 2 conductores");
         }
         conductors.add(conductor);
     }
+
     public Tripulante[] getTripulantes(){
-        Tripulante t1= (Tripulante) aux;
-        ArrayList<Tripulante> cond= conductors;
-        cond.add(t1);
-        Tripulante[] t2= cond.toArray(new Tripulante[0]);
-        return t2;
+       ArrayList<Tripulante> totalTrip = new ArrayList<>();
+
+       totalTrip.add((Tripulante) aux);
+
+       for (Conductor c : conductors){
+           totalTrip.add(c);
+       }
+
+       return totalTrip.toArray(new Tripulante[0]);
     }
+
     public Terminal getTerminalLlegada(){
         return llegada;
     }
+
     public Terminal getTerminalSalida(){
         return salida;
     }
