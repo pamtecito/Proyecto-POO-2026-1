@@ -1,4 +1,4 @@
-package Modelo;
+package Utilidades;
 
 public class Direccion {
     private String calle;
@@ -25,6 +25,13 @@ public class Direccion {
 
     @Override
     public String toString() {
-        return "Calle: " + calle + ", \nNumero: " + numero + ", \nComuna: " + comuna;
+        return calle +  numero + comuna;
+    }
+
+    public boolean equals(Object otro) {
+        if (this == otro) return true;
+        if (otro == null || this.getClass() != otro.getClass()) return false;
+        Direccion direccion = (Direccion) otro;
+        return this.numero == direccion.numero && this.comuna.equals(direccion.comuna);
     }
 }
