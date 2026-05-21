@@ -35,7 +35,7 @@ public class ControladorEmpresa {
 
     public void createEmpresa(Rut rut, String nombre, String url) throws SistemaVentaPasajesException{
         if (findEmpresa(rut).isPresent()) {
-            throw new SistemaVentaPasajesException("Ya existe una empresa con ese rut.")
+            throw new SistemaVentaPasajesException("Ya existe una empresa con ese rut.");
         }
 
         Empresa empresa = new Empresa(rut, nombre, url);
