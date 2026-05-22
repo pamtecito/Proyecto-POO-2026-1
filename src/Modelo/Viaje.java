@@ -61,14 +61,13 @@ public class Viaje {
         return fechita.plusMinutes(duracion);
     }
 
-    public String[][] getAsientos(){
-        String[][] asientos = new String[this.getBus().getNroAsientos()][2];
+    public String[] getAsientos() {
+        String[] asientos = new String[this.getBus().getNroAsientos()];
         for (int i = 0; i < asientos.length; i++) {
-            asientos[i][0] = String.valueOf(i+1);
-            asientos[i][1] = "libre";
+            asientos[i] = String.valueOf(i + 1);
         }
-        for (Pasaje p : pasajes){
-            asientos[p.getAsiento()][1] = "Ocupado";
+        for (Pasaje p : pasajes) {
+            asientos[p.getAsiento() - 1] = "*";
         }
         return asientos;
     }
@@ -80,16 +79,17 @@ public class Viaje {
     public String[][] getListaPasajeros(){
         String[][] h= new String[pasajes.size()][4];
         for(int i=0; i<h.length; i++){
-            h[i][0]= String.valueOf(pasajes.get(i).getPasajero().getIdPersona());
-            h[i][1]= String.valueOf(pasajes.get(i).getPasajero().getNomContacto());
-            h[i][2]= String.valueOf(pasajes.get(i).getPasajero().getNombreCompleto());
+            h[i][0]= String.valueOf(pasajes.get(i).getPasajero().getIdPersona().toString());
+            h[i][1]= String.valueOf(pasajes.get(i).getPasajero().getNombreCompleto().toString());
+            h[i][2]= String.valueOf(pasajes.get(i).getPasajero().getNomContacto().toString());
             h[i][3]= pasajes.get(i).getPasajero().getFonoContacto();
         }
         return h;
     }
 
-    public boolean existeDisponibilidad(){
-        return pasajes.size() < bus.getNroAsientos();
+    public boolean existeDisponibilidad(int nroAsientos){
+        int asientosLibres = bus.getNroAsientos() - pasajes.size();
+        return asientosLibres >= nroAsientos;
     }
 
     public int getNroAsientosDisponibles() {
