@@ -1,5 +1,6 @@
 package Controlador;
 
+import Excepciones.SistemaVentaPasajesException;
 import Modelo.*;
 import Utilidades.*;
 
@@ -24,35 +25,60 @@ public class SistemaVentaPasaje {
         misVentas = new ArrayList<>();
     }
 
-    public boolean createCliente(IdPersona id, Nombre nom, String fono, String email) {
-        if (findCliente(id) != null) return false;
+    public void createCliente(IdPersona id, Nombre nom, String fono, String email) throws SistemaVentaPasajesException {
+        if (findCliente(id).isPresent()) {
+            throw new SistemaVentaPasajesException("Ya existe un cliente con ese id.");
+        }
+
         Cliente c = new Cliente(id,nom,email);
         c.setTelefono(fono);
-        return misClientes.add(c);
+        misClientes.add(c);
     }
 
-    public boolean createPasajero(IdPersona id, Nombre nom, String fono, Nombre nomContacto, String fonoContacto) {
-        if (findPasajero(id) != null) return false;
+    public void createPasajero(IdPersona id, Nombre nom, String fono, Nombre nomContacto, String fonoContacto) throws SistemaVentaPasajesException{
+        if (findPasajero(id).isPresent()){
+            throw new SistemaVentaPasajesException("Ya existe un pasajero con ese id.");
+        }
         Pasajero p = new Pasajero(id, nom);
-        p.setNomContacto(nomContacto);
         p.setFonoContacto(fono);
+        p.setNomContacto(nomContacto);
         p.setFonoContacto(fonoContacto);
-        return misPasajeros.add(p);
+        misPasajeros.add(p);
 
     }
 
-    public boolean createBus(String patente, String marca, String modelo, int nroAsientos){
+    /*public boolean createBus(String patente, String marca, String modelo, int nroAsientos){
             if(findBus(patente) != null) return false;
             Bus b = new Bus(patente, nroAsientos);
             b.setMarca(marca);
             b.setModelo(modelo);
             return misbuses.add(b);
-    }
+    }*/
 
-    public boolean createViaje(LocalDate fecha, LocalTime hora, int precio, String patBus) {
-        if (findViaje(String.valueOf(fecha),String.valueOf(hora),patBus) != null) return false;
-        if (findBus(patBus) == null) return false;
-        return misViajes.add(new Viaje(fecha,hora,precio,findBus(patBus)));
+    public void createViaje(LocalDate fecha, LocalTime hora, int precio, int duracion, String patBus, IdPersona[] idPersonas, String[] nomComunas) throws SistemaVentaPasajesException {
+        if (findViaje(String.valueOf(fecha),String.valueOf(hora),patBus).isPresent()){
+            throw new SistemaVentaPasajesException("Ya existe un viaje con estos datos.");
+        }
+
+        Optional<Bus> bus = ControladorEmpresa.getInstance().findBus(patBus);
+        if (bus.isEmpty()) {
+            throw new SistemaVentaPasajesException("No existe un bus con esa patente");
+        }
+
+        Rut rutEmpresa = bus.get().getEmpresa().getRut();
+
+        Optional<Auxiliar> aux = ControladorEmpresa.getInstance().findAuxiliar(idPersonas[0], rutEmpresa);
+        if (aux.isEmpty()) {
+            throw new SistemaVentaPasajesException("No existe un auxiliar con ese id en esa empresa.");
+        }
+
+        Auxiliar auxiliar = aux.get();
+
+        Optional<Conductor> cond = ControladorEmpresa.getInstance().findConductor(idPersonas[1], rutEmpresa);
+        if (cond.isEmpty()) {
+            throw new SistemaVentaPasajesException("no existe un conductor con ese id en esa empresa.");
+        }
+
 
     }
 
@@ -220,14 +246,14 @@ public class SistemaVentaPasaje {
         return Optional.empty();
    }
 
-   private Optional<Bus> findBus(String patente){
+   /*private Optional<Bus> findBus(String patente){
         for (Bus b : misbuses){
             if (b.getPatente().equals(patente)){
                 return Optional.of(b);
             }
         }
         return Optional.empty();
-   }
+   }*/
 
    private Optional<Viaje> findViaje(String fecha, String hora, String patenteBus){
         LocalTime h = LocalTime.parse(hora);
