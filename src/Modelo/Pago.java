@@ -1,6 +1,6 @@
 package Modelo;
 
-public class Pago {
+public abstract class Pago {
     private int monto;
 
     public Pago(int monto) {
