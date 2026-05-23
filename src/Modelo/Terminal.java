@@ -4,6 +4,8 @@ import Utilidades.Direccion;
 
 import java.util.ArrayList;
 
+
+//Alonso
 public class Terminal {
     private String nombre;
     private Direccion direccion;
@@ -30,10 +32,15 @@ public class Terminal {
     }
 
     public void addLlegada(Viaje viaje) {
+        if (!llegadas.contains(viaje)) {
+            llegadas.add(viaje);
+        }
     }
 
     public void addSalida(Viaje viaje) {
-
+        if (!salidas.contains(viaje)) {
+            salidas.add(viaje);
+        }
     }
 
     public Viaje[] getLlegadas() {
