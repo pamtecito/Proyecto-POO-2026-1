@@ -12,15 +12,15 @@ import Controlador.SistemaVentaPasaje;
 
 public class Main {
     private static Scanner tcld = new Scanner(System.in);
-    private static SistemaVentaPasaje sistema = new SistemaVentaPasaje();
+    //private static SistemaVentaPasaje sistema = new SistemaVentaPasaje();
     private static DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 
     public static void main(String[] args) {
-        menu();
+        UISVP.getInstance().menu();
     }
 
-    private static void menu() {
+    /*private static void menu() {
         LocalDate f = null;
         int opcion;
 
@@ -508,6 +508,6 @@ public class Main {
                 );
             }
         }
-    }
+    }*/
 }
 
