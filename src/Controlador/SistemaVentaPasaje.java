@@ -3,11 +3,6 @@ package Controlador;
 import Excepciones.SistemaVentaPasajesException;
 import Modelo.*;
 import Utilidades.*;
-
-import javax.annotation.processing.SupportedSourceVersion;
-import java.awt.desktop.OpenFilesEvent;
-import java.sql.SQLClientInfoException;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
