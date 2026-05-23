@@ -294,15 +294,6 @@ public class SistemaVentaPasaje {
         return Optional.empty();
    }
 
-   /*private Optional<Bus> findBus(String patente){
-        for (Bus b : misbuses){
-            if (b.getPatente().equals(patente)){
-                return Optional.of(b);
-            }
-        }
-        return Optional.empty();
-   }*/
-
    private Optional<Viaje> findViaje(LocalDate fecha, LocalTime hora, String patenteBus){
      for (Viaje v : misViajes){
          if (v.getFecha().equals(fecha) && v.getHora().equals(hora) && v.getBus().getPatente().equals(patenteBus)){
