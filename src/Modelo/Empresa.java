@@ -74,13 +74,6 @@ public class Empresa {
         }
 
         return arreglo;
-        /*
-        for(int i = 0; i < arreglo.length ; i++){
-            arreglo[i] = conductores.get(i);
-            arreglo[i+ conductores.size()] = auxiliares.get(i);
-        }
-         return arreglo;
-         */
     }
 
 //metodo faltante
