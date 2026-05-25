@@ -1,6 +1,6 @@
 package Controlador;
 
-import excepciones.SistemaVentaPasajesException;
+import Excepciones.SistemaVentaPasajesException;
 import Modelo.*;
 import Utilidades.*;
 import java.time.LocalDate;

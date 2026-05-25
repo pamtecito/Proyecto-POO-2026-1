@@ -1,6 +1,5 @@
 package Modelo;
-import Controlador.*;
-import excepciones.*;
+import Excepciones.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

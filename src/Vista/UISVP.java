@@ -7,12 +7,9 @@ import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 import Controlador.*;
-import excepciones.SistemaVentaPasajesException;
-import Modelo.Terminal;
+import Excepciones.SistemaVentaPasajesException;
 import Modelo.TipoDocumento;
 import Utilidades.*;
-
-import javax.crypto.spec.PSource;
 
 public class UISVP {
     private static UISVP instance;

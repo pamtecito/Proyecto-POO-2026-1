@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import Modelo.*;
 import Utilidades.*;
-import excepciones.*;
+import Excepciones.*;
 
 public class ControladorEmpresa {
     private static ControladorEmpresa instance;
