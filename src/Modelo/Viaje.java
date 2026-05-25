@@ -1,7 +1,6 @@
 package Modelo;
 import Controlador.*;
-import Excepciones.*;
-
+import excepciones.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -27,6 +26,7 @@ public class Viaje {
         this.bus = bus;
         pasajes= new ArrayList<>();
         this.aux= aux;
+        this.conductors= new ArrayList<>();
         conductors.add(cond);
         this.salida= sale;
         this.llegada= llega;

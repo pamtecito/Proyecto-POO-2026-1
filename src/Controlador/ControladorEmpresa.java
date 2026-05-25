@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import Modelo.*;
 import Utilidades.*;
-import Excepciones.*;
+import excepciones.*;
 
 public class ControladorEmpresa {
     private static ControladorEmpresa instance;
@@ -215,6 +215,15 @@ public class ControladorEmpresa {
             }
         }
 
+        return Optional.empty();
+    }
+
+    protected Optional<Terminal> findTerminalPorComuna(String comuna){
+        for (Terminal t : misTerminales) {
+            if (t.getDireccion().getComuna().equals(comuna)) {
+                return Optional.of(t);
+            }
+        }
         return Optional.empty();
     }
 

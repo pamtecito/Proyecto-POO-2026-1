@@ -62,14 +62,25 @@ public class Empresa {
         return true;
     }
     public Tripulante[] getTripulantes(){
-        Tripulante[] arreglo = new Tripulante[conductores.size()+auxiliares.size()];
 
+        Tripulante[] arreglo = new Tripulante[conductores.size() + auxiliares.size()];
+
+        int idx = 0;
+        for (int i = 0; i < conductores.size(); i++) {
+            arreglo[idx++] = conductores.get(i);
+        }
+        for (int i = 0; i < auxiliares.size(); i++) {
+            arreglo[idx++] = auxiliares.get(i);
+        }
+
+        return arreglo;
+        /*
         for(int i = 0; i < arreglo.length ; i++){
             arreglo[i] = conductores.get(i);
             arreglo[i+ conductores.size()] = auxiliares.get(i);
         }
-
-        return arreglo;
+         return arreglo;
+         */
     }
 
 //metodo faltante

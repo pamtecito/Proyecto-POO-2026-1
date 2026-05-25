@@ -1,4 +1,4 @@
-package Excepciones;
+package excepciones;
 
 public class SistemaVentaPasajesException extends RuntimeException {
     public SistemaVentaPasajesException(String message) {
