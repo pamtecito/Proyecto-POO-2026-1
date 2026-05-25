@@ -1,6 +1,6 @@
 package Controlador;
 
-import Excepciones.SistemaVentaPasajesException;
+import excepciones.SistemaVentaPasajesException;
 import Modelo.*;
 import Utilidades.*;
 import java.time.LocalDate;
@@ -87,13 +87,13 @@ public class SistemaVentaPasaje {
             }
         }
 
-        Optional<Terminal> salidaTerm = ControladorEmpresa.getInstance().findTerminal(nomComunas[0]);
+        Optional<Terminal> salidaTerm = ControladorEmpresa.getInstance().findTerminalPorComuna(nomComunas[0]);
         if (salidaTerm.isEmpty()){
             throw new SistemaVentaPasajesException("No existe un terminal de salida en la comuna indicada.");
         }
         Terminal terminalSalida = salidaTerm.get();
 
-        Optional<Terminal> llegadaTerm = ControladorEmpresa.getInstance().findTerminal(nomComunas[1]);
+        Optional<Terminal> llegadaTerm = ControladorEmpresa.getInstance().findTerminalPorComuna(nomComunas[1]);
         if (llegadaTerm.isEmpty()){
             throw new SistemaVentaPasajesException("No existe un terminal de llegada en la comuna indicada.");
         }
