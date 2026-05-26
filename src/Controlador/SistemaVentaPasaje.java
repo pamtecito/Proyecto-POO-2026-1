@@ -269,7 +269,7 @@ public class SistemaVentaPasaje {
     public String[][] listPasajerosViaje(LocalDate fecha, LocalTime hora, String patBus) throws SistemaVentaPasajesException{
         Optional<Viaje> via = findViaje(fecha, hora, patBus);
         if (via.isEmpty()){
-            throw new SistemaVentaPasajesException("o existe viaje con la fecha, hora y patente de bus indicados.");
+            throw new SistemaVentaPasajesException("No existe viaje con la fecha, hora y patente de bus indicados.");
         }
         Viaje viaje = via.get();
 
