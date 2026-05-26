@@ -29,6 +29,9 @@ public class Viaje {
         conductors.add(cond);
         this.salida= sale;
         this.llegada= llega;
+        bus.addViaje(this);
+        sale.addSalida(this);
+        llega.addLlegada(this);
     }
 
     public LocalDate getFecha() {

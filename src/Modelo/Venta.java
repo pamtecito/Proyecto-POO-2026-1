@@ -40,7 +40,7 @@ public class Venta {
     public void createPasaje(int asiento, Viaje viaje, Pasajero pasajero) {
         Pasaje p = new Pasaje(asiento, viaje, pasajero, this);
         misPasajes.add(p);
-
+        viaje.addPasaje(p);
     }
 
     public Pasaje[] getPasajes() {

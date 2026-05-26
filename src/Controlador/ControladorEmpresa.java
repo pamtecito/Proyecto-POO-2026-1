@@ -13,17 +13,11 @@ public class ControladorEmpresa {
     private ArrayList<Empresa> misEmpresas;
     private ArrayList<Terminal> misTerminales;
     private ArrayList<Bus> misBuses;
-    private ArrayList<Conductor> misConductores;
-    private ArrayList<Auxiliar> misAxiliares;
-    private ArrayList<Venta> misVentas;
 
     private ControladorEmpresa() {
         misEmpresas = new ArrayList<>();
         misTerminales = new ArrayList<>();
         misBuses = new ArrayList<>();
-        misConductores = new ArrayList<>();
-        misAxiliares = new ArrayList<>();
-        misVentas = new ArrayList<>();
     }
 
     public static ControladorEmpresa getInstance(){
@@ -55,8 +49,8 @@ public class ControladorEmpresa {
         Bus bus = new Bus(pat, nroAsientos, empresa.get());
         bus.setMarca(marca);
         bus.setModelo(modelo);
-
         misBuses.add(bus);
+        empresa.get().addBus(bus);
     }
 
     public void createTerminal(String nombre, Direccion direccion) throws SistemaVentaPasajesException{
@@ -125,7 +119,7 @@ public class ControladorEmpresa {
     public String[][] listLlegadasSalidasTerminal(String nombre, LocalDate fecha) throws SistemaVentaPasajesException{
         Optional<Terminal> terminal = findTerminal(nombre);
         if (findTerminal(nombre).isEmpty()) {
-            throw new SistemaVentaPasajesException("No existe un terminal con el nombre dado.No existe terminal con el nombre indicado");
+            throw new SistemaVentaPasajesException("No existe un terminal con el nombre dado");
         }
 
         ArrayList<String[]> salidasYLlegadas = new ArrayList<>();
