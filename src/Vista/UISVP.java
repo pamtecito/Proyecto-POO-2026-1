@@ -8,11 +8,8 @@ import java.util.Optional;
 import java.util.Scanner;
 import Controlador.*;
 import Excepciones.SistemaVentaPasajesException;
-import Modelo.Terminal;
 import Modelo.TipoDocumento;
 import Utilidades.*;
-
-import javax.crypto.spec.PSource;
 
 public class UISVP {
     private static UISVP instance;
@@ -252,10 +249,10 @@ public class UISVP {
 
     private void createViaje() {
         System.out.println("\n ...::::: Creando un nuevo viaje :::::...");
-        String fechaStr = leeFechaValida("\t Fecha[dd/mm/yyyy] :");
-        LocalDate fecha = LocalDate.parse(fechaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        System.out.println("Fecha: ");
+        System.out.println(LocalDate.now());
         String hraString = leeStringNoVacio("\t Hora[hh:mm] : ");
-        LocalTime hora = LocalTime.parse(hraString, DateTimeFormatter.ofPattern("HH:mmm"));
+        LocalTime hora = LocalTime.parse(hraString, DateTimeFormatter.ofPattern("HH:mm"));
         int precio = leeIntNoNegativo("\t Precio: ");
         int duracion = leeIntNoNegativo("\t Duracion (minutos) : ");
         String patente = leeStringNoVacio("\t Patente Bus : ").toUpperCase();
@@ -287,7 +284,7 @@ public class UISVP {
             idTripulantes[0] = Pasaporte.of(numPasaporte, nacionalidad);
         }
 
-        for (int i = 1; i < nroConductores; i++) {
+        for (int i = 1; i <= nroConductores; i++) {
             System.out.println("\n\t :: Id Conductor ::");
             int tipoIdConductor;
             do{
@@ -314,7 +311,7 @@ public class UISVP {
         String[] comunas = {comunaSalida, comunaLlegada};
 
         try {
-            SistemaVentaPasaje.getInstance().createViaje(fecha, hora, precio, duracion, patente, idTripulantes, comunas);
+            SistemaVentaPasaje.getInstance().createViaje(LocalDate.now(), hora, precio, duracion, patente, idTripulantes, comunas);
             System.out.println("\n ...::::: Viaje creado exitosamente :::::...");
         }catch (SistemaVentaPasajesException e){
             System.out.println(e.getMessage());
@@ -383,6 +380,7 @@ public class UISVP {
             System.out.println("Venta iniciada.");
         } catch (SistemaVentaPasajesException e){
             System.out.println(e.getMessage());
+            return;
         }
 
         System.out.println("\n:::: Listado de horarios disponibles");
@@ -442,7 +440,7 @@ public class UISVP {
             int contPasajero = 1;
             for (String asientoStr : asientosSeleccionados) {
                 int asiento = Integer.parseInt(asientoStr.trim());
-                System.out.println("\n :::: Datos pasajeros " + asiento);
+                System.out.println("\n :::: Datos pasajeros " + contPasajero);
                 rutOpasaporte2 = leeIntNoNegativo("\t Rut[1] o Pasaporte[2] : ");
                 do {
                     if (rutOpasaporte2 != 1 && rutOpasaporte2 != 2) {

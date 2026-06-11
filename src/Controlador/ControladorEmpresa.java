@@ -218,6 +218,15 @@ public class ControladorEmpresa {
         return Optional.empty();
     }
 
+    protected Optional<Terminal> findTerminalPorComuna(String comuna){
+        for (Terminal t : misTerminales) {
+            if (t.getDireccion().getComuna().equals(comuna)) {
+                return Optional.of(t);
+            }
+        }
+        return Optional.empty();
+    }
+
     protected Optional<Bus> findBus(String patente)throws SistemaVentaPasajesException {
         if (patente == null){
             throw new SistemaVentaPasajesException("La patente no puede ser null.");
