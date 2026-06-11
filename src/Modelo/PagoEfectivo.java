@@ -6,8 +6,4 @@ public class PagoEfectivo extends Pago {
         super(monto);
     }
 
-    @Override
-    public int getMonto() {
-        return super.getMonto();
-    }
 }
