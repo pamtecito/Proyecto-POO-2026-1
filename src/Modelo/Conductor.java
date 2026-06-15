@@ -2,9 +2,10 @@ package Modelo;
 
 import Utilidades.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Conductor extends Tripulante{
+public class Conductor extends Tripulante implements Serializable {
 
     private ArrayList<Viaje> misViajes;
 
