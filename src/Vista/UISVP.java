@@ -26,6 +26,7 @@ public class UISVP {
     }
 
     public void menu(){
+        cargarDatosPrueba();
         int opcion = 0;
         sc.useDelimiter("[\\t\\r\\n]+");
         do {
@@ -249,8 +250,8 @@ public class UISVP {
 
     private void createViaje() {
         System.out.println("\n ...::::: Creando un nuevo viaje :::::...");
-        System.out.println("Fecha: ");
-        System.out.println(LocalDate.now());
+        String fechaStr = leeFechaValida("\t Fecha viaje: ");
+        LocalDate fecha = LocalDate.parse(fechaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         String hraString = leeStringNoVacio("\t Hora[hh:mm] : ");
         LocalTime hora = LocalTime.parse(hraString, DateTimeFormatter.ofPattern("HH:mm"));
         int precio = leeIntNoNegativo("\t Precio: ");
@@ -311,7 +312,7 @@ public class UISVP {
         String[] comunas = {comunaSalida, comunaLlegada};
 
         try {
-            SistemaVentaPasaje.getInstance().createViaje(LocalDate.now(), hora, precio, duracion, patente, idTripulantes, comunas);
+            SistemaVentaPasaje.getInstance().createViaje(fecha, hora, precio, duracion, patente, idTripulantes, comunas);
             System.out.println("\n ...::::: Viaje creado exitosamente :::::...");
         }catch (SistemaVentaPasajesException e){
             System.out.println(e.getMessage());
@@ -509,7 +510,7 @@ public class UISVP {
         String idDoc = leeStringNoVacio("\t ID Documento: ");
         int tipoDoc;
         do {
-            tipoDoc = leeIntNoNegativo("\t Tipo documento: Boleta[1] o Factura[2]");
+            tipoDoc = leeIntNoNegativo("\t Tipo documento: Boleta[1] o Factura[2] : ");
             if (tipoDoc < 1 || tipoDoc > 2){
                 System.out.println("Opción invalida. Debe ser 1 o 2.");
             }
@@ -534,7 +535,7 @@ public class UISVP {
              if (tipoPago == 1){
                  SistemaVentaPasaje.getInstance().pagaVenta(idDoc, tipo);
              }else {
-                 long nroTarjeta = (long) leeFloatNoNegativo("\t Numero de tarjeta: ");
+                 long nroTarjeta =  leeIntNoNegativo("\t Numero de tarjeta: ");
                  SistemaVentaPasaje.getInstance().pagaVenta(idDoc, tipo, nroTarjeta);
              }
              System.out.println("\n ...::::: Venta realizada exitosamente :::::...");
@@ -853,6 +854,320 @@ public class UISVP {
             }
         } while (!datoValido);
         return nroNoNegativo;
+    }
+
+    private void cargarDatosPrueba() {
+
+        // ── EMPRESAS ─────────────────────────────────────────────────
+        try {
+            Rut rutBusesNuble = Rut.of("88.888.888-8");
+            ControladorEmpresa.getInstance().createEmpresa(rutBusesNuble, "Buses Ñuble", "https://www.busesnuble.cl");
+
+            Rut rutEfeBus = Rut.of("99.999.999-9");
+            ControladorEmpresa.getInstance().createEmpresa(rutEfeBus, "Efe Bus", "https://www.efebus.cl");
+
+            Rut rutTurbus = Rut.of("77.777.777-7");
+            ControladorEmpresa.getInstance().createEmpresa(rutTurbus, "Turbus", "https://www.turbus.cl");
+        } catch (SistemaVentaPasajesException e) {
+            System.out.println("DatosPrueba empresa: " + e.getMessage());
+        }
+
+        // ── TERMINALES ────────────────────────────────────────────────
+        try {
+            ControladorEmpresa.getInstance().createTerminal("Fray Silvano",
+                    new Direccion("Almirante Gaete", 1240, "Chillan"));
+
+            ControladorEmpresa.getInstance().createTerminal("El Pinar",
+                    new Direccion("Arturo Prat", 500, "Pinto"));
+
+            ControladorEmpresa.getInstance().createTerminal("Terminal Medina",
+                    new Direccion("O'Higgins", 320, "Medina"));
+
+            ControladorEmpresa.getInstance().createTerminal("Terminal Santa Faz",
+                    new Direccion("Los Carrera", 800, "Santa Faz"));
+
+            ControladorEmpresa.getInstance().createTerminal("Terminal Bulnes",
+                    new Direccion("Yungay", 150, "Bulnes"));
+        } catch (SistemaVentaPasajesException e) {
+            System.out.println("DatosPrueba terminal: " + e.getMessage());
+        }
+
+        // ── BUSES ─────────────────────────────────────────────────────
+        try {
+            Rut rutBN = Rut.of("88.888.888-8");
+            ControladorEmpresa.getInstance().createBus("ABCD-12", "Mercedes", "Marcopolo", 45, rutBN);
+            ControladorEmpresa.getInstance().createBus("EFGH-34", "Mercedes", "Paradiso",  52, rutBN);
+            ControladorEmpresa.getInstance().createBus("IJKL-56", "Volvo",    "Novo",      40, rutBN);
+            ControladorEmpresa.getInstance().createBus("MNOP-78", "Scania",   "Irizar",    38, rutBN);
+            ControladorEmpresa.getInstance().createBus("QRST-90", "Volvo",    "9800",      44, rutBN);
+
+            Rut rutEB = Rut.of("99.999.999-9");
+            ControladorEmpresa.getInstance().createBus("AZYB-12", "Mercedes", "Novo", 50, rutEB);
+
+            Rut rutTB = Rut.of("77.777.777-7");
+            ControladorEmpresa.getInstance().createBus("TURB-01", "Scania", "Touring", 46, rutTB);
+        } catch (SistemaVentaPasajesException e) {
+            System.out.println("DatosPrueba bus: " + e.getMessage());
+        }
+
+        // ── TRIPULANTES ───────────────────────────────────────────────
+        try {
+            Rut rutEmp = Rut.of("88.888.888-8");
+
+            // Auxiliar de Buses Ñuble
+            Nombre nomAux = new Nombre();
+            nomAux.setTratamiento(Tratamiento.SRA);
+            nomAux.setNombres("Maria Jose");
+            nomAux.setApellidoPaterno("Perez");
+            nomAux.setApellidoMaterno("Soto");
+            ControladorEmpresa.getInstance().hireAuxiliarForEmpresa(
+                    rutEmp,
+                    Rut.of("55.555.555-5"),
+                    nomAux,
+                    new Direccion("Almirante Gaete", 890, "Chillan"));
+
+            // Conductor 1 de Buses Ñuble
+            Nombre nomCond1 = new Nombre();
+            nomCond1.setTratamiento(Tratamiento.SR);
+            nomCond1.setNombres("Carlos Andres");
+            nomCond1.setApellidoPaterno("Gonzalez");
+            nomCond1.setApellidoMaterno("Muñoz");
+            ControladorEmpresa.getInstance().hireConductorForEmpresa(
+                    rutEmp,
+                    Rut.of("77.777.777-7"),
+                    nomCond1,
+                    new Direccion("Santa Rosa", 123, "Bulnes"));
+
+            // Conductor 2 de Buses Ñuble
+            Nombre nomCond2 = new Nombre();
+            nomCond2.setTratamiento(Tratamiento.SR);
+            nomCond2.setNombres("Diego Antonio");
+            nomCond2.setApellidoPaterno("Galindo");
+            nomCond2.setApellidoMaterno("Torres");
+            ControladorEmpresa.getInstance().hireConductorForEmpresa(
+                    rutEmp,
+                    Rut.of("66.666.666-6"),
+                    nomCond2,
+                    new Direccion("Los Robles", 456, "Chillan"));
+
+            // Tripulantes Efe Bus
+            Rut rutEB = Rut.of("99.999.999-9");
+
+            Nombre nomAux2 = new Nombre();
+            nomAux2.setTratamiento(Tratamiento.SRA);
+            nomAux2.setNombres("Ana Paula");
+            nomAux2.setApellidoPaterno("Fuentes");
+            nomAux2.setApellidoMaterno("Castro");
+            ControladorEmpresa.getInstance().hireAuxiliarForEmpresa(
+                    rutEB,
+                    Rut.of("33.333.333-3"),
+                    nomAux2,
+                    new Direccion("O'Higgins", 77, "Medina"));
+
+            Nombre nomCond3 = new Nombre();
+            nomCond3.setTratamiento(Tratamiento.SR);
+            nomCond3.setNombres("Pedro Luis");
+            nomCond3.setApellidoPaterno("Ramirez");
+            nomCond3.setApellidoMaterno("Vega");
+            ControladorEmpresa.getInstance().hireConductorForEmpresa(
+                    rutEB,
+                    Rut.of("44.444.444-4"),
+                    nomCond3,
+                    new Direccion("Arturo Prat", 210, "Pinto"));
+
+        } catch (SistemaVentaPasajesException e) {
+            System.out.println("DatosPrueba tripulante: " + e.getMessage());
+        }
+
+        // ── CLIENTES ──────────────────────────────────────────────────
+        try {
+            Nombre nomC1 = new Nombre();
+            nomC1.setTratamiento(Tratamiento.SR);
+            nomC1.setNombres("Juan Pablo");
+            nomC1.setApellidoPaterno("Morales");
+            nomC1.setApellidoMaterno("Diaz");
+            SistemaVentaPasaje.getInstance().createCliente(
+                    Rut.of("11.111.111-1"), nomC1, "+56912345678", "jpmorales@gmail.com");
+
+            Nombre nomC2 = new Nombre();
+            nomC2.setTratamiento(Tratamiento.SRA);
+            nomC2.setNombres("Valentina");
+            nomC2.setApellidoPaterno("Rojas");
+            nomC2.setApellidoMaterno("Lopez");
+            SistemaVentaPasaje.getInstance().createCliente(
+                    Rut.of("22.222.222-2"), nomC2, "+56987654321", "vrojas@hotmail.com");
+
+            Nombre nomC3 = new Nombre();
+            nomC3.setTratamiento(Tratamiento.SR);
+            nomC3.setNombres("Lucas");
+            nomC3.setApellidoPaterno("Fernandez");
+            nomC3.setApellidoMaterno("Gomez");
+            SistemaVentaPasaje.getInstance().createCliente(
+                    Pasaporte.of("P12345678", "ARG"), nomC3, "+54911111111", "lfernandez@mail.ar");
+
+        } catch (SistemaVentaPasajesException e) {
+            System.out.println("DatosPrueba cliente: " + e.getMessage());
+        }
+
+        // ── PASAJEROS ─────────────────────────────────────────────────
+        try {
+            Nombre nomP1 = new Nombre();
+            nomP1.setTratamiento(Tratamiento.SR);
+            nomP1.setNombres("Juan Pablo");
+            nomP1.setApellidoPaterno("Morales");
+            nomP1.setApellidoMaterno("Diaz");
+            Nombre contactoP1 = new Nombre();
+            contactoP1.setNombres("Rosa Diaz");
+            SistemaVentaPasaje.getInstance().createPasajero(
+                    Rut.of("11.111.111-1"), nomP1, "+56912345678", contactoP1, "+56912000001");
+
+            Nombre nomP2 = new Nombre();
+            nomP2.setTratamiento(Tratamiento.SRA);
+            nomP2.setNombres("Valentina");
+            nomP2.setApellidoPaterno("Rojas");
+            nomP2.setApellidoMaterno("Lopez");
+            Nombre contactoP2 = new Nombre();
+            contactoP2.setNombres("Claudio Lopez");
+            SistemaVentaPasaje.getInstance().createPasajero(
+                    Rut.of("22.222.222-2"), nomP2, "+56987654321", contactoP2, "+56912000002");
+
+            Nombre nomP3 = new Nombre();
+            nomP3.setTratamiento(Tratamiento.SR);
+            nomP3.setNombres("Sebastian");
+            nomP3.setApellidoPaterno("Castro");
+            nomP3.setApellidoMaterno("Pino");
+            Nombre contactoP3 = new Nombre();
+            contactoP3.setNombres("Lucia Pino");
+            SistemaVentaPasaje.getInstance().createPasajero(
+                    Rut.of("33.333.333-3"), nomP3, "+56955555555", contactoP3, "+56912000003");
+
+            Nombre nomP4 = new Nombre();
+            nomP4.setTratamiento(Tratamiento.SRA);
+            nomP4.setNombres("Camila");
+            nomP4.setApellidoPaterno("Vega");
+            nomP4.setApellidoMaterno("Rios");
+            Nombre contactoP4 = new Nombre();
+            contactoP4.setNombres("Mario Rios");
+            SistemaVentaPasaje.getInstance().createPasajero(
+                    Rut.of("44.444.444-4"), nomP4, "+56944444444", contactoP4, "+56912000004");
+
+        } catch (SistemaVentaPasajesException e) {
+            System.out.println("DatosPrueba pasajero: " + e.getMessage());
+        }
+
+        // ── VIAJES ────────────────────────────────────────────────────
+        // idTripulantes[]: [0]=auxiliar, [1]=conductor (,[2]=conductor2 opcional)
+        // comunas[]      : [0]=salida, [1]=llegada
+        try {
+            LocalDate hoy = LocalDate.now();
+            LocalDate manana = hoy.plusDays(1);
+
+            SistemaVentaPasaje.getInstance().createViaje(
+                    hoy, LocalTime.of(8, 0), 3000, 60, "ABCD-12",
+                    new IdPersona[]{ Rut.of("55.555.555-5"), Rut.of("77.777.777-7") },
+                    new String[]{ "Pinto", "Medina" });
+
+            SistemaVentaPasaje.getInstance().createViaje(
+                    hoy, LocalTime.of(9, 15), 3500, 75, "EFGH-34",
+                    new IdPersona[]{ Rut.of("55.555.555-5"), Rut.of("77.777.777-7") },
+                    new String[]{ "Pinto", "Santa Faz" });
+
+            SistemaVentaPasaje.getInstance().createViaje(
+                    hoy, LocalTime.of(10, 30), 4000, 90, "IJKL-56",
+                    new IdPersona[]{ Rut.of("55.555.555-5"), Rut.of("66.666.666-6") },
+                    new String[]{ "Pinto", "Medina" });
+
+            SistemaVentaPasaje.getInstance().createViaje(
+                    hoy, LocalTime.of(11, 45), 5500, 105, "MNOP-78",
+                    new IdPersona[]{ Rut.of("55.555.555-5"), Rut.of("77.777.777-7") },
+                    new String[]{ "Pinto", "Santa Faz" });
+
+            SistemaVentaPasaje.getInstance().createViaje(
+                    manana, LocalTime.of(13, 0), 6000, 120, "QRST-90",
+                    new IdPersona[]{ Rut.of("55.555.555-5"), Rut.of("66.666.666-6") },
+                    new String[]{ "Pinto", "Medina" });
+
+            // Viaje día siguiente para probar filtros de fecha
+            LocalDate fecha2 = LocalDate.of(2026, 5, 29);
+            SistemaVentaPasaje.getInstance().createViaje(
+                    fecha2, LocalTime.of(8, 0), 3000, 60, "ABCD-12",
+                    new IdPersona[]{ Rut.of("55.555.555-5"), Rut.of("77.777.777-7") },
+                    new String[]{ "Pinto", "Medina" });
+
+        } catch (SistemaVentaPasajesException e) {
+            System.out.println("DatosPrueba viaje: " + e.getMessage());
+        }
+        cargarVentas();
+        System.out.println("...:::: Datos de prueba cargados exitosamente ::::....");
+    }
+
+    private void cargarVentas() {
+        LocalDate hoy = LocalDate.now();
+        System.out.println("DEBUG fecha: " + hoy);
+
+        // ── Venta B001 ──
+        try {
+            SistemaVentaPasaje.getInstance().iniciaVenta(
+                    "B001", TipoDocumento.BOLETA, hoy, "Pinto", "Medina",
+                    Rut.of("11.111.111-1"), 2);
+            System.out.println("DEBUG iniciaVenta B001 OK");
+
+            SistemaVentaPasaje.getInstance().vendePasaje(
+                    "B001", TipoDocumento.BOLETA, hoy, LocalTime.of(8, 0), "ABCD-12",
+                    5, Rut.of("11.111.111-1"));
+            System.out.println("DEBUG vendePasaje B001 asiento 5 OK");
+
+            SistemaVentaPasaje.getInstance().vendePasaje(
+                    "B001", TipoDocumento.BOLETA, hoy, LocalTime.of(8, 0), "ABCD-12",
+                    6, Rut.of("22.222.222-2"));
+            System.out.println("DEBUG vendePasaje B001 asiento 6 OK");
+
+            SistemaVentaPasaje.getInstance().pagaVenta("B001", TipoDocumento.BOLETA);
+            System.out.println("DEBUG pagaVenta B001 OK");
+        } catch (SistemaVentaPasajesException e) {
+            System.out.println("DEBUG ERROR B001: " + e.getMessage());
+        }
+
+        // ── Venta F001 ──
+        try {
+            SistemaVentaPasaje.getInstance().iniciaVenta(
+                    "F001", TipoDocumento.FACTURA, hoy, "Pinto", "Medina",
+                    Rut.of("22.222.222-2"), 2);
+            System.out.println("DEBUG iniciaVenta F001 OK");
+
+            SistemaVentaPasaje.getInstance().vendePasaje(
+                    "F001", TipoDocumento.FACTURA, hoy, LocalTime.of(10, 30), "IJKL-56",
+                    3, Rut.of("33.333.333-3"));
+            System.out.println("DEBUG vendePasaje F001 asiento 3 OK");
+
+            SistemaVentaPasaje.getInstance().vendePasaje(
+                    "F001", TipoDocumento.FACTURA, hoy, LocalTime.of(10, 30), "IJKL-56",
+                    4, Rut.of("44.444.444-4"));
+            System.out.println("DEBUG vendePasaje F001 asiento 4 OK");
+
+            SistemaVentaPasaje.getInstance().pagaVenta("F001", TipoDocumento.FACTURA, 1234567890123456L);
+            System.out.println("DEBUG pagaVenta F001 OK");
+        } catch (SistemaVentaPasajesException e) {
+            System.out.println("DEBUG ERROR F001: " + e.getMessage());
+        }
+
+        // ── Venta B002 ──
+        try {
+            SistemaVentaPasaje.getInstance().iniciaVenta(
+                    "B002", TipoDocumento.BOLETA, hoy, "Pinto", "Santa Faz",
+                    Rut.of("11.111.111-1"), 1);
+            System.out.println("DEBUG iniciaVenta B002 OK");
+
+            SistemaVentaPasaje.getInstance().vendePasaje(
+                    "B002", TipoDocumento.BOLETA, hoy, LocalTime.of(9, 15), "EFGH-34",
+                    10, Rut.of("44.444.444-4"));
+            System.out.println("DEBUG vendePasaje B002 asiento 10 OK");
+
+            SistemaVentaPasaje.getInstance().pagaVenta("B002", TipoDocumento.BOLETA);
+            System.out.println("DEBUG pagaVenta B002 OK");
+        } catch (SistemaVentaPasajesException e) {
+            System.out.println("DEBUG ERROR B002: " + e.getMessage());
+        }
     }
 
 }

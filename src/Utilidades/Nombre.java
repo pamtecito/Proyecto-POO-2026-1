@@ -42,7 +42,7 @@ public class Nombre {
     @Override
     public String toString (){
 
-        return tratamiento + " " + nombres + apellidoPaterno +" " + apellidoMaterno;
+        return tratamiento + " " + nombres + " " + apellidoPaterno +" " + apellidoMaterno;
     }
 
     @Override
