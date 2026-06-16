@@ -284,7 +284,7 @@ public class SistemaVentaPasaje {
 
     }
 
-    public void saveDatosIniciales(){
+    public void saveDatosSistema(){
 
     }
 
