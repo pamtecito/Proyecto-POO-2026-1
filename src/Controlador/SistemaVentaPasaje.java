@@ -276,6 +276,22 @@ public class SistemaVentaPasaje {
         return viaje.getListaPasajeros();
     }
 
+    public void generatePasajeVenta(String idDocumento, TipoDocumento tipo){
+
+    }
+
+    public void readDatosIniciales(){
+
+    }
+
+    public void saveDatosIniciales(){
+
+    }
+
+    public void readDatosSistema(){
+
+    }
+
    private Optional<Cliente> findCliente (IdPersona id) {
        for (Cliente c : misClientes) {
            if (c.getIdPersona().equals(id)) {

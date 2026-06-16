@@ -1,5 +1,6 @@
 package Controlador;
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -183,6 +184,14 @@ public class ControladorEmpresa {
         }
 
         return ventasTotales;
+    }
+
+    protected void setInstanciaPersistente(ControladorEmpresa instanciaPersistente){
+
+    }
+
+    protected void setDatosIniciales(Object[] objetos){
+
     }
 
     protected Optional<Empresa> findEmpresa(Rut rut) throws SistemaVentaPasajesException {
