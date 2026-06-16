@@ -47,7 +47,11 @@ public class UISVP {
             System.out.println("11) Listar empresas");
             System.out.println("12) Listar llegadas/salidas de terminal");
             System.out.println("13) Listar ventas de empresa");
-            System.out.println("14) Salir");
+            System.out.println("14) Generar pasajes venta");
+            System.out.println("15) Leer datos iniciales");
+            System.out.println("16) Guardar datos del sistema");
+            System.out.println("17) Leer datos del sistema");
+            System.out.println("18) Salir");
             System.out.println("-------------------------------------------");
             System.out.print("..:: Ingrese un número de opción: ");
             opcion = sc.nextInt();
@@ -65,9 +69,13 @@ public class UISVP {
                 case 11 -> listEmpresas();
                 case 12 -> listLLegadasSalidasTerminal();
                 case 13 -> listVentasEmpresa();
+                case 14 -> System.out.println("Saliendo...");
+                case 15 -> readDatosIniciales();
+                case 16 -> saveDatosSistema();
+                case 17 -> readDatosSitema();
                 default -> System.out.println("La opcion debe estar en el rango valido: (1 a 14)");
             }
-        }while (opcion != 14);
+        } while (opcion != 14);
     }
 
     private void createEmpresa(){
@@ -1167,6 +1175,33 @@ public class UISVP {
             System.out.println("DEBUG pagaVenta B002 OK");
         } catch (SistemaVentaPasajesException e) {
             System.out.println("DEBUG ERROR B002: " + e.getMessage());
+        }
+    }
+
+    private void readDatosIniciales() {
+        try {
+            SistemaVentaPasaje.getInstance().readDatosIniciales();
+            System.out.println("Datos iniciales cargados correctamente.");
+        } catch (SistemaVentaPasajesException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    private void saveDatosSistema() {
+        try {
+            SistemaVentaPasaje.getInstance().saveDatosSistema();
+            System.out.println("Datos guardados correctamente.");
+        } catch (SistemaVentaPasajesException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    private void readDatosSitema() {
+        try {
+            SistemaVentaPasaje.getInstance().readDatosSistema();
+            System.out.println("Datos recuperados correctamente.");
+        } catch (SistemaVentaPasajesException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
