@@ -201,11 +201,9 @@ public class IOSVP {
     private void readTerminales(String linea, ArrayList<Object> objetos, ArrayList<Terminal> terminales) throws SistemaVentaPasajesException {
         String[] datos = linea.split(";");
 
-        Direccion direccion =
-                new Direccion(datos[1], Integer.parseInt(datos[2]), datos[3]);
+        Direccion direccion = new Direccion(datos[1], Integer.parseInt(datos[2]), datos[3]);
 
-        Terminal terminal =
-                new Terminal(datos[0], direccion);
+        Terminal terminal = new Terminal(datos[0], direccion);
 
         terminales.add(terminal);
         objetos.add(terminal);
@@ -280,6 +278,8 @@ public class IOSVP {
 
         return Arrays.stream(empresa.getTripulantes())
                 .filter(t -> t.getIdPersona().equals(id))
+                .filter(t -> t instanceof Auxiliar
+                        || t instanceof Conductor)
                 .findFirst();
     }
 

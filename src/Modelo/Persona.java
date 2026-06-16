@@ -2,8 +2,9 @@ package Modelo;
 //Alonso Gutiérrez Pino
 
 import Utilidades.*;
+import java.io.Serializable;
 
-public class Persona {
+public class Persona implements Serializable {
     private IdPersona idPersona;
     private Nombre nombreCompleto;
     private String telefono;
