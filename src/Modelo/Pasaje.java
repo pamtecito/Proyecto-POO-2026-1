@@ -29,6 +29,34 @@ public class Pasaje implements Serializable {
     }
     public Venta getVenta(){
         return venta;
+        //no se si arreglarlo mas aca??
     }
+    @Override
+    public String toString() {
+        return "------------------------------------------------------------\n" +
+                "                    PASAJE ELECTRÓNICO\n" +
+                "------------------------------------------------------------\n" +
+                "Nombre Empresa          Número de pasaje\n" +
+                viaje.getBus().getEmpresa().getNombre() + "          " +
+                numero + "\n\n" +
+
+                "Nombre Pasajero                    RUT/Pasaporte\n" +
+                pasajero.getNomContacto() + "          " +
+                pasajero.getIdPersona() + "\n\n" +
+
+                "Patente bus     Asiento     Valor Pagado\n" +
+                viaje.getBus().getPatente() + "          " +
+                asiento + "          " +
+                viaje.getPrecio() + "\n\n" +
+
+                "Terminal origen     Terminal destino     Fecha     Hora\n" +
+                viaje.getTerminalSalida().getNombre() + "     " +
+                viaje.getTerminalLlegada().getNombre() + "     " +
+                viaje.getFecha() + "     " +
+                viaje.getHora() + "\n" +
+
+                "------------------------------------------------------------";
+    }
+
 
 }

@@ -113,7 +113,16 @@ public class IOSVP {
             throw new SistemaVentaPasajesException("No se puede leer el archivo SVPObjetos.obj");
         }
     }
-
+    public void savePasajesDeVenta(Pasaje[] pasajes, String nombreArchivo) throws SistemaVentaPasajesException {
+        try (PrintStream archPasajes = new PrintStream(nombreArchivo)) {
+            for (Pasaje pasaje : pasajes) {
+                archPasajes.println(pasaje);
+                archPasajes.println();
+            }
+        } catch (FileNotFoundException e) {
+            throw new SistemaVentaPasajesException("No se puede abrir o crear el archivo "+nombreArchivo);
+        }
+    }
 
 
     private void readClientesPasajeros(String linea, ArrayList<Object> objetos, ArrayList<Cliente> clientes, ArrayList<Pasajero> pasajeros) throws SistemaVentaPasajesException {
