@@ -1,5 +1,6 @@
 package Controlador;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -8,7 +9,7 @@ import Modelo.*;
 import Utilidades.*;
 import Excepciones.*;
 
-public class ControladorEmpresa {
+public class ControladorEmpresa implements Serializable {
     private static ControladorEmpresa instance;
     private ArrayList<Empresa> misEmpresas;
     private ArrayList<Terminal> misTerminales;
