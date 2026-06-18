@@ -1,6 +1,6 @@
 package Controlador;
 
-import java.io.Serializable;
+import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -9,7 +9,7 @@ import Modelo.*;
 import Utilidades.*;
 import Excepciones.*;
 
-public class ControladorEmpresa implements Serializable {
+public class ControladorEmpresa {
     private static ControladorEmpresa instance;
     private ArrayList<Empresa> misEmpresas;
     private ArrayList<Terminal> misTerminales;
@@ -184,6 +184,14 @@ public class ControladorEmpresa implements Serializable {
         }
 
         return ventasTotales;
+    }
+
+    protected void setInstanciaPersistente(ControladorEmpresa instanciaPersistente){
+
+    }
+
+    protected void setDatosIniciales(Object[] objetos){
+
     }
 
     protected Optional<Empresa> findEmpresa(Rut rut) throws SistemaVentaPasajesException {

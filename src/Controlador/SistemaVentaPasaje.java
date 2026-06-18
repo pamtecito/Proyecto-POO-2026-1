@@ -278,6 +278,22 @@ public class SistemaVentaPasaje implements Serializable {
         return viaje.getListaPasajeros();
     }
 
+    public void generatePasajeVenta(String idDocumento, TipoDocumento tipo){
+
+    }
+
+    public void readDatosIniciales(){
+
+    }
+
+    public void saveDatosSistema(){
+
+    }
+
+    public void readDatosSistema(){
+
+    }
+
    private Optional<Cliente> findCliente (IdPersona id) {
        for (Cliente c : misClientes) {
            if (c.getIdPersona().equals(id)) {
