@@ -1,11 +1,14 @@
 package Modelo;
 import Excepciones.*;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class Viaje {
+public class Viaje implements Serializable {
     private LocalDate fecha;
     private LocalTime hora;
     private int precio;
@@ -105,6 +108,8 @@ public class Viaje {
             }
         }
         return ventas.toArray(new Venta[0]);
+
+        
     }
 
     public void addConductor(Conductor conductor) throws SistemaVentaPasajesException {
@@ -117,7 +122,7 @@ public class Viaje {
     public Tripulante[] getTripulantes(){
        ArrayList<Tripulante> totalTrip = new ArrayList<>();
 
-       totalTrip.add((Tripulante) aux);
+       totalTrip.add(aux);
 
        for (Conductor c : conductors){
            totalTrip.add(c);
