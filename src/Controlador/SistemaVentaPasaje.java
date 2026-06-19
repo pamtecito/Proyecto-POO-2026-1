@@ -1,10 +1,9 @@
 package Controlador;
 
 import Excepciones.SVPException;
-import Excepciones.SVPException;
 import Modelo.*;
 import Utilidades.*;
-
+import persistencia.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -279,12 +278,65 @@ public class SistemaVentaPasaje implements Serializable {
         return viaje.getListaPasajeros();
     }
 
-    public void generatePasajesVenta(String idDocumento, TipoDocumento tipo){
+    public void generatePasajesVenta(String idDocumento, TipoDocumento tipo) throws SVPException{
         Optional<Venta> v= findVenta(idDocumento, tipo);
         if(v.isEmpty()){
-            throw new SVPException("");
+            throw new SVPException("No existe el pasaje");
+        }
+        try {
+            IOSVP.getInstancia().savePasajesDeVenta(v.getPasajes(), idDocumento + tipo.name().toLowerCase() + ".txt");
+        } catch (SVPException e){
+            throw new SVPException(e.getMessage());
         }
 
+    }
+
+    public void readDatosIniciales(){
+        Object[] obj= IOSVP.getInstancia().readDatosIniciales();
+        misVentas.clear();
+        misbuses.clear();
+        misViajes.clear();
+        misClientes.clear();
+        misPasajeros.clear();
+
+        for(Object o: obj){
+            if(o instanceof Venta v){
+                misVentas.add(v);
+            } else if (o instanceof Bus b) {
+                misbuses.add(b);
+            } else if (o instanceof Viaje vi) {
+                misViajes.add(vi);
+            } else if (o instanceof Cliente c) {
+                misClientes.add(c);
+            } else if (o instanceof Pasajero p) {
+                misPasajeros.add(p);
+            }
+        }
+        ControladorEmpresas.getInstancia().setDatosIniciales(obj);
+    }
+
+    public void saveDatosSistema(){
+        Object[] controladores = {ControladorEmpresas.getInstancia(), this};
+        try {
+            IOSVP.getInstancia().saveControladores(controladores);
+        } catch (SVPException e) {
+            throw new SVPException(e.getMessage());
+        }
+    }
+
+    public void readDatosSistema(){
+        try {
+            Object[] controladores = IOSVP.getInstancia().readControladores();
+            for (Object obj : controladores) {
+                if (obj instanceof SistemaVentaPasajes svp) {
+                    SistemaVentaPasajes.setInstanciaPersistente(svp);
+                } else if (obj instanceof ControladorEmpresas ce) {
+                    ControladorEmpresas.setInstanciaPersistente(ce);
+                }
+            }
+        } catch (SVPException e) {
+            throw new SVPException(e.getMessage());
+        }
     }
 
    private Optional<Cliente> findCliente (IdPersona id) {
