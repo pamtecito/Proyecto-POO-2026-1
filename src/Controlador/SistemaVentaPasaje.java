@@ -3,12 +3,14 @@ package Controlador;
 import Excepciones.SistemaVentaPasajesException;
 import Modelo.*;
 import Utilidades.*;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class SistemaVentaPasaje {
+public class SistemaVentaPasaje implements Serializable {
     private static SistemaVentaPasaje instance;
     private ArrayList<Bus> misbuses;
     private ArrayList<Cliente> misClientes;

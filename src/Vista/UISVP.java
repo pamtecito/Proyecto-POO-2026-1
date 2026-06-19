@@ -1177,6 +1177,16 @@ public class UISVP {
             System.out.println("DEBUG ERROR B002: " + e.getMessage());
         }
     }
+    private void generatePasajesVenta(){
+        try {
+            SistemaVentaPasaje.getInstance().generatePasajesVenta();
+            System.out.println("Pasaje generedao correctamente");
+
+        } catch (SistemaVentaPasajesException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+    }
 
     private void readDatosIniciales() {
         try {

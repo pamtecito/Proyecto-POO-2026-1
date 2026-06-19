@@ -1,4 +1,5 @@
 package Modelo;
+import Utilidades.*;
 
 import java.io.Serializable;
 
@@ -41,7 +42,8 @@ public class Pasaje implements Serializable {
                 numero + "\n\n" +
 
                 "Nombre Pasajero                    RUT/Pasaporte\n" +
-                pasajero.getNomContacto() + "          " +
+                pasajero.getNombreCompleto().getTratamiento() + ". " +
+                pasajero.getNombreCompleto() + "          " +
                 pasajero.getIdPersona() + "\n\n" +
 
                 "Patente bus     Asiento     Valor Pagado\n" +
