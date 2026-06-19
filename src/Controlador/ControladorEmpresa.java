@@ -1,13 +1,16 @@
 package Controlador;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 import Modelo.*;
 import Utilidades.*;
 import Excepciones.*;
+import com.sun.jdi.ObjectReference;
 
 public class ControladorEmpresa implements Serializable {
     private static ControladorEmpresa instance;
@@ -160,6 +163,8 @@ public class ControladorEmpresa implements Serializable {
 
     }
 
+
+
     public String[][] listVentasEmpresa(Rut rut) throws SistemaVentaPasajesException {
         Optional<Empresa> empresa = findEmpresa(rut);
 
@@ -184,6 +189,22 @@ public class ControladorEmpresa implements Serializable {
         }
 
         return ventasTotales;
+    }
+
+    protected void setInstanciaPersistente(ControladorEmpresa instanciaPersistente){
+        instance = instanciaPersistente;
+    }
+
+    protected void setDatosIniciales(Object[] objetos){
+        Arrays.stream(objetos)
+                .filter(obj -> obj instanceof Empresa)
+                .map(obj -> (Empresa) obj)
+                .forEach(misEmpresas::add);
+
+        Arrays.stream(objetos)
+                .filter(obj -> obj instanceof Terminal)
+                .map(obj -> (Terminal) obj)
+                .forEach(misTerminales::add);
     }
 
     protected Optional<Empresa> findEmpresa(Rut rut) throws SistemaVentaPasajesException {
