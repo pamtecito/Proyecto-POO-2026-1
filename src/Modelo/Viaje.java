@@ -112,9 +112,9 @@ public class Viaje implements Serializable {
         
     }
 
-    public void addConductor(Conductor conductor) throws SistemaVentaPasajesException {
+    public void addConductor(Conductor conductor) throws SVPException {
         if(conductors.size()>= 2) {
-            throw new SistemaVentaPasajesException("Maximo 2 conductores");
+            throw new SVPException("Maximo 2 conductores");
         }
         conductors.add(conductor);
     }
