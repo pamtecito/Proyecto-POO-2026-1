@@ -69,13 +69,14 @@ public class UISVP {
                 case 11 -> listEmpresas();
                 case 12 -> listLLegadasSalidasTerminal();
                 case 13 -> listVentasEmpresa();
-                case 14 -> System.out.println("Saliendo...");
+                case 14 -> generatePasajesVenta();
                 case 15 -> readDatosIniciales();
                 case 16 -> saveDatosSistema();
                 case 17 -> readDatosSitema();
-                default -> System.out.println("La opcion debe estar en el rango valido: (1 a 14)");
+                case 18 -> System.out.println("Saliendooo");
+                default -> System.out.println("La opcion debe estar en el rango valido: (1 a 18)");
             }
-        } while (opcion != 14);
+        } while (opcion != 18);
     }
 
     private void createEmpresa(){
@@ -1177,15 +1178,32 @@ public class UISVP {
             System.out.println("DEBUG ERROR B002: " + e.getMessage());
         }
     }
-    private void generatePasajesVenta(){
+    private void generatePasajesVenta() {
         try {
-            SistemaVentaPasaje.getInstance().generatePasajesVenta();
-            System.out.println("Pasaje generedao correctamente");
+            System.out.print("Ingrese id documento de la venta: ");
+            String idDocumento = sc.nextLine().trim();
 
-        } catch (SistemaVentaPasajesException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.print("Ingrese tipo documento (BOLETA/FACTURA): ");
+            String tipoStr = sc.nextLine().trim().toUpperCase();
+
+            // Validar que el tipo sea válido antes de llamar a valueOf
+            TipoDocumento tipo;
+            try {
+                tipo = TipoDocumento.valueOf(tipoStr);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Tipo de documento no válido. Use BOLETA o FACTURA.");
+                return;
+            }
+
+            SistemaVentaPasaje.getInstance().generatePasajesVenta(idDocumento, tipo);
+            System.out.println("Pasajes generados correctamente.");
+
+        } catch (SVPException e) {
+            System.out.println(e.getMessage());
         }
-
+        catch (Exception e ){
+            System.out.println("error al generar Pasajes");
+        }
     }
 
     private void readDatosIniciales() {
