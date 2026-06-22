@@ -339,39 +339,30 @@ public class SistemaVentaPasaje implements Serializable {
         }
     }
 
-   private Optional<Cliente> findCliente (IdPersona id) {
-       for (Cliente c : misClientes) {
-           if (c.getIdPersona().equals(id)) {
-               return Optional.of(c);
-           }
-       }
-       return Optional.empty();
-   }
+    private Optional<Cliente> findCliente(IdPersona id) {
+        return misClientes.stream()
+                .filter(c -> c.getIdPersona().equals(id))
+                .findFirst();
+    }
 
-   private Optional<Venta> findVenta(String idDocumento, TipoDocumento tipoDocumento){
-        for (Venta v: misVentas){
-            if (v.getIdDocumento().equals(idDocumento) && v.getTipo().equals(tipoDocumento)){
-                return Optional.of(v);
-            }
-        }
-        return Optional.empty();
-   }
+    private Optional<Venta> findVenta(String idDocumento, TipoDocumento tipoDocumento) {
+        return misVentas.stream()
+                .filter(v -> v.getIdDocumento().equals(idDocumento))
+                .filter(v -> v.getTipo().equals(tipoDocumento))
+                .findFirst();
+    }
 
-   private Optional<Viaje> findViaje(LocalDate fecha, LocalTime hora, String patenteBus){
-     for (Viaje v : misViajes){
-         if (v.getFecha().equals(fecha) && v.getHora().equals(hora) && v.getBus().getPatente().equals(patenteBus)){
-             return Optional.of(v);
-         }
-     }
-     return Optional.empty();
-   }
+    private Optional<Viaje> findViaje(LocalDate fecha, LocalTime hora, String patenteBus) {
+        return misViajes.stream()
+                .filter(v -> v.getFecha().equals(fecha))
+                .filter(v -> v.getHora().equals(hora))
+                .filter(v -> v.getBus().getPatente().equals(patenteBus))
+                .findFirst();
+    }
 
-   private Optional<Pasajero> findPasajero(IdPersona idPersona){
-        for (Pasajero p :misPasajeros){
-            if (p.getIdPersona().equals(idPersona)){
-                return Optional.of(p);
-            }
-        }
-        return Optional.empty();
-   }
+    private Optional<Pasajero> findPasajero(IdPersona idPersona) {
+        return misPasajeros.stream()
+                .filter(p -> p.getIdPersona().equals(idPersona))
+                .findFirst();
+    }
 }
