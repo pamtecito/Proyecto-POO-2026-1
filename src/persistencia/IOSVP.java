@@ -2,7 +2,7 @@ package persistencia;
 import Modelo.*;
 import Utilidades.*;
 
-import Excepciones.SistemaVentaPasajesException;
+import Excepciones.SVPException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -30,7 +30,7 @@ public class IOSVP {
         return instancia;
     }
 
-    public Object[] readDatosIniciales() throws SistemaVentaPasajesException {
+    public Object[] readDatosIniciales() throws SVPException {
         ArrayList<Object> objetos = new ArrayList<>();
 
         ArrayList<Cliente> clientes = new ArrayList<>();
@@ -87,45 +87,45 @@ public class IOSVP {
             escaner.close();
 
         } catch(FileNotFoundException e) {
-            throw new SistemaVentaPasajesException("No existe o no se puede abrir el archivo SVPDatosIniciales.txt");
+            throw new SVPException("No existe o no se puede abrir el archivo SVPDatosIniciales.txt");
         }
 
         return objetos.toArray();
     }
 
-    public void saveControladores(Object[] controladores) throws SistemaVentaPasajesException {
+    public void saveControladores(Object[] controladores) throws SVPException {
         try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream("SVPObjetos.obj"))) {
 
             salida.writeObject(controladores);
 
         } catch (IOException e) {
-            throw new SistemaVentaPasajesException("No se puede grabar en el archivo SVPObjetos.obj");
+            throw new SVPException("No se puede grabar en el archivo SVPObjetos.obj");
         }
     }
 
-    public Object[] readControladores() throws SistemaVentaPasajesException {
+    public Object[] readControladores() throws SVPException {
         try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream("SVPObjetos.obj"))) {
             return (Object[]) entrada.readObject();
 
         } catch (IOException e) {
-            throw new SistemaVentaPasajesException("No existe o no se puede abrir el archivo SVPObjetos.obj");
+            throw new SVPException("No existe o no se puede abrir el archivo SVPObjetos.obj");
         } catch (ClassNotFoundException e) {
-            throw new SistemaVentaPasajesException("No se puede leer el archivo SVPObjetos.obj");
+            throw new SVPException("No se puede leer el archivo SVPObjetos.obj");
         }
     }
-    public void savePasajesDeVenta(Pasaje[] pasajes, String nombreArchivo) throws SistemaVentaPasajesException {
+    public void savePasajesDeVenta(Pasaje[] pasajes, String nombreArchivo) throws SVPException {
         try (PrintStream archPasajes = new PrintStream(nombreArchivo)) {
             for (Pasaje pasaje : pasajes) {
                 archPasajes.println(pasaje);
                 archPasajes.println();
             }
         } catch (FileNotFoundException e) {
-            throw new SistemaVentaPasajesException("No se puede abrir o crear el archivo "+nombreArchivo);
+            throw new SVPException("No se puede abrir o crear el archivo "+nombreArchivo);
         }
     }
 
 
-    private void readClientesPasajeros(String linea, ArrayList<Object> objetos, ArrayList<Cliente> clientes, ArrayList<Pasajero> pasajeros) throws SistemaVentaPasajesException {
+    private void readClientesPasajeros(String linea, ArrayList<Object> objetos, ArrayList<Cliente> clientes, ArrayList<Pasajero> pasajeros) throws SVPException {
         String[] datos = linea.split(";");
 
         String tipo = datos[0];
@@ -165,7 +165,7 @@ public class IOSVP {
 
     }
 
-    private void readEmpresas(String linea, ArrayList<Object> objetos, ArrayList<Empresa> empresas) throws SistemaVentaPasajesException {
+    private void readEmpresas(String linea, ArrayList<Object> objetos, ArrayList<Empresa> empresas) throws SVPException {
         String[] datos = linea.split(";");
         Empresa empresa = new Empresa(Rut.of(datos[0]), datos[1], datos[2]);
 
@@ -173,13 +173,13 @@ public class IOSVP {
         objetos.add(empresa);
     }
 
-    private void readTripulantes(String linea, ArrayList<Object> objetos, ArrayList<Auxiliar> auxiliares, ArrayList<Conductor> conductores, ArrayList<Empresa> empresas) throws SistemaVentaPasajesException {
+    private void readTripulantes(String linea, ArrayList<Object> objetos, ArrayList<Auxiliar> auxiliares, ArrayList<Conductor> conductores, ArrayList<Empresa> empresas) throws SVPException {
         String[] datos = linea.split(";");
 
         IdPersona id = Rut.of(datos[1]);
         Nombre nombre = crearNombre(datos[2], datos[3], datos[4], datos[5]);
         Direccion direccion = new Direccion(datos[6], Integer.parseInt(datos[7]), datos[8]);
-        Empresa empresa = findEmpresa(empresas, Rut.of(datos[9])).orElseThrow(() -> new SistemaVentaPasajesException("Empresa no encontrada"));
+        Empresa empresa = findEmpresa(empresas, Rut.of(datos[9])).orElseThrow(() -> new SVPException("Empresa no encontrada"));
 
         if(datos[0].equals("A")) {
 
@@ -198,7 +198,7 @@ public class IOSVP {
         }
     }
 
-    private void readTerminales(String linea, ArrayList<Object> objetos, ArrayList<Terminal> terminales) throws SistemaVentaPasajesException {
+    private void readTerminales(String linea, ArrayList<Object> objetos, ArrayList<Terminal> terminales) throws SVPException {
         String[] datos = linea.split(";");
 
         Direccion direccion = new Direccion(datos[1], Integer.parseInt(datos[2]), datos[3]);
@@ -209,11 +209,11 @@ public class IOSVP {
         objetos.add(terminal);
     }
 
-    private void readBuses(String linea, ArrayList<Object> objetos, ArrayList<Bus> buses, ArrayList<Empresa> empresas) throws SistemaVentaPasajesException {
+    private void readBuses(String linea, ArrayList<Object> objetos, ArrayList<Bus> buses, ArrayList<Empresa> empresas) throws SVPException {
         String[] datos = linea.split(";");
         Rut rutEmpresa = Rut.of(datos[4]);
 
-        Empresa empresa = findEmpresa(empresas, Rut.of(datos[4])).orElseThrow(() -> new SistemaVentaPasajesException("No existe empresa con rut " + datos[4]));
+        Empresa empresa = findEmpresa(empresas, Rut.of(datos[4])).orElseThrow(() -> new SVPException("No existe empresa con rut " + datos[4]));
         Bus bus = new Bus(datos[0], Integer.parseInt(datos[3]), empresa);
 
         bus.setMarca(datos[1]);
@@ -224,7 +224,7 @@ public class IOSVP {
         objetos.add(bus);
     }
 
-    private void readViajes(String linea, ArrayList<Object> objetos, ArrayList<Viaje> viajes, ArrayList<Bus> buses, ArrayList<Terminal> terminales) throws SistemaVentaPasajesException {
+    private void readViajes(String linea, ArrayList<Object> objetos, ArrayList<Viaje> viajes, ArrayList<Bus> buses, ArrayList<Terminal> terminales) throws SVPException {
         String[] datos = linea.split(";");
 
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -236,28 +236,28 @@ public class IOSVP {
         int precio = Integer.parseInt(datos[2]);
         int duracion = Integer.parseInt(datos[3]);
 
-        Bus bus = findBus(buses, datos[4]).orElseThrow(() -> new SistemaVentaPasajesException("Bus no encontrado"));
+        Bus bus = findBus(buses, datos[4]).orElseThrow(() -> new SVPException("Bus no encontrado"));
 
         Empresa empresa = bus.getEmpresa();
 
-        Tripulante auxiliar = findTripulante(empresa, Rut.of(datos[5])).orElseThrow(() -> new SistemaVentaPasajesException("Auxiliar no encontrado"));
+        Tripulante auxiliar = findTripulante(empresa, Rut.of(datos[5])).orElseThrow(() -> new SVPException("Auxiliar no encontrado"));
 
-        Tripulante conductor = findTripulante(empresa, Rut.of(datos[6])).orElseThrow(() -> new SistemaVentaPasajesException("Conductor no encontrado"));
+        Tripulante conductor = findTripulante(empresa, Rut.of(datos[6])).orElseThrow(() -> new SVPException("Conductor no encontrado"));
 
         if (!(auxiliar instanceof Auxiliar)) {
-            throw new SistemaVentaPasajesException("El tripulante indicado no es auxiliar");
+            throw new SVPException("El tripulante indicado no es auxiliar");
         }
 
         if (!(conductor instanceof Conductor)) {
-            throw new SistemaVentaPasajesException("El tripulante indicado no es conductor");
+            throw new SVPException("El tripulante indicado no es conductor");
         }
 
         Auxiliar auxilio = (Auxiliar) auxiliar;
         Conductor conducto = (Conductor) conductor;
 
-        Terminal salida = findTerminal(terminales, datos[7]).orElseThrow(() -> new SistemaVentaPasajesException("Terminal de salida no encontrado"));
+        Terminal salida = findTerminal(terminales, datos[7]).orElseThrow(() -> new SVPException("Terminal de salida no encontrado"));
 
-        Terminal llegada = findTerminal(terminales, datos[8]).orElseThrow(() -> new SistemaVentaPasajesException("Terminal de llegada no encontrado"));
+        Terminal llegada = findTerminal(terminales, datos[8]).orElseThrow(() -> new SVPException("Terminal de llegada no encontrado"));
 
         Viaje viaje = new Viaje(fecha, hora, precio, duracion, bus, auxilio, conducto, salida, llegada);
 
