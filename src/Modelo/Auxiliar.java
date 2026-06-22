@@ -5,8 +5,9 @@ import Utilidades.IdPersona;
 import Utilidades.Nombre;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Auxiliar extends Tripulante {
+public class Auxiliar extends Tripulante implements Serializable {
 
     private ArrayList<Viaje> misViajes;
 
