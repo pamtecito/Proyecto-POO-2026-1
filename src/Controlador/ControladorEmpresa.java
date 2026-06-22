@@ -29,20 +29,20 @@ public class ControladorEmpresa implements Serializable {
         return instance;
     }
 
-    public void createEmpresa(Rut rut, String nombre, String url) throws SistemaVentaPasajesException {
+    public void createEmpresa(Rut rut, String nombre, String url) throws SVPException {
         findEmpresa(rut).ifPresent(e -> {
-            throw new SistemaVentaPasajesException("Ya existe empresa con el rut indicado.");
+            throw new SVPException("Ya existe empresa con el rut indicado.");
         });
 
         misEmpresas.add(new Empresa(rut, nombre, url));
     }
 
-    public void createBus(String pat, String marca, String modelo, int nroAsientos, Rut rutEmp) throws SistemaVentaPasajesException {
+    public void createBus(String pat, String marca, String modelo, int nroAsientos, Rut rutEmp) throws SVPException {
         Empresa empresa = findEmpresa(rutEmp)
-                .orElseThrow(() -> new SistemaVentaPasajesException("No existe empresa con el rut indicado."));
+                .orElseThrow(() -> new SVPException("No existe empresa con el rut indicado."));
 
         findBus(pat).ifPresent(b -> {
-            throw new SistemaVentaPasajesException("Ya existe bus con la patente indicada.");
+            throw new SVPException("Ya existe bus con la patente indicada.");
         });
 
         Bus bus = new Bus(pat, nroAsientos, empresa);
@@ -52,38 +52,38 @@ public class ControladorEmpresa implements Serializable {
         empresa.addBus(bus);
     }
 
-    public void createTerminal(String nombre, Direccion direccion) throws SistemaVentaPasajesException {
+    public void createTerminal(String nombre, Direccion direccion) throws SVPException {
         findTerminal(nombre).ifPresent(t -> {
-            throw new SistemaVentaPasajesException("Ya existe terminal con el nombre indicado");
+            throw new SVPException("Ya existe terminal con el nombre indicado");
         });
 
         boolean existeEnComuna = misTerminales.stream()
                 .anyMatch(t -> t.getDireccion().getComuna().equalsIgnoreCase(direccion.getComuna()));
 
         if (existeEnComuna) {
-            throw new SistemaVentaPasajesException("Ya existe terminal en la comuna indicada");
+            throw new SVPException("Ya existe terminal en la comuna indicada");
         }
 
         misTerminales.add(new Terminal(nombre, direccion));
     }
 
-    public void hireConductorForEmpresa(Rut rutEmp, IdPersona id, Nombre nom, Direccion dir) throws SistemaVentaPasajesException {
+    public void hireConductorForEmpresa(Rut rutEmp, IdPersona id, Nombre nom, Direccion dir) throws SVPException {
         Empresa empresa = findEmpresa(rutEmp)
-                .orElseThrow(() -> new SistemaVentaPasajesException("No existe empresa con el rut indicado"));
+                .orElseThrow(() -> new SVPException("No existe empresa con el rut indicado"));
 
         boolean contratado = empresa.addConductor(id, nom, dir);
         if (!contratado) {
-            throw new SistemaVentaPasajesException("Ya está contratado conductor/auxiliar con el id dado en la empresa señalada");
+            throw new SVPException("Ya está contratado conductor/auxiliar con el id dado en la empresa señalada");
         }
     }
 
-    public void hireAuxiliarForEmpresa(Rut rutEmp, IdPersona id, Nombre nom, Direccion dir) throws SistemaVentaPasajesException {
+    public void hireAuxiliarForEmpresa(Rut rutEmp, IdPersona id, Nombre nom, Direccion dir) throws SVPException {
         Empresa empresa = findEmpresa(rutEmp)
-                .orElseThrow(() -> new SistemaVentaPasajesException("No existe empresa con el rut indicado."));
+                .orElseThrow(() -> new SVPException("No existe empresa con el rut indicado."));
 
         boolean contratado = empresa.addAuxiliar(id, nom, dir);
         if (!contratado) {
-            throw new SistemaVentaPasajesException("Ya está contratado auxiliar/conductor con el id dado en la empresa señalada.");
+            throw new SVPException("Ya está contratado auxiliar/conductor con el id dado en la empresa señalada.");
         }
     }
 
@@ -107,10 +107,10 @@ public class ControladorEmpresa implements Serializable {
         return listEmp;
     }
 
-    public String[][] listLlegadasSalidasTerminal(String nombre, LocalDate fecha) throws SistemaVentaPasajesException{
+    public String[][] listLlegadasSalidasTerminal(String nombre, LocalDate fecha) throws SVPException{
         Optional<Terminal> terminal = findTerminal(nombre);
         if (findTerminal(nombre).isEmpty()) {
-            throw new SistemaVentaPasajesException("No existe un terminal con el nombre dado");
+            throw new SVPException("No existe un terminal con el nombre dado");
         }
 
         ArrayList<String[]> salidasYLlegadas = new ArrayList<>();
@@ -152,11 +152,11 @@ public class ControladorEmpresa implements Serializable {
 
 
 
-    public String[][] listVentasEmpresa(Rut rut) throws SistemaVentaPasajesException {
+    public String[][] listVentasEmpresa(Rut rut) throws SVPException {
         Optional<Empresa> empresa = findEmpresa(rut);
 
         if(findEmpresa(rut).isEmpty()){
-            throw new SistemaVentaPasajesException("No existe empresa con el rut indicado.");
+            throw new SVPException("No existe empresa con el rut indicado.");
         }
 
         Venta[] ventas = empresa.get().getVentas();
@@ -194,18 +194,18 @@ public class ControladorEmpresa implements Serializable {
                 .forEach(misTerminales::add);
     }
 
-    protected Optional<Empresa> findEmpresa(Rut rut) throws SistemaVentaPasajesException {
+    protected Optional<Empresa> findEmpresa(Rut rut) throws SVPException {
         Rut rutValidado = Optional.ofNullable(rut)
-                .orElseThrow(() -> new SistemaVentaPasajesException("Rut no puede ser null"));
+                .orElseThrow(() -> new SVPException("Rut no puede ser null"));
 
         return misEmpresas.stream()
                 .filter(e -> e.getRut().equals(rutValidado))
                 .findFirst();
     }
 
-    protected Optional<Terminal> findTerminal(String nombre) throws SistemaVentaPasajesException {
+    protected Optional<Terminal> findTerminal(String nombre) throws SVPException {
         String nombreValidado = Optional.ofNullable(nombre)
-                .orElseThrow(() -> new SistemaVentaPasajesException("El nombre no puede ser null."));
+                .orElseThrow(() -> new SVPException("El nombre no puede ser null."));
         return misTerminales.stream()
                 .filter(t -> t.getNombre().equals(nombre))
                 .findFirst();
@@ -217,18 +217,18 @@ public class ControladorEmpresa implements Serializable {
                 .findFirst();
     }
 
-    protected Optional<Bus> findBus(String patente) throws SistemaVentaPasajesException {
+    protected Optional<Bus> findBus(String patente) throws SVPException {
         String patenteValidada = Optional.ofNullable(patente)
-                .orElseThrow(() -> new SistemaVentaPasajesException("La patente no puede ser null."));
+                .orElseThrow(() -> new SVPException("La patente no puede ser null."));
 
         return misBuses.stream()
                 .filter(b -> b.getPatente().equalsIgnoreCase(patente))
                 .findFirst();
     }
 
-    protected Optional<Conductor> findConductor(IdPersona id, Rut rutEmpresa) throws SistemaVentaPasajesException {
+    protected Optional<Conductor> findConductor(IdPersona id, Rut rutEmpresa) throws SVPException {
         Empresa empresa = findEmpresa(rutEmpresa)
-                .orElseThrow(() -> new SistemaVentaPasajesException("Empresa no encontrada."));
+                .orElseThrow(() -> new SVPException("Empresa no encontrada."));
 
         return Arrays.stream(empresa.getTripulantes())
                 .filter(t -> t instanceof Conductor c && c.getIdPersona().equals(id))
@@ -236,9 +236,9 @@ public class ControladorEmpresa implements Serializable {
                 .findFirst();
     }
 
-    protected Optional<Auxiliar> findAuxiliar(IdPersona id, Rut rutEmpresa) throws SistemaVentaPasajesException {
+    protected Optional<Auxiliar> findAuxiliar(IdPersona id, Rut rutEmpresa) throws SVPException {
         Empresa empresa = findEmpresa(rutEmpresa)
-                .orElseThrow(() -> new SistemaVentaPasajesException("Empresa no encontrada."));
+                .orElseThrow(() -> new SVPException("Empresa no encontrada."));
 
         return Arrays.stream(empresa.getTripulantes())
                 .filter(t -> t instanceof Auxiliar a && a.getIdPersona().equals(id))

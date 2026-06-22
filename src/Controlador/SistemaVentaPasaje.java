@@ -328,8 +328,8 @@ public class SistemaVentaPasaje implements Serializable {
         try {
             Object[] controladores = IOSVP.getInstancia().readControladores();
             for (Object obj : controladores) {
-                if (obj instanceof SistemaVentaPasajes svp) {
-                    SistemaVentaPasajes.setInstanciaPersistente(svp);
+                if (obj instanceof SistemaVentaPasaje svp) {
+                    SistemaVentaPasaje.setInstanciaPersistente(svp);
                 } else if (obj instanceof ControladorEmpresas ce) {
                     ControladorEmpresas.setInstanciaPersistente(ce);
                 }
