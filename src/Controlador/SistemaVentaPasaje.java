@@ -278,7 +278,7 @@ public class SistemaVentaPasaje implements Serializable {
         return viaje.getListaPasajeros();
     }
 
-    public void generatePasajeVenta(String idDocumento, TipoDocumento tipo){
+    public void generatePasajesVenta(String idDocumento, TipoDocumento tipo){
 
     }
 
