@@ -280,15 +280,16 @@ public class SistemaVentaPasaje implements Serializable {
 
     public void generatePasajesVenta(String idDocumento, TipoDocumento tipo) throws SVPException{
         Optional<Venta> v= findVenta(idDocumento, tipo);
+        Venta venta = v.get();
+
         if(v.isEmpty()){
             throw new SVPException("No existe el pasaje");
         }
         try {
-            IOSVP.getInstancia().savePasajesDeVenta(v.getPasajes(), idDocumento + tipo.name().toLowerCase() + ".txt");
+            IOSVP.getInstancia().savePasajesDeVenta(venta.getPasajes(), idDocumento + tipo.name().toLowerCase() + ".txt");
         } catch (SVPException e){
             throw new SVPException(e.getMessage());
         }
-
     }
 
     public void readDatosIniciales(){
@@ -312,11 +313,11 @@ public class SistemaVentaPasaje implements Serializable {
                 misPasajeros.add(p);
             }
         }
-        ControladorEmpresas.getInstancia().setDatosIniciales(obj);
+        ControladorEmpresa.getInstance().setDatosIniciales(obj);
     }
 
     public void saveDatosSistema(){
-        Object[] controladores = {ControladorEmpresas.getInstancia(), this};
+        Object[] controladores = {ControladorEmpresa.getInstance(), this};
         try {
             IOSVP.getInstancia().saveControladores(controladores);
         } catch (SVPException e) {
@@ -329,9 +330,9 @@ public class SistemaVentaPasaje implements Serializable {
             Object[] controladores = IOSVP.getInstancia().readControladores();
             for (Object obj : controladores) {
                 if (obj instanceof SistemaVentaPasaje svp) {
-                    SistemaVentaPasaje.setInstanciaPersistente(svp);
-                } else if (obj instanceof ControladorEmpresas ce) {
-                    ControladorEmpresas.setInstanciaPersistente(ce);
+                   instance = svp;
+                } else if (obj instanceof ControladorEmpresa ce) {
+                    ControladorEmpresa.getInstance().setInstanciaPersistente(ce);
                 }
             }
         } catch (SVPException e) {

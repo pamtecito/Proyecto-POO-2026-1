@@ -50,7 +50,6 @@ public class Venta implements Serializable {
             pasajes[i] = misPasajes.get(i);
         }
         return pasajes;
-        //return misPasajes.toArray(new Modelo.Pasaje[0]);
     }
 
     public int getMonto() {
