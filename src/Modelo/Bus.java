@@ -15,7 +15,7 @@ public class Bus implements Serializable {
         this.patente=patente;
         this.nroAsientos= nroAsientos;
         this.empresa = empresa;
-        viajes = new ArrayList<Viaje>();
+        viajes = new ArrayList<>();
     }
 
     public String getPatente() {

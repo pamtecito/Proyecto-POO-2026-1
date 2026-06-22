@@ -1,6 +1,7 @@
 package Modelo;
 import Excepciones.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,9 +32,6 @@ public class Viaje implements Serializable {
         conductors.add(cond);
         this.salida= sale;
         this.llegada= llega;
-        bus.addViaje(this);
-        sale.addSalida(this);
-        llega.addLlegada(this);
     }
 
     public LocalDate getFecha() {
@@ -110,11 +108,13 @@ public class Viaje implements Serializable {
             }
         }
         return ventas.toArray(new Venta[0]);
+
+        
     }
 
-    public void addConductor(Conductor conductor) throws SistemaVentaPasajesException {
+    public void addConductor(Conductor conductor) throws SVPException {
         if(conductors.size()>= 2) {
-            throw new SistemaVentaPasajesException("Maximo 2 conductores");
+            throw new SVPException("Maximo 2 conductores");
         }
         conductors.add(conductor);
     }
@@ -122,7 +122,7 @@ public class Viaje implements Serializable {
     public Tripulante[] getTripulantes(){
        ArrayList<Tripulante> totalTrip = new ArrayList<>();
 
-       totalTrip.add((Tripulante) aux);
+       totalTrip.add(aux);
 
        for (Conductor c : conductors){
            totalTrip.add(c);
