@@ -7,9 +7,10 @@ import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 import Controlador.*;
-import Excepciones.SistemaVentaPasajesException;
+import Excepciones.SVPException;
 import Modelo.TipoDocumento;
 import Utilidades.*;
+import Excepciones.*;
 
 public class UISVP {
     private static UISVP instance;
@@ -90,7 +91,7 @@ public class UISVP {
             ControladorEmpresa.getInstance().createEmpresa(rut, nombre, url);
             System.out.println();
             System.out.println("...::: Empresa guardada exitosamente :::...");
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println(e.getMessage());
         }
 
@@ -106,7 +107,7 @@ public class UISVP {
             Direccion direccion = new Direccion(calle, numero, comuna);
             ControladorEmpresa.getInstance().createTerminal(nombre, direccion);
             System.out.println("\n ...::::: Terminal guardado exitosamente :::::...");
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -173,7 +174,7 @@ public class UISVP {
             } else {
                 System.out.println("Opcion Invalida :/");
             }
-        } catch (SistemaVentaPasajesException e){
+        } catch (SVPException e){
             System.out.println(e.getMessage());
         }
     }
@@ -234,7 +235,7 @@ public class UISVP {
             SistemaVentaPasaje.getInstance().createCliente(id, nombre, telefono, email);
             System.out.println();
             System.out.println("...:::: Cliente guardado exitosamente ::::...");
-        }catch (SistemaVentaPasajesException e) {
+        }catch (SVPException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -252,7 +253,7 @@ public class UISVP {
             Rut rut = Rut.of(strRut);
             ControladorEmpresa.getInstance().createBus(patente, marca, modelo, nroAsientos, rut);
             System.out.println("\n ...::::: Bus creado existosamente :::::...");
-        }catch (SistemaVentaPasajesException e){
+        }catch (SVPException e){
             System.out.println(e.getMessage());
         }
     }
@@ -323,7 +324,7 @@ public class UISVP {
         try {
             SistemaVentaPasaje.getInstance().createViaje(fecha, hora, precio, duracion, patente, idTripulantes, comunas);
             System.out.println("\n ...::::: Viaje creado exitosamente :::::...");
-        }catch (SistemaVentaPasajesException e){
+        }catch (SVPException e){
             System.out.println(e.getMessage());
         }
     }
@@ -388,7 +389,7 @@ public class UISVP {
         try {
             SistemaVentaPasaje.getInstance().iniciaVenta(idDoc, tipo,fVenta, comunaOrigen, comunaDestino, id, cantPasajes);
             System.out.println("Venta iniciada.");
-        } catch (SistemaVentaPasajesException e){
+        } catch (SVPException e){
             System.out.println(e.getMessage());
             return;
         }
@@ -507,7 +508,7 @@ public class UISVP {
                 System.out.println("\n:::: Monto total de la venta: $" + montoTotal.get());
                 pagaVentaPasajes();
             }
-        } catch (SistemaVentaPasajesException e){
+        } catch (SVPException e){
             System.out.println(e.getMessage());
         }
 
@@ -548,7 +549,7 @@ public class UISVP {
                  SistemaVentaPasaje.getInstance().pagaVenta(idDoc, tipo, nroTarjeta);
              }
              System.out.println("\n ...::::: Venta realizada exitosamente :::::...");
-         }catch (SistemaVentaPasajesException e) {
+         }catch (SVPException e) {
              System.out.println(e.getMessage());
          }
     }
@@ -619,7 +620,7 @@ public class UISVP {
                         pasajero[0], pasajero[1], pasajero[2], pasajero[3]);
             }
 
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -668,7 +669,7 @@ public class UISVP {
                         viaje[0], viaje[1], viaje[2], viaje[3], viaje[4]);
             }
 
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -697,7 +698,7 @@ public class UISVP {
                         venta[0], venta[1], venta[2], venta[3]);
             }
 
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -725,39 +726,39 @@ public class UISVP {
         char dv;
         char guion;
         if  (rut.length() < 11 || rut.length() > 12) {
-            throw new SistemaVentaPasajesException("El rut ingresado no es correcto (no cumple con el formato)");
+            throw new SVPException("El rut ingresado no es correcto (no cumple con el formato)");
         }
         if (rut.length() == 11) {
             if (rut.charAt(1) != '.' || rut.charAt(5) != '.') {
-                throw new SistemaVentaPasajesException("El rut ingresado no es correcto (no cumple con el formato)");
+                throw new SVPException("El rut ingresado no es correcto (no cumple con el formato)");
             }
             dv = rut.charAt(10);
             guion = rut.charAt(9);
             if (!((dv >= '0' && dv <= '9') || dv == 'k' || dv == 'K')) {
-                throw new SistemaVentaPasajesException("El rut ingresado no es correcto (no cumple con el formato)");
+                throw new SVPException("El rut ingresado no es correcto (no cumple con el formato)");
             }
             if (guion != '-') {
-                throw new SistemaVentaPasajesException("El rut ingresado no es correcto (no cumple con el formato)");
+                throw new SVPException("El rut ingresado no es correcto (no cumple con el formato)");
             }
         }
 
         if  (rut.length() == 12) {
             if (rut.charAt(2) != '.' || rut.charAt(6) != '.') {
-                throw new SistemaVentaPasajesException("El rut ingresado no es correcto (no cumple con el formato)");
+                throw new SVPException("El rut ingresado no es correcto (no cumple con el formato)");
             }
             dv = rut.charAt(11);
             guion = rut.charAt(10);
             if (!((dv >= '0' && dv <= '9') || dv == 'k' || dv == 'K')) {
-                throw new SistemaVentaPasajesException("El rut ingresado no es correcto (no cumple con el formato)");
+                throw new SVPException("El rut ingresado no es correcto (no cumple con el formato)");
             }
             if (guion != '-') {
-                throw new SistemaVentaPasajesException("El rut ingresado no es correcto (no cumple con el formato)");
+                throw new SVPException("El rut ingresado no es correcto (no cumple con el formato)");
             }
         }
         for (int i = 0; i < rut.length() - 2; i++) {
             char caracter = rut.charAt(i);
             if (caracter != '.' && (caracter < '0' || caracter > '9')) {
-                throw new SistemaVentaPasajesException("El rut ingresado no es correcto (no cumple con el formato)");
+                throw new SVPException("El rut ingresado no es correcto (no cumple con el formato)");
             }
         }
     }
@@ -822,7 +823,7 @@ public class UISVP {
             try {
                 verFormatoRut(rut);
                 datoValido = true;
-            } catch (SistemaVentaPasajesException e) {
+            } catch (SVPException e) {
                 System.out.println(e.getMessage());
             }
         } while (!datoValido);
@@ -877,7 +878,7 @@ public class UISVP {
 
             Rut rutTurbus = Rut.of("77.777.777-7");
             ControladorEmpresa.getInstance().createEmpresa(rutTurbus, "Turbus", "https://www.turbus.cl");
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println("DatosPrueba empresa: " + e.getMessage());
         }
 
@@ -897,7 +898,7 @@ public class UISVP {
 
             ControladorEmpresa.getInstance().createTerminal("Terminal Bulnes",
                     new Direccion("Yungay", 150, "Bulnes"));
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println("DatosPrueba terminal: " + e.getMessage());
         }
 
@@ -915,7 +916,7 @@ public class UISVP {
 
             Rut rutTB = Rut.of("77.777.777-7");
             ControladorEmpresa.getInstance().createBus("TURB-01", "Scania", "Touring", 46, rutTB);
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println("DatosPrueba bus: " + e.getMessage());
         }
 
@@ -984,7 +985,7 @@ public class UISVP {
                     nomCond3,
                     new Direccion("Arturo Prat", 210, "Pinto"));
 
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println("DatosPrueba tripulante: " + e.getMessage());
         }
 
@@ -1014,7 +1015,7 @@ public class UISVP {
             SistemaVentaPasaje.getInstance().createCliente(
                     Pasaporte.of("P12345678", "ARG"), nomC3, "+54911111111", "lfernandez@mail.ar");
 
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println("DatosPrueba cliente: " + e.getMessage());
         }
 
@@ -1060,7 +1061,7 @@ public class UISVP {
             SistemaVentaPasaje.getInstance().createPasajero(
                     Rut.of("44.444.444-4"), nomP4, "+56944444444", contactoP4, "+56912000004");
 
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println("DatosPrueba pasajero: " + e.getMessage());
         }
 
@@ -1103,7 +1104,7 @@ public class UISVP {
                     new IdPersona[]{ Rut.of("55.555.555-5"), Rut.of("77.777.777-7") },
                     new String[]{ "Pinto", "Medina" });
 
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println("DatosPrueba viaje: " + e.getMessage());
         }
         cargarVentas();
@@ -1133,7 +1134,7 @@ public class UISVP {
 
             SistemaVentaPasaje.getInstance().pagaVenta("B001", TipoDocumento.BOLETA);
             System.out.println("DEBUG pagaVenta B001 OK");
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println("DEBUG ERROR B001: " + e.getMessage());
         }
 
@@ -1156,7 +1157,7 @@ public class UISVP {
 
             SistemaVentaPasaje.getInstance().pagaVenta("F001", TipoDocumento.FACTURA, 1234567890123456L);
             System.out.println("DEBUG pagaVenta F001 OK");
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println("DEBUG ERROR F001: " + e.getMessage());
         }
 
@@ -1174,7 +1175,7 @@ public class UISVP {
 
             SistemaVentaPasaje.getInstance().pagaVenta("B002", TipoDocumento.BOLETA);
             System.out.println("DEBUG pagaVenta B002 OK");
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println("DEBUG ERROR B002: " + e.getMessage());
         }
     }
@@ -1210,7 +1211,7 @@ public class UISVP {
         try {
             SistemaVentaPasaje.getInstance().readDatosIniciales();
             System.out.println("Datos iniciales cargados correctamente.");
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
@@ -1219,7 +1220,7 @@ public class UISVP {
         try {
             SistemaVentaPasaje.getInstance().saveDatosSistema();
             System.out.println("Datos guardados correctamente.");
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
@@ -1228,7 +1229,7 @@ public class UISVP {
         try {
             SistemaVentaPasaje.getInstance().readDatosSistema();
             System.out.println("Datos recuperados correctamente.");
-        } catch (SistemaVentaPasajesException e) {
+        } catch (SVPException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
