@@ -1,5 +1,7 @@
+package Utilidades;
+
 import java.util.Objects;
-public class Pasaporte implements IdPersona{
+public class Pasaporte implements IdPersona {
     private String numero;
     private String nacionalidad;
 
@@ -36,8 +38,8 @@ public class Pasaporte implements IdPersona{
         if (this == obj) return true;
         if (obj  == null || this.getClass() != obj.getClass()) return false;
         Pasaporte p = (Pasaporte) obj;
-        return  Objects.equals(this.numero, p.getNumero()) &&
-                Objects.equals(this.nacionalidad, p.getNacionalidad());
+        return   Objects.equals(this.numero, p.getNumero()) &&
+                        Objects.equals(this.nacionalidad,p.getNacionalidad());
     }
 }
 

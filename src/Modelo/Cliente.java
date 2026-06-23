@@ -1,6 +1,6 @@
-import java.security.Permission;
+package Modelo;
+import Utilidades.*;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 public class Cliente extends Persona {
     private String email;

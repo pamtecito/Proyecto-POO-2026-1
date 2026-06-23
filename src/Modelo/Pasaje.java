@@ -1,3 +1,5 @@
+package Modelo;
+
 public class Pasaje {
     private long numero;
     private int asiento;

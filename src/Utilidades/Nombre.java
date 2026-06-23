@@ -1,3 +1,5 @@
+package Utilidades;
+
 //clase hecha por anastacia en un pc del labIci
 public class Nombre {
     private Tratamiento tratamiento;
@@ -40,7 +42,7 @@ public class Nombre {
     @Override
     public String toString (){
 
-        return tratamiento + " " + nombres + apellidoPaterno +" " + apellidoMaterno;
+        return tratamiento + " " + nombres + " " + apellidoPaterno +" " + apellidoMaterno;
     }
 
     @Override
