@@ -37,8 +37,7 @@ public class Rut implements IdPersona {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (this == null || this.getClass() != getClass()) return false;
-        if (!(obj instanceof Rut)) return false;
+        if (obj == null || getClass() != obj.getClass()) return false;
         Rut rut = (Rut) obj;
         return this.numero == rut.numero && this.dv == rut.dv;
     }

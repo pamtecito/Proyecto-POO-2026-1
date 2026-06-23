@@ -183,6 +183,10 @@ public class ControladorEmpresa implements Serializable {
     }
 
     protected void setDatosIniciales(Object[] objetos){
+        misEmpresas.clear();
+        misTerminales.clear();
+        misBuses.clear();
+
         Arrays.stream(objetos)
                 .filter(obj -> obj instanceof Empresa)
                 .map(obj -> (Empresa) obj)
@@ -192,6 +196,11 @@ public class ControladorEmpresa implements Serializable {
                 .filter(obj -> obj instanceof Terminal)
                 .map(obj -> (Terminal) obj)
                 .forEach(misTerminales::add);
+
+        Arrays.stream(objetos)
+                .filter(obj -> obj instanceof Bus)
+                .map(obj -> (Bus) obj)
+                .forEach(misBuses::add);
     }
 
     protected Optional<Empresa> findEmpresa(Rut rut) throws SVPException {

@@ -1182,10 +1182,10 @@ public class UISVP {
     private void generatePasajesVenta() {
         try {
             System.out.print("Ingrese id documento de la venta: ");
-            String idDocumento = sc.nextLine().trim();
+            String idDocumento = sc.next();
 
             System.out.print("Ingrese tipo documento (BOLETA/FACTURA): ");
-            String tipoStr = sc.nextLine().trim().toUpperCase();
+            String tipoStr = sc.next();
 
             // Validar que el tipo sea válido antes de llamar a valueOf
             TipoDocumento tipo;

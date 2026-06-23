@@ -32,6 +32,11 @@ public class Viaje implements Serializable {
         conductors.add(cond);
         this.salida= sale;
         this.llegada= llega;
+        bus.addViaje(this);
+        sale.addSalida(this);
+        llega.addLlegada(this);
+        aux.addViaje(this);
+        cond.addViaje(this);
     }
 
     public LocalDate getFecha() {

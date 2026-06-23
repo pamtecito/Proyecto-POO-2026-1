@@ -280,11 +280,11 @@ public class SistemaVentaPasaje implements Serializable {
 
     public void generatePasajesVenta(String idDocumento, TipoDocumento tipo) throws SVPException{
         Optional<Venta> v= findVenta(idDocumento, tipo);
-        Venta venta = v.get();
-
         if(v.isEmpty()){
             throw new SVPException("No existe el pasaje");
         }
+        Venta venta = v.get();
+
         try {
             IOSVP.getInstancia().savePasajesDeVenta(venta.getPasajes(), idDocumento + tipo.name().toLowerCase() + ".txt");
         } catch (SVPException e){
@@ -292,7 +292,7 @@ public class SistemaVentaPasaje implements Serializable {
         }
     }
 
-    public void readDatosIniciales(){
+    public void readDatosIniciales() throws SVPException{
         Object[] obj= IOSVP.getInstancia().readDatosIniciales();
         misVentas.clear();
         misbuses.clear();
@@ -316,7 +316,7 @@ public class SistemaVentaPasaje implements Serializable {
         ControladorEmpresa.getInstance().setDatosIniciales(obj);
     }
 
-    public void saveDatosSistema(){
+    public void saveDatosSistema() throws SVPException{
         Object[] controladores = {ControladorEmpresa.getInstance(), this};
         try {
             IOSVP.getInstancia().saveControladores(controladores);
