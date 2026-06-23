@@ -87,6 +87,7 @@ public class SistemaVentaPasaje implements Serializable {
             if (cond2.isEmpty()){
                 throw  new SVPException("No existe un conductor con el id indicado en la empresa con el rut indicado.");
             }
+            conductor2 = cond2.get();
         }
 
         Optional<Terminal> salidaTerm = ControladorEmpresa.getInstance().findTerminalPorComuna(nomComunas[0]);
@@ -293,15 +294,20 @@ public class SistemaVentaPasaje implements Serializable {
     }
 
     public void readDatosIniciales(){
-        Object[] obj= IOSVP.getInstancia().readDatosIniciales();
+        Object[] obj;
+        try {
+            obj = IOSVP.getInstancia().readDatosIniciales();
+        } catch (SVPException e) {
+            throw new SVPException(e.getMessage());
+        }
         misVentas.clear();
         misbuses.clear();
         misViajes.clear();
         misClientes.clear();
         misPasajeros.clear();
 
-        for(Object o: obj){
-            if(o instanceof Venta v){
+        for (Object o : obj) {
+            if (o instanceof Venta v) {
                 misVentas.add(v);
             } else if (o instanceof Bus b) {
                 misbuses.add(b);
@@ -330,7 +336,7 @@ public class SistemaVentaPasaje implements Serializable {
             Object[] controladores = IOSVP.getInstancia().readControladores();
             for (Object obj : controladores) {
                 if (obj instanceof SistemaVentaPasaje svp) {
-                   instance = svp;
+                    instance = svp;
                 } else if (obj instanceof ControladorEmpresa ce) {
                     ControladorEmpresa.getInstance().setInstanciaPersistente(ce);
                 }
