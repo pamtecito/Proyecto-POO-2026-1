@@ -246,5 +246,5 @@ public class SistemaVentaPasaje {
         nomCliente2.setNombres("María José");
         nomCliente2.setApellidoPaterno("López");
         nomCliente2.setApellidoMaterno("Soto");
-
+    }
 }
