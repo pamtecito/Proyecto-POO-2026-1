@@ -1,8 +1,9 @@
 package Modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Bus {
+public class Bus implements Serializable {
     private String patente;
     private String marca;
     private String modelo;
@@ -14,7 +15,7 @@ public class Bus {
         this.patente=patente;
         this.nroAsientos= nroAsientos;
         this.empresa = empresa;
-        viajes = new ArrayList<Viaje>();
+        viajes = new ArrayList<>();
     }
 
     public String getPatente() {

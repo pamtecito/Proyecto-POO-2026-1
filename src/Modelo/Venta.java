@@ -1,10 +1,11 @@
 package Modelo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class Venta {
+public class Venta implements Serializable {
     private String idDocumento;
     private TipoDocumento tipo;//enum
     private LocalDate fecha;
@@ -49,7 +50,6 @@ public class Venta {
             pasajes[i] = misPasajes.get(i);
         }
         return pasajes;
-        //return misPasajes.toArray(new Modelo.Pasaje[0]);
     }
 
     public int getMonto() {

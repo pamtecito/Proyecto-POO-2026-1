@@ -9,6 +9,11 @@ public class PagoTarjeta extends Pago {
         this.nroTarjeta = nroTarjeta;
     }
 
+    @Override
+    public int getMonto() {
+        return super.getMonto();
+    }
+
     public long getNroTarjeta() {
         return nroTarjeta;
     }
