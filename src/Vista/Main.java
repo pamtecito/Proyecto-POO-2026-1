@@ -4,7 +4,10 @@ import Controlador.*;
 
 public class Main {
     public static void main(String[] args) {
-        SistemaVentaPasaje.getInstance().readDatosSistema();
+        GUIMenu dialog = new GUIMenu();
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
         UISVP.getInstance().menu();
 
     }

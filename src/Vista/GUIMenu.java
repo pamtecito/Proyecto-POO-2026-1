@@ -17,7 +17,7 @@ public class GUIMenu extends JDialog {
 
     public GUIMenu() {
         setContentPane(contentPane);
-        setModal(true);
+        setModal(false);
         setTitle("Menú Venta Pasaje");
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -104,6 +104,12 @@ public class GUIMenu extends JDialog {
             }
         });
 
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+
         // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -112,21 +118,9 @@ public class GUIMenu extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private void onOK() {
-        // add your code here
-        dispose();
-    }
-
     private void onCancel() {
         // add your code here if necessary
         dispose();
     }
 
-    public static void main(String[] args) {
-        GUIMenu dialog = new GUIMenu();
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
-        System.exit(0);
-    }
 }
