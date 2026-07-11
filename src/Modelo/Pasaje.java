@@ -2,6 +2,7 @@ package Modelo;
 import Utilidades.*;
 
 import java.io.Serializable;
+import java.time.format.DateTimeFormatter;
 
 public class Pasaje implements Serializable {
     private long numero;
@@ -34,16 +35,18 @@ public class Pasaje implements Serializable {
     }
     @Override
     public String toString() {
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+
         return "------------------------------------------------------------\n" +
                 "                    PASAJE ELECTRÓNICO\n" +
                 "------------------------------------------------------------\n" +
                 "Nombre Empresa          Número de pasaje\n" +
-                viaje.getBus().getEmpresa().getNombre() + "          " +
+                viaje.getBus().getEmpresa().getNombre().toUpperCase() + "          " +
                 numero + "\n\n" +
 
                 "Nombre Pasajero                    RUT/Pasaporte\n" +
-                pasajero.getNombreCompleto().getTratamiento() + ". " +
-                pasajero.getNombreCompleto() + "          " +
+                pasajero.getNombreCompleto().toString().toUpperCase() + "       " +
                 pasajero.getIdPersona() + "\n\n" +
 
                 "Patente bus     Asiento     Valor Pagado\n" +
@@ -52,10 +55,10 @@ public class Pasaje implements Serializable {
                 viaje.getPrecio() + "\n\n" +
 
                 "Terminal origen     Terminal destino     Fecha     Hora\n" +
-                viaje.getTerminalSalida().getNombre() + "     " +
-                viaje.getTerminalLlegada().getNombre() + "     " +
-                viaje.getFecha() + "     " +
-                viaje.getHora() + "\n" +
+                viaje.getTerminalSalida().getNombre().toUpperCase() + "     " +
+                viaje.getTerminalLlegada().getNombre().toUpperCase() + "     " +
+                viaje.getFecha().format(formatoFecha) + "    " +
+                viaje.getHora().format(formatoHora) + "\n" +
 
                 "------------------------------------------------------------";
     }
