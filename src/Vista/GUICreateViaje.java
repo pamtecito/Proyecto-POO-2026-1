@@ -10,6 +10,7 @@ public class GUICreateViaje extends JDialog {
 
     public GUICreateViaje() {
         setContentPane(contentPane);
+        setTitle("Creando un viaje...");
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
@@ -51,10 +52,4 @@ public class GUICreateViaje extends JDialog {
         dispose();
     }
 
-    public static void main(String[] args) {
-        GUICreateViaje dialog = new GUICreateViaje();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
 }

@@ -18,7 +18,7 @@ public class GUIMenu extends JDialog {
     public GUIMenu() {
         setContentPane(contentPane);
         setModal(false);
-        setTitle("Menú Venta Pasaje");
+        setTitle("Menú Sistema Venta Pasaje");
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
@@ -29,6 +29,7 @@ public class GUIMenu extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GUICreateViaje cv = new GUICreateViaje();
+                cv.setLocationRelativeTo(null);
                 cv.pack();
                 cv.setVisible(true);
             }
@@ -38,6 +39,7 @@ public class GUIMenu extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GUIVentaPasaje vp = new GUIVentaPasaje();
+                vp.setLocationRelativeTo(null);
                 vp.pack();
                 vp.setVisible(true);
             }
@@ -47,6 +49,7 @@ public class GUIMenu extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GUIListLlegadasYSalidas list = new GUIListLlegadasYSalidas();
+                list.setLocationRelativeTo(null);
                 list.pack();
                 list.setVisible(true);
             }
@@ -56,6 +59,7 @@ public class GUIMenu extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GUIListViajeDisponibles list = new GUIListViajeDisponibles();
+                list.setLocationRelativeTo(null);
                 list.pack();
                 list.setVisible(true);
             }
@@ -65,6 +69,7 @@ public class GUIMenu extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GUIListPasajerosViaje list = new GUIListPasajerosViaje();
+                list.setLocationRelativeTo(null);
                 list.pack();
                 list.setVisible(true);
             }
@@ -74,7 +79,8 @@ public class GUIMenu extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GUIReadDatosIniciales rdi = new GUIReadDatosIniciales();
-                rdi.pack();;
+                rdi.setLocationRelativeTo(null);
+                rdi.pack();
                 rdi.setVisible(true);
             }
         });
@@ -83,6 +89,7 @@ public class GUIMenu extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GUISaveSystemData ssd = new GUISaveSystemData();
+                ssd.setLocationRelativeTo(null);
                 ssd.pack();
                 ssd.setVisible(true);
             }
@@ -92,6 +99,7 @@ public class GUIMenu extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GUIRecoverSystemData rsd = new GUIRecoverSystemData();
+                rsd.setLocationRelativeTo(null);
                 rsd.pack();
                 rsd.setVisible(true);
             }
@@ -120,6 +128,7 @@ public class GUIMenu extends JDialog {
 
     private void onCancel() {
         // add your code here if necessary
+        System.exit(0);
         dispose();
     }
 
