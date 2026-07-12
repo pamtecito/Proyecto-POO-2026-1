@@ -68,7 +68,7 @@ public class GUIMenu extends JDialog {
         pasajerosDeUnViajeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GUIListPasajerosViaje list = new GUIListPasajerosViaje();
+                GUIListEmpresas list = new GUIListEmpresas();
                 list.setLocationRelativeTo(null);
                 list.pack();
                 list.setVisible(true);

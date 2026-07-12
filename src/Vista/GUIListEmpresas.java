@@ -3,12 +3,12 @@ package Vista;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class GUIListPasajerosViaje extends JDialog {
+public class GUIListEmpresas extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
 
-    public GUIListPasajerosViaje() {
+    public GUIListEmpresas() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -52,7 +52,7 @@ public class GUIListPasajerosViaje extends JDialog {
     }
 
     public static void main(String[] args) {
-        GUIListPasajerosViaje dialog = new GUIListPasajerosViaje();
+        GUIListEmpresas dialog = new GUIListEmpresas();
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);
