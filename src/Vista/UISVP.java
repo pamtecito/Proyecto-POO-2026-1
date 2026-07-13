@@ -624,7 +624,7 @@ public class UISVP {
     private void listEmpresas(){
         System.out.println("\n ...::::: Listado de empresas :::::...");
 
-        String[][] empresas = ControladorEmpresa.getInstance().listEmpresas();
+        Object[][] empresas = ControladorEmpresa.getInstance().listEmpresas();
 
         if (empresas.length == 0) {
             System.out.println("No existen empresas registradas.");
@@ -635,7 +635,7 @@ public class UISVP {
                 "RUT EMPRESA", "NOMBRE", "URL", "NRO. TRIPULANTES", "NRO. BUSES", "NRO. VENTAS");
         System.out.println(" " + "-".repeat(120));
 
-        for (String[] empresa : empresas) {
+        for (Object[] empresa : empresas) {
             System.out.printf(" %-15s | %-30s | %-30s | %-17s | %-10s | %-12s%n",
                     empresa[0], empresa[1], empresa[2], empresa[3], empresa[4], empresa[5]);
         }

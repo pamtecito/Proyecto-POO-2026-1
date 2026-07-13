@@ -87,21 +87,21 @@ public class ControladorEmpresa implements Serializable {
         }
     }
 
-    public String[][] listEmpresas(){
+    public Object[][] listEmpresas(){
         if (misEmpresas.isEmpty()){
             return new String[0][0];
         }
 
-        String[][] listEmp = new String[misEmpresas.size()][6];
+        Object[][] listEmp = new String[misEmpresas.size()][6];
 
         for (int i = 0; i < misEmpresas.size(); i++) {
             Empresa e = misEmpresas.get(i);
             listEmp[i][0] = e.getRut().toString();
             listEmp[i][1] = e.getNombre();
             listEmp[i][2] = e.getUrl();
-            listEmp[i][3] = String.valueOf(e.getTripulantes().length);
-            listEmp[i][4] = String.valueOf(e.getBuses().length);
-            listEmp[i][5] = String.valueOf(e.getVentas().length);
+            listEmp[i][3] = e.getTripulantes();
+            listEmp[i][4] = e.getBuses();
+            listEmp[i][5] = e.getVentas();
         }
 
         return listEmp;
