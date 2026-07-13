@@ -45,6 +45,6 @@ public class Persona implements Serializable {
         if (this == otro) return true;
         if (otro == null || getClass() != otro.getClass()) return false;
         Persona perso = (Persona)otro;
-        return this.idPersona == perso.idPersona;
+        return this.idPersona.equals(perso.idPersona);
     }
 }

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class SistemaVentaPasaje implements Serializable {
@@ -17,6 +18,7 @@ public class SistemaVentaPasaje implements Serializable {
     private ArrayList<Pasajero> misPasajeros;
     private ArrayList<Viaje> misViajes;
     private ArrayList<Venta> misVentas;
+
 
     private SistemaVentaPasaje() {
         misbuses = new ArrayList<>();
@@ -281,11 +283,11 @@ public class SistemaVentaPasaje implements Serializable {
 
     public void generatePasajesVenta(String idDocumento, TipoDocumento tipo) throws SVPException{
         Optional<Venta> v= findVenta(idDocumento, tipo);
-        Venta venta = v.get();
 
         if(v.isEmpty()){
             throw new SVPException("No existe el pasaje");
         }
+        Venta venta = v.get();
         try {
             IOSVP.getInstancia().savePasajesDeVenta(venta.getPasajes(), idDocumento + tipo.name().toLowerCase() + ".txt");
         } catch (SVPException e){
@@ -365,6 +367,9 @@ public class SistemaVentaPasaje implements Serializable {
                 .filter(v -> v.getHora().equals(hora))
                 .filter(v -> v.getBus().getPatente().equals(patenteBus))
                 .findFirst();
+    }
+    public List<Viaje> getViajesDisponibles() {
+        return misViajes;
     }
 
     private Optional<Pasajero> findPasajero(IdPersona idPersona) {

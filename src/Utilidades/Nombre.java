@@ -1,7 +1,9 @@
 package Utilidades;
 
+import java.io.Serializable;
+
 //clase hecha por anastacia en un pc del labIci
-public class Nombre {
+public class Nombre implements Serializable {
     private Tratamiento tratamiento;
     private String nombres;
     private String apellidoPaterno;
