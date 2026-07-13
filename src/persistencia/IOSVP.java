@@ -43,9 +43,9 @@ public class IOSVP {
         ArrayList<Viaje> viajes = new ArrayList<>();
 
         try {
-            File archivo = new File("SVPDatosIniciales.txt");
+            File archivo = new File("SVPDatosIniciales.txt.txt");
 
-            Scanner escaner = new Scanner(new File("SVPDatosIniciales.txt"));
+            Scanner escaner = new Scanner(new File("SVPDatosIniciales.txt.txt"));
 
             int seccion = 0;
 
@@ -87,7 +87,7 @@ public class IOSVP {
             escaner.close();
 
         } catch(FileNotFoundException e) {
-            throw new SVPException("No existe o no se puede abrir el archivo SVPDatosIniciales.txt");
+            throw new SVPException("No existe o no se puede abrir el archivo SVPDatosIniciales.txt.txt");
         }
 
         return objetos.toArray();
@@ -236,7 +236,7 @@ public class IOSVP {
         int precio = Integer.parseInt(datos[2]);
         int duracion = Integer.parseInt(datos[3]);
 
-        Bus bus = findBus(buses, datos[4]).orElseThrow(() -> new SVPException("Bus no encontrado"));
+        Bus bus = findBus(buses, datos[4].trim()).orElseThrow(() -> new SVPException("Bus no encontrado"));
 
         Empresa empresa = bus.getEmpresa();
 
@@ -255,9 +255,9 @@ public class IOSVP {
         Auxiliar auxilio = (Auxiliar) auxiliar;
         Conductor conducto = (Conductor) conductor;
 
-        Terminal salida = findTerminal(terminales, datos[7]).orElseThrow(() -> new SVPException("Terminal de salida no encontrado"));
+        Terminal salida = findTerminal(terminales, datos[7].trim()).orElseThrow(() -> new SVPException("Terminal de salida no encontrado"));
 
-        Terminal llegada = findTerminal(terminales, datos[8]).orElseThrow(() -> new SVPException("Terminal de llegada no encontrado"));
+        Terminal llegada = findTerminal(terminales, datos[8].trim()).orElseThrow(() -> new SVPException("Terminal de llegada no encontrado"));
 
         Viaje viaje = new Viaje(fecha, hora, precio, duracion, bus, auxilio, conducto, salida, llegada);
 
