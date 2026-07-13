@@ -68,7 +68,7 @@ public class GUIListEmpresas extends JDialog {
             }});
     }
     private void cargarEmpresas() {
-        String[][] empresas = ControladorEmpresa.getInstance().listEmpresas();
+        Object[][] empresas = ControladorEmpresa.getInstance().listEmpresas();
         DefaultTableModel modelo = (DefaultTableModel) tablaEmpresas.getModel();
         modelo.setRowCount(0);
 

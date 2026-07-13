@@ -43,9 +43,9 @@ public class IOSVP {
         ArrayList<Viaje> viajes = new ArrayList<>();
 
         try {
-            File archivo = new File("SVPDatosIniciales.txt.txt");
+            File archivo = new File("SVPDatosInicialestxt");
 
-            Scanner escaner = new Scanner(new File("SVPDatosIniciales.txt.txt"));
+            Scanner escaner = new Scanner(new File("SVPDatosInicialestxt"));
 
             int seccion = 0;
 
@@ -87,7 +87,7 @@ public class IOSVP {
             escaner.close();
 
         } catch(FileNotFoundException e) {
-            throw new SVPException("No existe o no se puede abrir el archivo SVPDatosIniciales.txt.txt");
+            throw new SVPException("No existe o no se puede abrir el archivo SVPDatosInicialestxt");
         }
 
         return objetos.toArray();

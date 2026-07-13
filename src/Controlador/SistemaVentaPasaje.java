@@ -283,11 +283,11 @@ public class SistemaVentaPasaje implements Serializable {
 
     public void generatePasajesVenta(String idDocumento, TipoDocumento tipo) throws SVPException{
         Optional<Venta> v= findVenta(idDocumento, tipo);
-        Venta venta = v.get();
 
         if(v.isEmpty()){
             throw new SVPException("No existe el pasaje");
         }
+        Venta venta = v.get();
         try {
             IOSVP.getInstancia().savePasajesDeVenta(venta.getPasajes(), idDocumento + tipo.name().toLowerCase() + ".txt");
         } catch (SVPException e){
