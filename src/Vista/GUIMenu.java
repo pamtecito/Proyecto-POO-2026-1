@@ -2,6 +2,8 @@ package Vista;
 
 import javax.swing.*;
 import java.awt.event.*;
+import Controlador.*;
+import Excepciones.*;
 
 public class GUIMenu extends JDialog {
     private JPanel contentPane;
@@ -39,7 +41,7 @@ public class GUIMenu extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GUIVentaPasaje vp = new GUIVentaPasaje();
-                vp.setLocationRelativeTo(null);
+                vp.setLocationRelativeTo(GUIMenu.this);
                 vp.pack();
                 vp.setVisible(true);
             }
@@ -78,30 +80,37 @@ public class GUIMenu extends JDialog {
         leerDatosInicialesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GUIReadDatosIniciales rdi = new GUIReadDatosIniciales();
-                rdi.setLocationRelativeTo(null);
-                rdi.pack();
-                rdi.setVisible(true);
+                try {
+                    SistemaVentaPasaje.getInstance().readDatosIniciales();
+                    JOptionPane.showMessageDialog(GUIMenu.this, "Datos iniciales cargados correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (SVPException ex) {
+                    JOptionPane.showMessageDialog(GUIMenu.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
         guardarDatosDelSistemaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GUISaveSystemData ssd = new GUISaveSystemData();
-                ssd.setLocationRelativeTo(null);
-                ssd.pack();
-                ssd.setVisible(true);
+                try {
+                    SistemaVentaPasaje.getInstance().saveDatosSistema();
+                    JOptionPane.showMessageDialog(GUIMenu.this, "Datos guardados correctamente en el sistema.", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SVPException ex) {
+                    JOptionPane.showMessageDialog(GUIMenu.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
         recuperarDatosDelSistemaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GUIRecoverSystemData rsd = new GUIRecoverSystemData();
-                rsd.setLocationRelativeTo(null);
-                rsd.pack();
-                rsd.setVisible(true);
+                try{
+                    SistemaVentaPasaje.getInstance().readDatosSistema();
+                    JOptionPane.showMessageDialog(GUIMenu.this, "Datos del sistema recuperados correctamente.", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                } catch (SVPException ex){
+                    JOptionPane.showMessageDialog(GUIMenu.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         // call onCancel() when cross is clicked

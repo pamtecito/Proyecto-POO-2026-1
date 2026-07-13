@@ -10,7 +10,10 @@ import Utilidades.Rut;
 import javax.swing.*;
 import java.awt.event.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class GUIVentaPasaje extends JDialog {
     DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -19,9 +22,6 @@ public class GUIVentaPasaje extends JDialog {
     private JRadioButton boletaRadioButton;
     private JRadioButton facturaRadioButton;
     private JTextField strFecha;
-    private JTextField strOrigen;
-    private JTextField strDestino;
-    private JComboBox tipoDocumento;
     private JTextField strCantPasajes;
     private JButton buscarViajesButton;
     private JTextField RUTOPASAPORTE;
@@ -30,8 +30,8 @@ public class GUIVentaPasaje extends JDialog {
     private JTextField strNacionalidad;
     private JRadioButton RUTRadioButton;
     private JRadioButton pasaporteRadioButton;
-    private JComboBox comboBox1;
-    private JComboBox comboBox2;
+    private JComboBox<String> origenCombo;
+    private JComboBox<String> destinoCombo;
 
 
     public GUIVentaPasaje() {
@@ -39,7 +39,12 @@ public class GUIVentaPasaje extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         setLocationRelativeTo(null);
-
+        String[][] viajes = SistemaVentaPasaje.getInstance().listViajes();
+        origenCombo.removeAllItems();
+        for (int i = 0; i < viajes.length; i++) {
+            agregarSiNoExiste(origenCombo, viajes[i][6]);
+        }
+        actualizarDestino();
         nacionalidadlbl.setVisible(false);
         strNacionalidad.setVisible(false);
 
@@ -74,6 +79,12 @@ public class GUIVentaPasaje extends JDialog {
                 cambiarTipoDocumento();
             }
         });
+        origenCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarDestino();
+            }
+        });
 
         pasaporteRadioButton.addActionListener(new ActionListener() {
             @Override
@@ -88,7 +99,6 @@ public class GUIVentaPasaje extends JDialog {
         String fecha = strFecha.getText();
         IdPersona idCliente = null;
         LocalDate fechaVenta;
-        String opcion = (String) tipoDocumento.getSelectedItem();
         if (!verFormato(fecha)) {
             JOptionPane.showMessageDialog(this, "El formato de fecha es incorrecto (debe ser DD/MM/YYYY).");
             return;
@@ -96,17 +106,19 @@ public class GUIVentaPasaje extends JDialog {
             fechaVenta = LocalDate.parse(fecha, formato);
         }
         try {
-            if (opcion.equals("RUT")) {
+            if (RUTRadioButton.isSelected()) {
                 String rut = RUTOPASAPORTE.getText();
                 verFormatoRut(rut);
                 idCliente = Rut.of(rut);
             } else {
                 String numero = RUTOPASAPORTE.getText();
                 String nacionalidad = strNacionalidad.getText();
+
                 if (numero.length() != 9) {
                     JOptionPane.showMessageDialog(this, "El pasaporte debe tener 9 caracteres.");
                     return;
                 }
+
                 if (nacionalidad.isBlank()) {
                     JOptionPane.showMessageDialog(this, "Debe ingresar la nacionalidad.");
                     return;
@@ -136,7 +148,16 @@ public class GUIVentaPasaje extends JDialog {
             return;
         }
         try {
-            //SistemaVentaPasaje.getInstance().iniciaVenta(idDocumento,tipo,fechaVenta,idCliente,cantPasajes);
+            String origen = (String) origenCombo.getSelectedItem();
+            String destino = (String) destinoCombo.getSelectedItem();
+            SistemaVentaPasaje.getInstance().iniciaVenta(idDocumento,tipo,fechaVenta,origen, destino, idCliente,cantPasajes);
+            String[][] horarios = SistemaVentaPasaje.getInstance().getHorariosDisponibles(fechaVenta, origen, destino, cantPasajes);
+            GUISeleccionViaje gui = new GUISeleccionViaje(idDocumento, tipo, horarios, fechaVenta, cantPasajes);
+            gui.pack();
+            gui.setLocationRelativeTo(this);
+            gui.setVisible(true);
+
+            dispose();
         } catch (SVPException e){
             JOptionPane.showMessageDialog(this, e.getMessage());
             return;
@@ -144,12 +165,6 @@ public class GUIVentaPasaje extends JDialog {
 
     }
 
-    public static void main(String[] args) {
-        GUIVentaPasaje dialog = new GUIVentaPasaje();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
     private void verFormatoRut(String rut) {
         //Formatos = 1.111.111-1 11.111.111-1
 
@@ -221,6 +236,40 @@ public class GUIVentaPasaje extends JDialog {
             strNacionalidad.setVisible(true);
         }
         pack();
+    }
+
+    private void agregarSiNoExiste(JComboBox<String> combo, String comuna) {
+        for (int i = 0; i < combo.getItemCount(); i++) {
+            if (combo.getItemAt(i).equals(comuna)) {
+                return;
+            }
+        }
+        combo.addItem(comuna);
+    }
+    private void actualizarDestino() {
+        String origen = (String) origenCombo.getSelectedItem();
+        String destinoAnterior = (String) destinoCombo.getSelectedItem();
+        destinoCombo.removeAllItems();
+        if (origen == null) {
+            return;
+        }
+        String[][] viajes = SistemaVentaPasaje.getInstance().listViajes();
+        for (int i = 0; i < viajes.length; i++) {
+            String salida = viajes[i][6];
+            String llegada = viajes[i][7];
+
+            if (salida.equalsIgnoreCase(origen)) {
+                agregarSiNoExiste(destinoCombo, llegada);
+            }
+        }
+
+        if (destinoAnterior != null) {
+            for (int i = 0; i < destinoCombo.getItemCount(); i++) {
+                if (destinoCombo.getItemAt(i).equalsIgnoreCase(destinoAnterior)) {
+                    destinoCombo.setSelectedIndex(i);
+                }
+            }
+        }
     }
 
 }
